@@ -1,0 +1,5 @@
+package ngocthang.models;
+
+public class User {
+
+}

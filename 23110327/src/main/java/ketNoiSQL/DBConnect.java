@@ -1,0 +1,45 @@
+package ketNoiSQL;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class DBConnect {
+	private final String serverName = "WIN";
+	private final String dbName = "baitapWeb";
+	private final String portNumber = "1433";
+	private final String instance = "";
+	private final String userID = "sa";
+	private final String password = "ngocthang";
+
+	public Connection getConnection() throws Exception {
+		String url = "jdbc:sqlserver://" + serverName + "\\" + instance + ":" + portNumber + ";databaseName=" + dbName;
+		if (instance == null || instance.trim().isEmpty())
+			url = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";databaseName=" + dbName
+					+ ";encrypt=true;trustServerCertificate=true;";
+		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		return DriverManager.getConnection(url, userID, password);
+	}
+
+	public static void main(String[] args) {
+		try {
+			// Connect to database 'baitapWeb'
+			Connection conn = new DBConnect().getConnection();
+			// create statement
+			Statement stmt = conn.createStatement();
+			// insert vao bang ten users trong Database
+			stmt.executeUpdate(
+					"INSERT INTO users(id, username, email) " + "VALUES (1, 'ngocthang', 'win2k5thxng@gmail.com')");
+			// get data from table ‘GiaoVien'
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+			// show data
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3));
+			}
+			conn.close(); // close connection
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+}
