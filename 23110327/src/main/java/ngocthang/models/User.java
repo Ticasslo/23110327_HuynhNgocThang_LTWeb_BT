@@ -36,6 +36,19 @@ public class User implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+	public User(String email, String userName, String fullName, String passWord, String avatar, int roleid,
+			String phone, Date createdDate) {
+		super();
+		this.email = email;
+		this.userName = userName;
+		this.fullName = fullName;
+		this.passWord = passWord;
+		this.avatar = avatar;
+		this.roleid = roleid;
+		this.phone = phone;
+		this.createdDate = createdDate;
+	}
+
 	// Tạo constructor, getters/setters
 	public int getId() {
 		return id;

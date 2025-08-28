@@ -3,9 +3,20 @@ package ngocthang.service;
 import ngocthang.models.User;
 
 public interface UserService {
-    // Đăng nhập: trả về User nếu đúng, null nếu sai
-    User login(String username, String password);
+	// Đăng nhập: trả về User nếu đúng, null nếu sai
+	User login(String username, String password);
 
-    // Lấy thông tin user theo username
-    User get(String username);
+	// Lấy thông tin user theo username
+	User get(String username);
+
+	// Dang ky register
+	void insert(User user);
+
+	boolean register(String email, String password, String username, String fullname, String phone);
+
+	boolean checkExistEmail(String email);
+
+	boolean checkExistUsername(String username);
+
+	boolean checkExistPhone(String phone);
 }
