@@ -1,0 +1,5 @@
+package ngocthang.service;
+
+public class UserService {
+
+}

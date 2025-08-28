@@ -1,0 +1,12 @@
+package ngocthang.dao.impl;
+
+import ngocthang.models.User;
+
+public class UserDaoImpl {
+
+	public User get(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,43 @@
+package ngocthang.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import ketNoiSQL.DBConnect;          // dùng class DBConnect của bạn
+import ngocthang.dao.UserDao;
+import ngocthang.models.User;
+
+public class UserDaoImpl implements UserDao {
+
+    @Override
+    public User get(String username) {
+        String sql = "SELECT id,email,username,fullname,password,avatar,roleid,phone,createdDate " +
+                     "FROM [User] WHERE username = ?";
+
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User u = new User();
+                    u.setId(rs.getInt("id"));
+                    u.setEmail(rs.getString("email"));
+                    u.setUserName(rs.getString("username"));
+                    u.setFullName(rs.getString("fullname"));
+                    u.setPassWord(rs.getString("password"));
+                    u.setAvatar(rs.getString("avatar"));
+                    u.setRoleid(rs.getInt("roleid"));
+                    u.setPhone(rs.getString("phone"));
+                    u.setCreatedDate(rs.getDate("createdDate"));
+                    return u;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

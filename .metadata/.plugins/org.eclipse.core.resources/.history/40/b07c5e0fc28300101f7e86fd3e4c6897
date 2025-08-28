@@ -1,0 +1,5 @@
+package ngocthang.dao.impl;
+
+public class UserDaoImpl {
+
+}
