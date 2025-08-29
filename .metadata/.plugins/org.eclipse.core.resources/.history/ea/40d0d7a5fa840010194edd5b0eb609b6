@@ -311,9 +311,8 @@ td:last-child {
 								<tr>
 									<td>${STT.index + 1}</td>
 									<td><c:choose>
-											<c:when
-												test="${category.icon != null && category.icon != ''}">
-												<c:url value="/image?fname=${category.icon}" var="imgUrl"></c:url>
+											<c:when test="${cate.icon != null && cate.icon != ''}">
+												<c:url value="/image?fname=${cate.icon}" var="imgUrl"></c:url>
 												<img src="${imgUrl}" alt="Category Image"
 													class="category-image" />
 											</c:when>
@@ -322,25 +321,24 @@ td:last-child {
 											</c:otherwise>
 										</c:choose></td>
 									<td>
-										<div class="category-name">${category.name}</div>
+										<div class="category-name">${cate.name}</div>
 									</td>
 									<td><a
-										href="<c:url value='/admin/category/edit?id=${category.id}'/>"
+										href="<c:url value='/admin/category/edit?id=${cate.id}'/>"
 										class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
-
 										<a
-										href="<c:url value='/admin/category/delete?id=${category.id}'/>"
+										href="<c:url value='/admin/category/delete?id=${cate.id}'/>"
 										class="btn btn-danger" title="Xóa danh mục"
-										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️
-											Xóa</a> <c:if test="${not empty category.icon}">
+										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục \"
+										${cate.name}\"?\n\nHành động này không thể hoàntác!')">🗑️
+											Xóa</a> <c:if test="${not empty cate.icon}">
 											<c:url var="dlUrl" value="/image">
-												<c:param name="fname" value="${category.icon}" />
+												<c:param name="fname" value="${cate.icon}" />
 												<c:param name="download" value="1" />
 											</c:url>
 											<a href="${dlUrl}" class="btn btn-secondary" title="Tải ảnh">⬇️
 												Tải ảnh</a>
 										</c:if></td>
-
 								</tr>
 							</c:forEach>
 						</tbody>

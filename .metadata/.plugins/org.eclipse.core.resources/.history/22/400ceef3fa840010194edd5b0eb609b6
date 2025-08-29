@@ -311,8 +311,7 @@ td:last-child {
 								<tr>
 									<td>${STT.index + 1}</td>
 									<td><c:choose>
-											<c:when
-												test="${category.icon != null && category.icon != ''}">
+											<c:when test="${category.icon != null && category.icon != ''}">
 												<c:url value="/image?fname=${category.icon}" var="imgUrl"></c:url>
 												<img src="${imgUrl}" alt="Category Image"
 													class="category-image" />
@@ -327,11 +326,11 @@ td:last-child {
 									<td><a
 										href="<c:url value='/admin/category/edit?id=${category.id}'/>"
 										class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
-
 										<a
 										href="<c:url value='/admin/category/delete?id=${category.id}'/>"
 										class="btn btn-danger" title="Xóa danh mục"
-										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️
+										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục \"
+										${category.name}\"?\n\nHành động này không thể hoàntác!')">🗑️
 											Xóa</a> <c:if test="${not empty category.icon}">
 											<c:url var="dlUrl" value="/image">
 												<c:param name="fname" value="${category.icon}" />
@@ -340,7 +339,6 @@ td:last-child {
 											<a href="${dlUrl}" class="btn btn-secondary" title="Tải ảnh">⬇️
 												Tải ảnh</a>
 										</c:if></td>
-
 								</tr>
 							</c:forEach>
 						</tbody>
