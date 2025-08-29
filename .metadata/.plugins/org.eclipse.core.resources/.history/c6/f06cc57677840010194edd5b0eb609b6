@@ -1,0 +1,5 @@
+package ngocthang.controller;
+
+public class HomeController {
+
+}
