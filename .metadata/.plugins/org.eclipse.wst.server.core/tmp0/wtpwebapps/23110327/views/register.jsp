@@ -19,7 +19,6 @@
 </head>
 <body>
 
-	<!-- Include topbar -->
 	<jsp:include page="topbar.jsp" />
 
 	<div class="container mt-5">
@@ -133,7 +132,7 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-	<!-- JavaScript validation -->
+	<!-- Validation -->
 	<script>
 		document
 				.querySelector('form')

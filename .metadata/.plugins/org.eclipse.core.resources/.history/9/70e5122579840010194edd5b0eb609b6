@@ -19,6 +19,7 @@
 </head>
 <body>
 
+	<!-- Include topbar -->
 	<jsp:include page="topbar.jsp" />
 
 	<div class="container mt-5">
