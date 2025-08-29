@@ -1,0 +1,94 @@
+package ngocthang.service.impl;
+
+import ngocthang.dao.impl.UserDaoImpl;
+import ngocthang.models.User;
+import ngocthang.service.UserService;
+
+public class UserServiceImpl implements UserService {
+	UserDaoImpl userDao = new UserDaoImpl();
+
+	// Login
+	@Override
+	public User login(String username, String password) {
+		User user = this.get(username);
+		if (user != null && password != null && password.equals(user.getPassWord())) {
+			return user;
+		}
+		return null;
+	}
+
+	@Override
+	public User get(String username) {
+		if (username == null || username.isEmpty())
+			return null;
+		return userDao.get(username);
+	}
+
+	// Register
+	@Override
+	public boolean register(String username, String password, String email, String fullname, String phone) {
+		if (userDao.checkExistUsername(username)) {
+			return false;
+		}
+		long millis = System.currentTimeMillis();
+		java.sql.Date date = new java.sql.Date(millis);
+		userDao.insert(new User(email, username, fullname, password, null, 5, phone, date));
+		return true;
+	}
+
+	public boolean checkExistEmail(String email) {
+		return userDao.checkExistEmail(email);
+	}
+
+	public boolean checkExistUsername(String username) {
+		return userDao.checkExistUsername(username);
+	}
+
+	@Override
+	public boolean checkExistPhone(String phone) {
+		return userDao.checkExistPhone(phone);
+	}
+
+	@Override
+	public void insert(User user) {
+		userDao.insert(user);
+	}
+
+	@Override
+	public User findByUsernameOrEmail(String identifier) {
+		// Tìm theo username trước
+		User user = userDao.findByUserName(identifier);
+
+		// Nếu không tìm thấy, tìm theo email
+		if (user == null) {
+			user = userDao.findByEmail(identifier);
+		}
+
+		return user;
+	}
+
+	@Override
+	public boolean updatePassword(String username, String newPassword) {
+		return userDao.updatePassword(username, newPassword);
+	}
+	
+    public boolean verifyUserInfo(String username, String email, String phone) {
+        if (username == null || username.trim().isEmpty() ||
+            email == null || email.trim().isEmpty() ||
+            phone == null || phone.trim().isEmpty()) {
+            return false;
+        }
+        
+        User user = userDao.findByUserName(username.trim());
+        
+        if (user == null) {
+            return false;
+        }
+        
+        // Kiểm tra email và phone có khớp không (case-insensitive cho email)
+        boolean emailMatch = email.trim().equalsIgnoreCase(user.getEmail());
+        boolean phoneMatch = phone.trim().equals(user.getPhone());
+        
+        return emailMatch && phoneMatch;
+    }
+}

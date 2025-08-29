@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ngocthang.utils.Constant;
+import ngocthang.models.User;
 import ngocthang.service.UserService;
 import ngocthang.service.impl.UserServiceImpl;
 

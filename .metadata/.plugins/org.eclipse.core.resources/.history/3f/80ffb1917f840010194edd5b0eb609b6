@@ -1,0 +1,117 @@
+package ngocthang.controller;
+
+import java.io.IOException;
+import java.security.SecureRandom;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import ngocthang.models.User;
+import ngocthang.service.UserService;
+import ngocthang.service.impl.UserServiceImpl;
+
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = "/forgot-password")
+public class ForgotPasswordController extends HttpServlet {
+
+    private UserService userService = new UserServiceImpl();
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
+        req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
+        
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
+        
+        String identifier = req.getParameter("identifier");
+        
+        if (identifier == null || identifier.trim().isEmpty()) {
+            req.setAttribute("error", "Vui lòng nhập email hoặc tài khoản");
+            req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+            return;
+        }
+        
+        // Tìm user bằng username hoặc email
+        User user = userService.findByUsernameOrEmail(identifier);
+        
+        if (user == null) {
+            req.setAttribute("error", "Không tìm thấy tài khoản với thông tin này");
+            req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+            return;
+        }
+        
+        // Tạo mật khẩu mới
+        String newPassword = generateNewPassword();
+        
+        // Cập nhật mật khẩu trong database
+        boolean updated = userService.updatePassword(user.getUserName(), newPassword);
+        
+        if (updated) {
+            // Gửi email (giả lập - trong thực tế cần implement email service)
+            boolean emailSent = sendEmailWithNewPassword(user.getEmail(), newPassword);
+            
+            if (emailSent) {
+                req.setAttribute("alert", 
+                    "Mật khẩu mới đã được gửi đến email của bạn: " + maskEmail(user.getEmail()));
+            } else {
+                req.setAttribute("alert", 
+                    "Mật khẩu mới của bạn là: " + newPassword + " (Tính năng gửi email chưa được cấu hình)");
+            }
+        } else {
+            req.setAttribute("error", "Có lỗi xảy ra, vui lòng thử lại sau");
+        }
+        
+        req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+    }
+    
+    private String generateNewPassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder newPassword = new StringBuilder();
+        
+        for (int i = 0; i < 8; i++) {
+            newPassword.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        
+        return newPassword.toString();
+    }
+    
+    private String maskEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            return email;
+        }
+        
+        String[] parts = email.split("@");
+        String username = parts[0];
+        String domain = parts[1];
+        
+        if (username.length() <= 2) {
+            return email;
+        }
+        
+        String maskedUsername = username.charAt(0) + "***" + username.charAt(username.length() - 1);
+        return maskedUsername + "@" + domain;
+    }
+    
+    private boolean sendEmailWithNewPassword(String email, String newPassword) {
+        // TODO: Implement email sending logic
+        // Sử dụng JavaMail API hoặc service như SendGrid, AWS SES
+        
+        System.out.println("=== EMAIL SIMULATION ===");
+        System.out.println("To: " + email);
+        System.out.println("Subject: Mật khẩu mới cho tài khoản của bạn");
+        System.out.println("Content: Mật khẩu mới của bạn là: " + newPassword);
+        System.out.println("========================");
+        
+        // Trả về false để hiển thị mật khẩu trực tiếp (demo mode)
+        return false;
+    }
+}

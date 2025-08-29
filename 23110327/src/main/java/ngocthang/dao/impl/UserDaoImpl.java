@@ -37,6 +37,8 @@ public class UserDaoImpl implements UserDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		return null;
 	}
@@ -59,6 +61,8 @@ public class UserDaoImpl implements UserDao {
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 	}
 
@@ -77,6 +81,8 @@ public class UserDaoImpl implements UserDao {
 			ps.close();
 			conn.close();
 		} catch (Exception ex) {
+		} finally {
+			closeConnection();
 		}
 		return duplicate;
 	}
@@ -96,6 +102,8 @@ public class UserDaoImpl implements UserDao {
 			ps.close();
 			conn.close();
 		} catch (Exception ex) {
+		} finally {
+			closeConnection();
 		}
 		return duplicate;
 	}
@@ -116,7 +124,101 @@ public class UserDaoImpl implements UserDao {
 			conn.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		return duplicate;
 	}
+
+	@Override
+	public User findByUserName(String username) {
+		String sql = "SELECT * FROM users WHERE username = ?";
+		try {
+			conn = new DBConnect().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setUserName(rs.getString("username"));
+				user.setEmail(rs.getString("email"));
+				user.setFullName(rs.getString("fullname"));
+				user.setPassWord(rs.getString("password"));
+				user.setAvatar(rs.getString("avatar"));
+				user.setRoleid(rs.getInt("roleid"));
+				user.setPhone(rs.getString("phone"));
+				user.setCreatedDate(rs.getDate("createddate"));
+				return user;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		String sql = "SELECT * FROM users WHERE email = ?";
+		try {
+			conn = new DBConnect().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setUserName(rs.getString("username"));
+				user.setEmail(rs.getString("email"));
+				user.setFullName(rs.getString("fullname"));
+				user.setPassWord(rs.getString("password"));
+				user.setAvatar(rs.getString("avatar"));
+				user.setRoleid(rs.getInt("roleid"));
+				user.setPhone(rs.getString("phone"));
+				user.setCreatedDate(rs.getDate("createddate"));
+				return user;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean updatePassword(String username, String newPassword) {
+		String sql = "UPDATE users SET password = ? WHERE username = ?";
+		try {
+			conn = new DBConnect().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newPassword);
+			ps.setString(2, username);
+
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection();
+		}
+		return false;
+	}
+
+	// Helper method to close connections
+	private void closeConnection() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (ps != null)
+				ps.close();
+			if (conn != null)
+				conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
