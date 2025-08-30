@@ -41,6 +41,12 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        .btn-admin {
+            background-color: #28a745;
+        }
+        .btn-admin:hover {
+            background-color: #1e7e34;
+        }
         .description {
             margin: 20px 0;
             padding: 20px;
@@ -52,10 +58,10 @@
 <body>
     <div class="container">
         <h1>🛍️ Servlet CRUD MVC Application</h1>
-       
         
         <div class="menu">
-            <h3>Menu quản lý:</h3>
+            <h3>Menu:</h3>
+            <a href="<c:url value='/admin/home'/>" class="btn btn-admin">🎛️ Admin Panel</a>
             <a href="<c:url value='/admin/category/list'/>" class="btn">📋 Quản lý danh mục</a>
             <a href="<c:url value='/admin/category/add'/>" class="btn">➕ Thêm danh mục mới</a>
         </div>

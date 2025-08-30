@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<section name="java.lang.Class">
 		<item key="selection" value="package ketNoiSQL;"/>
+		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="seta"/>
+			<item value="cate."/>
+			<item value="set"/>
+			<item value="cate"/>
+			<item value="category."/>
 			<item value="package ketNoiSQL;"/>
 		</list>
 	</section>

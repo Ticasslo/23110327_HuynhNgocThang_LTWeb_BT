@@ -1,4 +1,5 @@
 eclipse.m2.downloadJavadoc=true
+eclipse.m2.updateProjects=true
 eclipse.m2.userSettingsFile=D\:\\UTE_LapTrinhWeb\\apache-maven-3.9.11\\conf\\settings.xml
 eclipse.m2.userToolchainsFile=D\:\\UTE_LapTrinhWeb\\apache-maven-3.9.11\\conf\\toolchains.xml
 eclipse.preferences.version=1

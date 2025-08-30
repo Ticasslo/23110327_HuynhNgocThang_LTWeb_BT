@@ -281,8 +281,9 @@ td:last-child {
 
 		<div class="header-actions">
 			<a href="<c:url value='/admin/category/add'/>"
-				class="btn btn-success">➕ Thêm danh mục mới</a> <a
-				href="<c:url value='/'/>" class="btn btn-secondary">🏠 Trang chủ</a>
+				class="btn btn-success">➕ Thêm danh mục mới</a> 
+				<!--<a href="<c:url value='/'/>" class="btn btn-secondary">🏠 Trang chủ</a> -->
+				<a href="<c:url value='/admin/home'/>" class="btn btn-secondary">🏠 Admin Home</a>
 		</div>
 
 		<c:choose>

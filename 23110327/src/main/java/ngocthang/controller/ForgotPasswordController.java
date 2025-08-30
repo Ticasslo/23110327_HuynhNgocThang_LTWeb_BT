@@ -1,7 +1,6 @@
 package ngocthang.controller;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -39,6 +38,8 @@ public class ForgotPasswordController extends HttpServlet {
 			handleStep1(req, resp);
 		} else if (step == 2) {
 			handleStep2(req, resp);
+		} else if (step == 3) {
+			handleStep3(req, resp);
 		}
 	}
 
@@ -72,7 +73,7 @@ public class ForgotPasswordController extends HttpServlet {
 	}
 
 	/**
-	 * Bước 2: Xác thực email và phone, sau đó đặt lại mật khẩu
+	 * Bước 2: Xác thực email và phone
 	 */
 	private void handleStep2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -140,18 +141,71 @@ public class ForgotPasswordController extends HttpServlet {
 			return;
 		}
 
-		// Tạo mật khẩu mới
-		String newPassword = generateNewPassword();
+		// Chuyển sang bước 3: cho phép người dùng tự tạo mật khẩu mới
+		req.setAttribute("step", 3);
+		req.setAttribute("username", username);
+		req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+	}
+
+	/**
+	 * Bước 3: Người dùng nhập mật khẩu mới
+	 */
+	private void handleStep3(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String username = req.getParameter("username");
+		String newPassword = req.getParameter("newPassword");
+		String confirmPassword = req.getParameter("confirmPassword");
+
+		// Validate input
+		if (username == null || username.trim().isEmpty()) {
+			req.setAttribute("error", "Thông tin tài khoản không hợp lệ");
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
+
+		if (newPassword == null || newPassword.trim().isEmpty()) {
+			req.setAttribute("error", "Vui lòng nhập mật khẩu mới");
+			req.setAttribute("step", 3);
+			req.setAttribute("username", username);
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
+
+		if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
+			req.setAttribute("error", "Vui lòng xác nhận mật khẩu mới");
+			req.setAttribute("step", 3);
+			req.setAttribute("username", username);
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
+
+		// Kiểm tra mật khẩu có khớp nhau không
+		if (!newPassword.equals(confirmPassword)) {
+			req.setAttribute("error", "Mật khẩu xác nhận không khớp");
+			req.setAttribute("step", 3);
+			req.setAttribute("username", username);
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
+
+		// Validate mật khẩu mạnh
+		String passwordValidationError = validatePasswordStrength(newPassword);
+		if (passwordValidationError != null) {
+			req.setAttribute("error", passwordValidationError);
+			req.setAttribute("step", 3);
+			req.setAttribute("username", username);
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
 
 		// Cập nhật mật khẩu trong database
-		boolean updated = userService.updatePassword(user.getUserName(), newPassword);
+		boolean updated = userService.updatePassword(username.trim(), newPassword);
 
 		if (updated) {
-			req.setAttribute("alert", "Đặt lại mật khẩu thành công! Mật khẩu mới của bạn là: " + "<strong>"
-					+ newPassword + "</strong><br>" + "Vui lòng đăng nhập lại");
+			req.setAttribute("alert", "Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại với mật khẩu mới.");
 		} else {
 			req.setAttribute("error", "Có lỗi xảy ra trong quá trình đặt lại mật khẩu. Vui lòng thử lại sau.");
-			req.setAttribute("step", 2);
+			req.setAttribute("step", 3);
 			req.setAttribute("username", username);
 		}
 
@@ -159,47 +213,50 @@ public class ForgotPasswordController extends HttpServlet {
 	}
 
 	/**
-	 * Tạo mật khẩu mới ngẫu nhiên
+	 * Validate độ mạnh của mật khẩu
 	 */
-	private String generateNewPassword() {
-		String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		String lowerCase = "abcdefghijklmnopqrstuvwxyz";
-		String digits = "0123456789";
-		String specialChars = "@#$%";
-
-		String allChars = upperCase + lowerCase + digits + specialChars;
-		SecureRandom random = new SecureRandom();
-		StringBuilder newPassword = new StringBuilder();
-
-		// Đảm bảo có ít nhất 1 ký tự mỗi loại
-		newPassword.append(upperCase.charAt(random.nextInt(upperCase.length())));
-		newPassword.append(lowerCase.charAt(random.nextInt(lowerCase.length())));
-		newPassword.append(digits.charAt(random.nextInt(digits.length())));
-		newPassword.append(specialChars.charAt(random.nextInt(specialChars.length())));
-
-		// Tạo thêm 4 ký tự ngẫu nhiên
-		for (int i = 4; i < 8; i++) {
-			newPassword.append(allChars.charAt(random.nextInt(allChars.length())));
+	private String validatePasswordStrength(String password) {
+		if (password.length() < 6) {
+			return "Mật khẩu phải có ít nhất 6 ký tự";
 		}
 
-		// Xáo trộn mật khẩu
-		return shuffleString(newPassword.toString());
-	}
-
-	/**
-	 * Xáo trộn chuỗi
-	 */
-	private String shuffleString(String string) {
-		char[] chars = string.toCharArray();
-		SecureRandom random = new SecureRandom();
-
-		for (int i = chars.length - 1; i > 0; i--) {
-			int j = random.nextInt(i + 1);
-			char temp = chars[i];
-			chars[i] = chars[j];
-			chars[j] = temp;
+		if (password.length() > 20) {
+			return "Mật khẩu không được quá 20 ký tự";
 		}
 
-		return new String(chars);
+		boolean hasUpper = false;
+		boolean hasLower = false;
+		boolean hasDigit = false;
+		boolean hasSpecial = false;
+
+		for (char c : password.toCharArray()) {
+			if (Character.isUpperCase(c)) {
+				hasUpper = true;
+			} else if (Character.isLowerCase(c)) {
+				hasLower = true;
+			} else if (Character.isDigit(c)) {
+				hasDigit = true;
+			} else if ("@#$%&*!?".indexOf(c) >= 0) {
+				hasSpecial = true;
+			}
+		}
+
+		if (!hasUpper) {
+			return "Mật khẩu phải có ít nhất 1 chữ hoa";
+		}
+
+		if (!hasLower) {
+			return "Mật khẩu phải có ít nhất 1 chữ thường";
+		}
+
+		if (!hasDigit) {
+			return "Mật khẩu phải có ít nhất 1 chữ số";
+		}
+
+		if (!hasSpecial) {
+			return "Mật khẩu phải có ít nhất 1 ký tự đặc biệt (@#$%&*!?)";
+		}
+
+		return null; // Mật khẩu hợp lệ
 	}
 }
