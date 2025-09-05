@@ -10,6 +10,7 @@ public interface UserDao {
     boolean checkExistEmail(String email);
     boolean checkExistUsername(String username);
     boolean checkExistPhone(String phone);
+    boolean checkExistId(int id);
     
     // Methods for forgot password
     User findByUserName(String username);

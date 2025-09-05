@@ -46,18 +46,19 @@ public class UserDaoImpl implements UserDao {
 	// register
 	@Override
 	public void insert(User user) {
-		String sql = "INSERT INTO users (email, username, fullname, password, avatar, roleid,phone, createddate) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO users (id, email, username, fullname, password, avatar, roleid,phone, createddate) VALUES (?,?,?,?,?,?,?,?,?)";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, user.getEmail());
-			ps.setString(2, user.getUserName());
-			ps.setString(3, user.getFullName());
-			ps.setString(4, user.getPassWord());
-			ps.setString(5, user.getAvatar());
-			ps.setInt(6, user.getRoleid());
-			ps.setString(7, user.getPhone());
-			ps.setDate(8, user.getCreatedDate());
+			ps.setInt(1, user.getId());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, user.getUserName());
+			ps.setString(4, user.getFullName());
+			ps.setString(5, user.getPassWord());
+			ps.setString(6, user.getAvatar());
+			ps.setInt(7, user.getRoleid());
+			ps.setString(8, user.getPhone());
+			ps.setDate(9, user.getCreatedDate());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,6 +117,28 @@ public class UserDaoImpl implements UserDao {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
 			ps.setString(1, phone);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				duplicate = true;
+			}
+			ps.close();
+			conn.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnection();
+		}
+		return duplicate;
+	}
+
+	@Override
+	public boolean checkExistId(int id) {
+		boolean duplicate = false;
+		String query = "select * from users where id = ?";
+		try {
+			conn = new DBConnect().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				duplicate = true;

@@ -3,6 +3,8 @@ package ngocthang.service.impl;
 import ngocthang.dao.impl.UserDaoImpl;
 import ngocthang.models.User;
 import ngocthang.service.UserService;
+import ngocthang.utils.Constant;
+import ngocthang.utils.RandomUtils;
 
 public class UserServiceImpl implements UserService {
 	UserDaoImpl userDao = new UserDaoImpl();
@@ -30,9 +32,18 @@ public class UserServiceImpl implements UserService {
 		if (userDao.checkExistUsername(username)) {
 			return false;
 		}
+		
+		// Tạo ID ngẫu nhiên cho user mới
+		int userId = RandomUtils.generateUserId(100000, 999999);
+		
+		// Kiểm tra ID đã tồn tại chưa, nếu có thì tạo lại
+		while (userDao.checkExistId(userId)) {
+			userId = RandomUtils.generateUserId(100000, 999999);
+		}
+		
 		long millis = System.currentTimeMillis();
 		java.sql.Date date = new java.sql.Date(millis);
-		userDao.insert(new User(email, username, fullname, password, null, 5, phone, date));
+		userDao.insert(new User(userId, email, username, fullname, password, null, Constant.ROLE_SELLER, phone, date));
 		return true;
 	}
 

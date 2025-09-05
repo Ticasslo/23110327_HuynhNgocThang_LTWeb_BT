@@ -15,7 +15,7 @@
 
 <h2>Xin chào, ${sessionScope.account.fullName}!</h2>
 <p>Tài khoản: <b>${sessionScope.account.userName}</b></p>
-<p>Vai trò: <b>Member</b></p>
+<p>Vai trò: <b>???</b></p>
 
 <p><a href="${pageContext.request.contextPath}/logout">Đăng xuất</a></p>
 

@@ -183,6 +183,19 @@ input[type="file"] {
 	<div class="container">
 		<h1>➕ Thêm danh mục mới</h1>
 
+		<!-- Hiển thị thông báo lỗi -->
+		<c:if test="${error != null}">
+			<div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+				<strong>❌ Lỗi:</strong> ${error}
+			</div>
+		</c:if>
+		
+		<!-- Hiển thị thông báo thành công -->
+		<c:if test="${success != null}">
+			<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+				<strong>✅ Thành công:</strong> ${success}
+			</div>
+		</c:if>
 
 		<form role="form" action="add" method="post"
 			enctype="multipart/form-data">
@@ -201,6 +214,7 @@ input[type="file"] {
 						class="file-input-label" id="fileLabel"> 📁 Chọn hình ảnh
 						(PNG, JPG, GIF...) </label>
 				</div>
+				<small class="note" style="color: #dc3545; display: block; margin-top: 8px;">⚠️ Kích thước file tối đa: 5MB</small>
 			</div>
 
 			<div class="button-group">

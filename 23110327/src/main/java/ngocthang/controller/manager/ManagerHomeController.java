@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ngocthang.utils.SessionUtils;
 
 @WebServlet(urlPatterns = "/manager/home")
 public class ManagerHomeController extends HttpServlet {
@@ -15,8 +16,7 @@ public class ManagerHomeController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         // Kiểm tra role manager
-        Object account = req.getSession().getAttribute("account");
-        if (account == null) {
+        if (!SessionUtils.isLoggedIn(req)) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }

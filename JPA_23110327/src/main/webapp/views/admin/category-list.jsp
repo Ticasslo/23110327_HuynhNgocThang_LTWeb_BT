@@ -1,0 +1,366 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Danh sách danh mục</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
+	padding: 20px;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 30px auto;
+	background: white;
+	padding: 30px;
+	border-radius: 15px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(10px);
+}
+
+h1 {
+	color: #333;
+	text-align: center;
+	margin-bottom: 30px;
+	font-size: 2.2em;
+	font-weight: 300;
+}
+
+.header-actions {
+	text-align: right;
+	margin-bottom: 25px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #e9ecef;
+}
+
+.table-wrapper {
+	overflow-x: auto;
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	background: white;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+thead {
+	background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+}
+
+th {
+	padding: 18px 15px;
+	text-align: left;
+	color: white;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-size: 14px;
+}
+
+th:first-child {
+	text-align: center;
+	width: 80px;
+}
+
+th:nth-child(2) {
+	text-align: center;
+	width: 120px;
+}
+
+th:last-child {
+	text-align: center;
+	width: 200px;
+}
+
+tbody tr {
+	transition: all 0.3s ease;
+	border-bottom: 1px solid #e9ecef;
+}
+
+tbody tr:hover {
+	background-color: #f8f9fa;
+	transform: scale(1.01);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+tbody tr:nth-child(even) {
+	background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(even):hover {
+	background-color: #e9ecef;
+}
+
+td {
+	padding: 15px;
+	vertical-align: middle;
+}
+
+td:first-child {
+	text-align: center;
+	font-weight: bold;
+	color: #6c757d;
+}
+
+td:nth-child(2) {
+	text-align: center;
+}
+
+td:last-child {
+	text-align: center;
+}
+
+.category-image {
+	max-width: 250px;
+	max-height: 250px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.category-image:hover {
+	transform: scale(1.2);
+}
+
+.no-image {
+	width: 80px;
+	height: 80px;
+	background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #6c757d;
+	font-size: 24px;
+	margin: 0 auto;
+}
+
+.category-name {
+	font-weight: 600;
+	color: #495057;
+	font-size: 16px;
+}
+
+.btn {
+	padding: 8px 16px;
+	margin: 2px;
+	border: none;
+	cursor: pointer;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	display: inline-block;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+	color: white;
+	box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary:hover {
+	background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+.btn-success {
+	background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+	color: white;
+	box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-success:hover {
+	background: linear-gradient(135deg, #1e7e34 0%, #17a2b8 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.btn-danger {
+	background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+	color: white;
+	box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.btn-danger:hover {
+	background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.btn-secondary {
+	background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+	color: white;
+	box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+.btn-secondary:hover {
+	background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+}
+
+.empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	color: #6c757d;
+}
+
+.empty-state img {
+	width: 100px;
+	height: 100px;
+	opacity: 0.3;
+	margin-bottom: 20px;
+}
+
+.stats-bar {
+	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+	padding: 15px;
+	border-radius: 8px;
+	margin-bottom: 25px;
+	text-align: center;
+}
+
+.stats-bar span {
+	font-weight: bold;
+	color: #495057;
+}
+
+@media ( max-width : 768px) {
+	.container {
+		margin: 15px;
+		padding: 20px;
+	}
+	h1 {
+		font-size: 1.8em;
+	}
+	table {
+		font-size: 14px;
+	}
+	.btn {
+		padding: 6px 12px;
+		font-size: 12px;
+		margin: 1px;
+	}
+	.category-image, .no-image {
+		max-width: 60px;
+		max-height: 60px;
+		width: 60px;
+		height: 60px;
+	}
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<h1>📋 Danh sách danh mục</h1>
+
+		<div class="stats-bar">
+			<span>📊 Tổng cộng: ${cateList != null ? cateList.size() : 0}
+				danh mục</span>
+		</div>
+
+		<div class="header-actions">
+			<a href="<c:url value='/admin/category/add'/>"
+				class="btn btn-success">➕ Thêm danh mục mới</a> 
+				<!--<a href="<c:url value='/'/>" class="btn btn-secondary">🏠 Trang chủ</a> -->
+				<a href="<c:url value='/admin/home'/>" class="btn btn-secondary">🏠 Admin Home</a>
+		</div>
+
+		<c:choose>
+			<c:when test="${empty cateList}">
+				<div class="empty-state">
+					<div style="font-size: 4em; margin-bottom: 20px;">📁</div>
+					<h3>Chưa có danh mục nào</h3>
+					<p>Hãy thêm danh mục đầu tiên để bắt đầu!</p>
+					<br> <a href="<c:url value='/admin/category/add'/>"
+						class="btn btn-success">➕ Thêm danh mục đầu tiên</a>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>🔢 STT</th>
+								<th>🖼️ Hình ảnh</th>
+								<th>📝 Tên danh mục</th>
+								<th>⚙️ Hành động</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${cateList}" var="category" varStatus="STT">
+								<tr>
+									<td>${STT.index + 1}</td>
+									<td><c:choose>
+											<c:when
+												test="${category.icon != null && category.icon != ''}">
+												<c:url value="/image?fname=${category.icon}" var="imgUrl"></c:url>
+												<img src="${imgUrl}" alt="Category Image"
+													class="category-image" />
+											</c:when>
+											<c:otherwise>
+												<div class="no-image">📷</div>
+											</c:otherwise>
+										</c:choose></td>
+									<td>
+										<div class="category-name">${category.name}</div>
+									</td>
+									<td><a
+										href="<c:url value='/admin/category/edit?id=${category.id}'/>"
+										class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
+
+										<a
+										href="<c:url value='/admin/category/delete?id=${category.id}'/>"
+										class="btn btn-danger" title="Xóa danh mục"
+										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️
+											Xóa</a> <c:if test="${not empty category.icon}">
+											<c:url var="dlUrl" value="/image">
+												<c:param name="fname" value="${category.icon}" />
+												<c:param name="download" value="1" />
+											</c:url>
+											<a href="${dlUrl}" class="btn btn-secondary" title="Tải ảnh">⬇️
+												Tải ảnh</a>
+										</c:if></td>
+
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</div>
+
+	<script>
+        // Smooth hover effects cho table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.01)';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,12 +3,11 @@ package ngocthang.controller;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import ngocthang.utils.Constant;
+import ngocthang.utils.CookieUtils;
+import ngocthang.utils.SessionUtils;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/logout")
@@ -19,25 +18,10 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
         
         // Xóa session
-        HttpSession session = req.getSession(false);
-        if (session != null) {
-            session.invalidate(); // Xóa toàn bộ session
-        }
+        SessionUtils.invalidateSession(req);
         
-        // Xóa tất cả cookies liên quan
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                // Xóa cookie remember
-                if (cookie.getName().equals("username") || 
-                    cookie.getName().equals(Constant.COOKIE_REMEMBER)) {
-                    cookie.setValue("");
-                    cookie.setMaxAge(0); // Xóa cookie
-                    cookie.setPath("/"); // Đảm bảo path đúng
-                    resp.addCookie(cookie);
-                }
-            }
-        }
+        // Xóa Remember Me cookie
+        CookieUtils.deleteRememberMe(resp);
         
         // Redirect về trang login
         resp.sendRedirect(req.getContextPath() + "/login");

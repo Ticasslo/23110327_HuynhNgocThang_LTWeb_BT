@@ -124,6 +124,20 @@ input[type="text"]:focus, input[type="file"]:focus {
 	<div class="container">
 		<h1>✏️ Chỉnh sửa danh mục</h1>
 
+		<!-- Hiển thị thông báo lỗi -->
+		<c:if test="${error != null}">
+			<div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+				<strong>❌ Lỗi:</strong> ${error}
+			</div>
+		</c:if>
+		
+		<!-- Hiển thị thông báo thành công -->
+		<c:if test="${success != null}">
+			<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+				<strong>✅ Thành công:</strong> ${success}
+			</div>
+		</c:if>
+
 		<form role="form" action="edit" method="post"
 			enctype="multipart/form-data">
 			<!-- Hidden field để gửi ID của category -->
@@ -151,6 +165,7 @@ input[type="text"]:focus, input[type="file"]:focus {
 
 				<input type="file" id="categoryIcon" name="icon" accept="image/*" />
 				<p class="note">Để trống nếu không muốn thay đổi ảnh</p>
+				<p class="note" style="color: #dc3545;">⚠️ Kích thước file tối đa: 5MB</p>
 
 				<!-- Hidden field để giữ ảnh cũ -->
 				<input type="hidden" name="oldIcon" value="${category.icon}" />
