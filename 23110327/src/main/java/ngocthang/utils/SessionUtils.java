@@ -59,13 +59,13 @@ public class SessionUtils {
     }
     
     /**
-     * Kiểm tra user có phải Seller không
+     * Kiểm tra user có phải User không
      * @param request HttpServletRequest
-     * @return true nếu là Seller, false nếu không
+     * @return true nếu là User, false nếu không
      */
-    public static boolean isSeller(HttpServletRequest request) {
+    public static boolean isUser(HttpServletRequest request) {
         User user = getUser(request);
-        return user != null && user.getRoleid() == Constant.ROLE_SELLER;
+        return user != null && user.getRoleid() == Constant.ROLE_USER;
     }
     
     /**

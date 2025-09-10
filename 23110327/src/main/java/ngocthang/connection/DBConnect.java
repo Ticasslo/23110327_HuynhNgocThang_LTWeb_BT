@@ -29,11 +29,11 @@ public class DBConnect {
 			Connection conn = new DBConnect().getConnection();
 			// create statement
 			Statement stmt = conn.createStatement();
-			// insert vao bang ten users trong Database
+			// insert vao bang ten Users trong Database
 			stmt.executeUpdate(
-					"INSERT INTO users(id, username, email) " + "VALUES (1, 'ngocthang', 'win2k5thxng@gmail.com')");
+					"INSERT INTO Users(id, username, email) " + "VALUES (1, 'ngocthang', 'win2k5thxng@gmail.com')");
 			// get data from table ‘GiaoVien'
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Users");
 			// show data
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3));

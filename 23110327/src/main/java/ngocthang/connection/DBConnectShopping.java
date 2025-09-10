@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class DBConnectShopping {
 
 	private final String serverName = "WIN";
-	private final String dbName = "ServletCRUDMVC";
+	private final String dbName = "baitapWeb";
 	private final String portNumber = "1433";
 	private final String instance = "";
 	private final String userID = "sa";

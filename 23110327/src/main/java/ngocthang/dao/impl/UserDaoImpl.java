@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User get(String username) {
-		String sql = "SELECT * FROM users WHERE username = ?";
+		String sql = "SELECT * FROM Users WHERE username = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 	// register
 	@Override
 	public void insert(User user) {
-		String sql = "INSERT INTO users (id, email, username, fullname, password, avatar, roleid,phone, createddate) VALUES (?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Users (id, email, username, fullname, password, avatar, roleid,phone, createddate) VALUES (?,?,?,?,?,?,?,?,?)";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistEmail(String email) {
 		boolean duplicate = false;
-		String query = "select * from users where email = ?";
+		String query = "select * from Users where email = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistUsername(String username) {
 		boolean duplicate = false;
-		String query = "select * from users where username = ?";
+		String query = "select * from Users where username = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
@@ -112,7 +112,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistPhone(String phone) {
 		boolean duplicate = false;
-		String query = "select * from users where phone = ?";
+		String query = "select * from Users where phone = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
@@ -134,7 +134,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistId(int id) {
 		boolean duplicate = false;
-		String query = "select * from users where id = ?";
+		String query = "select * from Users where id = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
@@ -155,7 +155,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findByUserName(String username) {
-		String sql = "SELECT * FROM users WHERE username = ?";
+		String sql = "SELECT * FROM Users WHERE username = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -184,7 +184,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findByEmail(String email) {
-		String sql = "SELECT * FROM users WHERE email = ?";
+		String sql = "SELECT * FROM Users WHERE email = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -213,7 +213,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean updatePassword(String username, String newPassword) {
-		String sql = "UPDATE users SET password = ? WHERE username = ?";
+		String sql = "UPDATE Users SET password = ? WHERE username = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
