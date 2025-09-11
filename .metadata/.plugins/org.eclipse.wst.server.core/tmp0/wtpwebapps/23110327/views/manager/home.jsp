@@ -257,20 +257,14 @@
         <!-- Sidebar Menu -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h3>📊 Quản lý hệ thống</h3>
+                <h3>📂 Quản lý danh mục</h3>
             </div>
             <div class="menu-section">
-                <a href="#" class="menu-item">
-                    📈 Báo cáo thống kê
+                <a href="<c:url value='/manager/category/list'/>" class="menu-item">
+                    📋 Danh sách danh mục của tôi
                 </a>
-                <a href="#" class="menu-item">
-                    👥 Quản lý nhân viên
-                </a>
-                <a href="#" class="menu-item">
-                    🎯 Quản lý dự án
-                </a>
-                <a href="#" class="menu-item">
-                    ⚙️ Cài đặt hệ thống
+                <a href="<c:url value='/manager/category/add'/>" class="menu-item">
+                    ➕ Thêm danh mục mới
                 </a>
             </div>
         </div>
@@ -279,23 +273,14 @@
         <div class="content">
             <div class="welcome-card">
                 <h2>🎉 Chào mừng đến với Manager Panel</h2>
-                <p>Quản lý hiệu quả các hoạt động và nhân sự trong hệ thống.</p>
+                <p>Quản lý các danh mục sản phẩm của bạn trong hệ thống.</p>
                 
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <span class="feature-icon">📈</span>
-                        <div class="feature-title">Báo cáo</div>
-                        <div class="feature-desc">Xem báo cáo chi tiết về hoạt động</div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">👥</span>
-                        <div class="feature-title">Nhân sự</div>
-                        <div class="feature-desc">Quản lý thông tin nhân viên</div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">🎯</span>
-                        <div class="feature-title">Dự án</div>
-                        <div class="feature-desc">Theo dõi tiến độ dự án</div>
+                <!-- Hiển thị danh sách categories của Manager -->
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #2e7d32; margin-bottom: 20px;">📂 Danh mục của tôi:</h3>
+                    <div id="categoryList">
+                        <!-- Categories sẽ được load ở đây -->
+                        <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
                     </div>
                 </div>
             </div>

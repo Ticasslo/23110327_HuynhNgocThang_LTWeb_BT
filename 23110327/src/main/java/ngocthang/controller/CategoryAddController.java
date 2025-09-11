@@ -11,11 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import ngocthang.models.Category;
+import ngocthang.models.User;
 import ngocthang.service.CategoryService;
 import ngocthang.service.impl.CategoryServiceImpl;
 import ngocthang.utils.UploadUtils;
+import ngocthang.utils.SessionUtils;
 
-@WebServlet(urlPatterns = { "/admin/category/add" })
+@WebServlet(urlPatterns = { "/admin/category/add", "/manager/category/add" })
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
     maxFileSize = 1024 * 1024 * 50,      // 50 MB (tăng để không bị reject)
@@ -28,6 +30,10 @@ public class CategoryAddController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        // Thêm currentUser để JSP có thể xác định role
+        User currentUser = SessionUtils.getUser(req);
+        req.setAttribute("currentUser", currentUser);
+        
         RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/add-category.jsp");
         dispatcher.forward(req, resp);
     }
@@ -35,6 +41,9 @@ public class CategoryAddController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        
+        // Khai báo currentUser ở đầu method để sử dụng trong catch blocks
+        User currentUser = SessionUtils.getUser(req);
         
         try {
             resp.setContentType("text/html");
@@ -47,12 +56,17 @@ public class CategoryAddController extends HttpServlet {
             String categoryName = UploadUtils.getFieldValue(req, "name");
             category.setName(categoryName);
             
+            // Set userid (người tạo category)
+            category.setUserid(currentUser.getId());
+            
             // Validate và upload file icon
             String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp"};
             String validationError = UploadUtils.validateUpload(req, "icon", 5, allowedExtensions);
             
             if (validationError != null) {
                 req.setAttribute("error", validationError);
+                // Thêm currentUser để JSP có thể xác định role
+                req.setAttribute("currentUser", currentUser);
                 doGet(req, resp);
                 return;
             }
@@ -63,7 +77,13 @@ public class CategoryAddController extends HttpServlet {
             
             // Lưu category
             cateService.insert(category);
-            resp.sendRedirect(req.getContextPath() + "/admin/category/list");
+            
+            // Redirect về đúng trang theo role
+            if (SessionUtils.isManager(req)) {
+                resp.sendRedirect(req.getContextPath() + "/manager/category/list");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/admin/category/list");
+            }
             
         } catch (IllegalStateException e) {
             // Xử lý lỗi file quá lớn từ Tomcat
@@ -72,10 +92,14 @@ public class CategoryAddController extends HttpServlet {
             } else {
                 req.setAttribute("error", "File quá lớn hoặc không hợp lệ. Vui lòng thử lại.");
             }
+            // Thêm currentUser để JSP có thể xác định role
+            req.setAttribute("currentUser", currentUser);
             doGet(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
             req.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
+            // Thêm currentUser để JSP có thể xác định role
+            req.setAttribute("currentUser", currentUser);
             doGet(req, resp);
         }
     }

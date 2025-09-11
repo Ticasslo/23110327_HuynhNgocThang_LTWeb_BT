@@ -260,20 +260,8 @@
                 <h3>👤 Tài khoản cá nhân</h3>
             </div>
             <div class="menu-section">
-                <a href="#" class="menu-item">
-                    📦 Quản lý sản phẩm
-                </a>
-                <a href="#" class="menu-item">
-                    🛒 Đơn hàng
-                </a>
-                <a href="#" class="menu-item">
-                    👥 Khách hàng
-                </a>
-                <a href="#" class="menu-item">
-                    💰 Doanh thu
-                </a>
-                <a href="#" class="menu-item">
-                    📊 Thống kê bán hàng
+                <a href="<c:url value='/user/category/list'/>" class="menu-item">
+                    📋 Xem danh mục
                 </a>
             </div>
         </div>
@@ -282,28 +270,14 @@
         <div class="content">
             <div class="welcome-card">
                 <h2>🎉 Chào mừng đến với User Panel</h2>
-                <p>Quản lý thông tin cá nhân và sử dụng các tính năng hệ thống.</p>
+                <p>Xem các danh mục sản phẩm và quản lý tài khoản cá nhân.</p>
                 
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <span class="feature-icon">📦</span>
-                        <div class="feature-title">Sản phẩm</div>
-                        <div class="feature-desc">Quản lý kho hàng và sản phẩm</div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">🛒</span>
-                        <div class="feature-title">Đơn hàng</div>
-                        <div class="feature-desc">Xử lý và theo dõi đơn hàng</div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">💰</span>
-                        <div class="feature-title">Doanh thu</div>
-                        <div class="feature-desc">Theo dõi thu nhập và lợi nhuận</div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">👥</span>
-                        <div class="feature-title">Khách hàng</div>
-                        <div class="feature-desc">Quản lý thông tin khách hàng</div>
+                <!-- Hiển thị danh sách tất cả categories -->
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #e65100; margin-bottom: 20px;">📂 Tất cả danh mục:</h3>
+                    <div id="categoryList">
+                        <!-- Categories sẽ được load ở đây -->
+                        <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
                     </div>
                 </div>
             </div>

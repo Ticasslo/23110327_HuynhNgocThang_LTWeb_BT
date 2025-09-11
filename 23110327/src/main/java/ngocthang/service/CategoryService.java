@@ -15,6 +15,8 @@ public interface CategoryService {
 	Category get(String name);
 
 	List<Category> getAll();
+	
+	List<Category> getCategoriesByUserId(int userid);
 
 	List<Category> search(String keyword);
 }

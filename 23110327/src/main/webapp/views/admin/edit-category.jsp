@@ -175,8 +175,16 @@ input[type="text"]:focus, input[type="file"]:focus {
 				<button type="submit" class="btn btn-success">💾 Lưu thay
 					đổi</button>
 				<button type="reset" class="btn btn-secondary">🔄 Reset</button>
-				<a href="<c:url value='/admin/category/list'/>"
-					class="btn btn-secondary">🔙 Quay lại</a>
+				<c:choose>
+					<c:when test="${currentUser.roleid == 2}">
+						<a href="<c:url value='/manager/category/list'/>"
+							class="btn btn-secondary">🔙 Quay lại</a>
+					</c:when>
+					<c:otherwise>
+						<a href="<c:url value='/admin/category/list'/>"
+							class="btn btn-secondary">🔙 Quay lại</a>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</form>
 	</div>

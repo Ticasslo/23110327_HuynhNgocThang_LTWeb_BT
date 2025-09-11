@@ -72,7 +72,7 @@ public class RegisterController extends HttpServlet {
 		}
 
 		// Đăng ký
-		boolean isSuccess = service.register(username, password, email, fullname, phone);
+		boolean isSuccess = service.register(email, password, username, fullname, phone);
 		if (isSuccess) {
 			// SendMail sm = new SendMail();
 			// sm.sendMail(email, "MyApp", "Welcome to My Shopping app. Please login!");

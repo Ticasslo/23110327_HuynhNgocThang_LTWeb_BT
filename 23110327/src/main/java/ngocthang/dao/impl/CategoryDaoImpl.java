@@ -14,12 +14,13 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
 
     @Override
     public void insert(Category category) {
-        String sql = "INSERT INTO category(cate_name,icons) VALUES (?,?)";
+        String sql = "INSERT INTO category(cate_name, icons, userid) VALUES (?,?,?)";
         try {
             Connection con = super.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, category.getName());
             ps.setString(2, category.getIcon());
+            ps.setInt(3, category.getUserid());
             ps.executeUpdate();
             con.close();
         } catch (Exception e) {
@@ -29,13 +30,14 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
 
     @Override
     public void edit(Category category) {
-        String sql = "UPDATE category SET cate_name = ?, icons=? WHERE cate_id = ?";
+        String sql = "UPDATE category SET cate_name = ?, icons=?, userid=? WHERE cate_id = ?";
         try {
             Connection con = super.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, category.getName());
             ps.setString(2, category.getIcon());
-            ps.setInt(3, category.getId());
+            ps.setInt(3, category.getUserid());
+            ps.setInt(4, category.getId());
             ps.executeUpdate();
             con.close();
         } catch (Exception e) {
@@ -70,6 +72,7 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
                 category.setId(rs.getInt("cate_id"));
                 category.setName(rs.getString("cate_name"));
                 category.setIcon(rs.getString("icons"));
+                category.setUserid(rs.getInt("userid"));
                 con.close();
                 return category;
             }
@@ -93,6 +96,7 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
                 category.setId(rs.getInt("cate_id"));
                 category.setName(rs.getString("cate_name"));
                 category.setIcon(rs.getString("icons"));
+                category.setUserid(rs.getInt("userid"));
                 con.close();
                 return category;
             }
@@ -116,6 +120,7 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
                 category.setId(rs.getInt("cate_id"));
                 category.setName(rs.getString("cate_name"));
                 category.setIcon(rs.getString("icons"));
+                category.setUserid(rs.getInt("userid"));
                 categories.add(category);
             }
             conn.close();
@@ -139,6 +144,31 @@ public class CategoryDaoImpl extends DBConnectShopping implements CategoryDao {
                 category.setId(rs.getInt("cate_id"));
                 category.setName(rs.getString("cate_name"));
                 category.setIcon(rs.getString("icons"));
+                category.setUserid(rs.getInt("userid"));
+                categories.add(category);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    @Override
+    public List<Category> getCategoriesByUserId(int userid) {
+        List<Category> categories = new ArrayList<Category>();
+        String sql = "SELECT * FROM category WHERE userid = ?";
+        try {
+            Connection conn = super.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Category category = new Category();
+                category.setId(rs.getInt("cate_id"));
+                category.setName(rs.getString("cate_name"));
+                category.setIcon(rs.getString("icons"));
+                category.setUserid(rs.getInt("userid"));
                 categories.add(category);
             }
             conn.close();

@@ -8,6 +8,7 @@ public class Category implements Serializable {
 	private int cateid;
 	private String catename;
 	private String icon;
+	private int userid;
 
 	public Category() {
 		super();
@@ -24,6 +25,14 @@ public class Category implements Serializable {
 		this.cateid = cateid;
 		this.catename = catename;
 		this.icon = icon;
+	}
+
+	public Category(int cateid, String catename, String icon, int userid) {
+		super();
+		this.cateid = cateid;
+		this.catename = catename;
+		this.icon = icon;
+		this.userid = userid;
 	}
 
 	// Getters và Setters
@@ -51,8 +60,16 @@ public class Category implements Serializable {
 		this.icon = icon;
 	}
 
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+
 	@Override
 	public String toString() {
-		return "Category [cateid=" + cateid + ", catename=" + catename + ", icon=" + icon + "]";
+		return "Category [cateid=" + cateid + ", catename=" + catename + ", icon=" + icon + ", userid=" + userid + "]";
 	}
 }
