@@ -28,7 +28,7 @@ public class CategoryController extends HttpServlet {
         String url = request.getRequestURI();
         
         if (url.contains("categories")) {
-            List<Category> list = categoryService.findAll();
+            List<Category> list = categoryService.getAll();
             request.setAttribute("listcate", list);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/category-list.jsp");
             rd.forward(request, response);
@@ -37,7 +37,7 @@ public class CategoryController extends HttpServlet {
             rd.forward(request, response);
         } else if (url.contains("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
-            Category category = categoryService.findById(id);
+            Category category = categoryService.get(id);
             request.setAttribute("cate", category);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/category-edit.jsp");
             rd.forward(request, response);
@@ -46,7 +46,8 @@ public class CategoryController extends HttpServlet {
             try {
                 categoryService.delete(id);
             } catch (Exception e) {
-                e.printStackTrace();
+                // Log error but don't print stack trace in production
+                System.err.println("Error deleting category: " + e.getMessage());
             }
             response.sendRedirect(request.getContextPath() + "/admin/categories");
         }
@@ -61,26 +62,34 @@ public class CategoryController extends HttpServlet {
         String url = request.getRequestURI();
         
         if (url.contains("insert")) {
-            String categoryname = request.getParameter("categoryname");
-            String images = request.getParameter("images");
+            String catename = request.getParameter("name");
+            String icon = request.getParameter("icon");
+            // Lấy userid từ session thay vì từ form
+            ngocthang.entity.User currentUser = ngocthang.utils.SessionUtils.getUser(request);
+            int userid = currentUser != null ? currentUser.getId() : 1; // Default admin ID
             
             Category category = new Category();
-            category.setCategoryname(categoryname);
-            category.setImages(images);
+            category.setName(catename);
+            category.setIcon(icon);
+            category.setUserid(userid);
             
             categoryService.insert(category);
             response.sendRedirect(request.getContextPath() + "/admin/categories");
         } else if (url.contains("update")) {
             int id = Integer.parseInt(request.getParameter("id"));
-            String categoryname = request.getParameter("categoryname");
-            String images = request.getParameter("images");
+            String catename = request.getParameter("name");
+            String icon = request.getParameter("icon");
+            // Lấy userid từ session thay vì từ form
+            ngocthang.entity.User currentUser = ngocthang.utils.SessionUtils.getUser(request);
+            int userid = currentUser != null ? currentUser.getId() : 1; // Default admin ID
             
             Category category = new Category();
             category.setId(id);
-            category.setCategoryname(categoryname);
-            category.setImages(images);
+            category.setName(catename);
+            category.setIcon(icon);
+            category.setUserid(userid);
             
-            categoryService.update(category);
+            categoryService.edit(category);
             response.sendRedirect(request.getContextPath() + "/admin/categories");
         }
     }

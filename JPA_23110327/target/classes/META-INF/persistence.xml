@@ -6,6 +6,7 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
 	version="3.0">
 	<persistence-unit name="dataSource">
 		<class>ngocthang.entity.Category</class>
+		<class>ngocthang.entity.User</class>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url"
 				value="jdbc:sqlserver://localhost:1433;databaseName=baitapWeb;encrypt=true;trustServerCertificate=true;" />

@@ -12,61 +12,85 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "categories")
-@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Categpry c")
+@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 public class Category implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@Column(name = "cateid")
+	private int cateid;
 
-	@Column(name = "categoryName", columnDefinition = "NVARCHAR(255)")
-	private String categoryname;
+	@Column(name = "catename", columnDefinition = "NVARCHAR(255)")
+	private String catename;
 
-	@Column(columnDefinition = "NVARCHAR(MAX)")
-	private String images;
+	@Column(name = "icon", columnDefinition = "NVARCHAR(MAX)")
+	private String icon;
+
+	@Column(name = "userid")
+	private int userid;
 
 	// Constructors
 	public Category() {
 		super();
 	}
 
-	public Category(int id, String categoryname, String images) {
+	public Category(String catename, String icon) {
 		super();
-		this.id = id;
-		this.categoryname = categoryname;
-		this.images = images;
+		this.catename = catename;
+		this.icon = icon;
 	}
 
+	public Category(int cateid, String catename, String icon) {
+		super();
+		this.cateid = cateid;
+		this.catename = catename;
+		this.icon = icon;
+	}
+
+	public Category(int cateid, String catename, String icon, int userid) {
+		super();
+		this.cateid = cateid;
+		this.catename = catename;
+		this.icon = icon;
+		this.userid = userid;
+	}
+
+	// Getters và Setters
 	public int getId() {
-		return id;
+		return cateid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int cateid) {
+		this.cateid = cateid;
 	}
 
-	public String getCategoryname() {
-		return categoryname;
+	public String getName() {
+		return catename;
 	}
 
-	public void setCategoryname(String categoryname) {
-		this.categoryname = categoryname;
+	public void setName(String catename) {
+		this.catename = catename;
 	}
 
-	public String getImages() {
-		return images;
+	public String getIcon() {
+		return icon;
 	}
 
-	public void setImages(String images) {
-		this.images = images;
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", categoryname=" + categoryname + ", images=" + images + "]";
+		return "Category [cateid=" + cateid + ", catename=" + catename + ", icon=" + icon + ", userid=" + userid + "]";
 	}
 }

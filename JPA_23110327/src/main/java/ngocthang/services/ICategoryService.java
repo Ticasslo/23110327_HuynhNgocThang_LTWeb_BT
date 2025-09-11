@@ -4,10 +4,19 @@ import java.util.List;
 import ngocthang.entity.Category;
 
 public interface ICategoryService {
-    void insert(Category category);
-    void update(Category category);
-    void delete(int id) throws Exception;
-    Category findById(int id);
-    List<Category> findAll();
-    List<Category> findByName(String categoryname);
+	void insert(Category category);
+
+	void edit(Category category);
+
+	void delete(int id);
+
+	Category get(int id);
+
+	Category get(String name);
+
+	List<Category> getAll();
+	
+	List<Category> getCategoriesByUserId(int userid);
+
+	List<Category> search(String keyword);
 }
