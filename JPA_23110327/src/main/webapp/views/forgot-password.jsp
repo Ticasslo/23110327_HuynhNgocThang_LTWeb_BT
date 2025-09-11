@@ -102,7 +102,7 @@
 								<div class="mb-3">
 									<label class="form-label">Xác nhận mật khẩu mới</label>
 									<div class="input-group">
-										<span class="input-group-text"> < i class="fa fa-lock"></i>
+										<span class="input-group-text"> <i class="fa fa-lock"></i>
 										</span> <input type="password" placeholder="Nhập lại mật khẩu mới"
 											name="confirmPassword" class="form-control" required
 											id="confirmPassword">

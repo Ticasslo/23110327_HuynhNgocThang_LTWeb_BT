@@ -43,7 +43,7 @@
 					<div class="mb-3">
 						<label class="form-label">Mật khẩu</label>
 						<div class="input-group">
-							<span class="input-group-text"> < i class="fa fa-lock"></i>
+							<span class="input-group-text"> <i class="fa fa-lock"></i>
 							</span> <input type="password" placeholder="Nhập mật khẩu"
 								name="password" class="form-control" required>
 						</div>

@@ -2,19 +2,18 @@ package ngocthang.controllers;
 
 import java.io.IOException;
 import java.util.List;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ngocthang.entity.Category;
 import ngocthang.services.ICategoryService;
 import ngocthang.services.impl.CategoryServiceImpl;
-import ngocthang.entity.Category;
 
-@WebServlet(urlPatterns = {"/admin/categories", "/admin/category/add", 
-                          "/admin/category/insert", "/admin/category/edit", 
-                          "/admin/category/update", "/admin/category/delete"})
+@WebServlet(urlPatterns = {"/admin/categories"})
 public class CategoryController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     public ICategoryService categoryService = new CategoryServiceImpl();

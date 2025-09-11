@@ -280,10 +280,21 @@ td:last-child {
 		</div>
 
 		<div class="header-actions">
-			<a href="<c:url value='/admin/category/add'/>"
-				class="btn btn-success">➕ Thêm danh mục mới</a> 
-				<!--<a href="<c:url value='/'/>" class="btn btn-secondary">🏠 Trang chủ</a> -->
-				<a href="<c:url value='/admin/home'/>" class="btn btn-secondary">🏠 Admin Home</a>
+			<c:if test="${currentUser.roleid == 1 || currentUser.roleid == 2}">
+				<c:choose>
+					<c:when test="${currentUser.roleid == 1}">
+						<a href="<c:url value='/admin/category/add'/>" class="btn btn-success">➕ Thêm danh mục mới</a>
+						<a href="<c:url value='/admin/home'/>" class="btn btn-secondary">🏠 Admin Home</a>
+					</c:when>
+					<c:otherwise>
+						<a href="<c:url value='/manager/category/add'/>" class="btn btn-success">➕ Thêm danh mục mới</a>
+						<a href="<c:url value='/manager/home'/>" class="btn btn-secondary">🏠 Manager Home</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			<c:if test="${currentUser.roleid == 5}">
+				<a href="<c:url value='/user/home'/>" class="btn btn-secondary">🏠 User Home</a>
+			</c:if>
 		</div>
 
 		<c:choose>
@@ -292,8 +303,12 @@ td:last-child {
 					<div style="font-size: 4em; margin-bottom: 20px;">📁</div>
 					<h3>Chưa có danh mục nào</h3>
 					<p>Hãy thêm danh mục đầu tiên để bắt đầu!</p>
-					<br> <a href="<c:url value='/admin/category/add'/>"
-						class="btn btn-success">➕ Thêm danh mục đầu tiên</a>
+					<br> 					<c:if test="${currentUser.roleid == 1}">
+						<a href="<c:url value='/admin/category/add'/>" class="btn btn-success">➕ Thêm danh mục đầu tiên</a>
+					</c:if>
+					<c:if test="${currentUser.roleid == 2}">
+						<a href="<c:url value='/manager/category/add'/>" class="btn btn-success">➕ Thêm danh mục đầu tiên</a>
+					</c:if>
 				</div>
 			</c:when>
 			<c:otherwise>
@@ -325,22 +340,40 @@ td:last-child {
 									<td>
 										<div class="category-name">${category.name}</div>
 									</td>
-									<td><a
-										href="<c:url value='/admin/category/edit?id=${category.id}'/>"
-										class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
-
-										<a
-										href="<c:url value='/admin/category/delete?id=${category.id}'/>"
-										class="btn btn-danger" title="Xóa danh mục"
-										onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️
-											Xóa</a> <c:if test="${not empty category.icon}">
+									<td>
+										<!-- Admin: Có thể edit/delete tất cả -->
+										<c:if test="${currentUser.roleid == 1}">
+											<a href="<c:url value='/admin/category/edit?id=${category.id}'/>" class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
+											<a href="<c:url value='/admin/category/delete?id=${category.id}'/>" class="btn btn-danger" title="Xóa danh mục"
+												onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️ Xóa</a>
+										</c:if>
+										
+										<!-- Manager: Chỉ edit/delete category của mình -->
+										<c:if test="${currentUser.roleid == 2}">
+											<c:if test="${category.userid == currentUser.id}">
+												<a href="<c:url value='/manager/category/edit?id=${category.id}'/>" class="btn btn-primary" title="Chỉnh sửa danh mục">✏️ Sửa</a>
+												<a href="<c:url value='/manager/category/delete?id=${category.id}'/>" class="btn btn-danger" title="Xóa danh mục"
+													onclick="return confirm('🗑️ Bạn có chắc chắn muốn xóa danh mục &quot;${category.name}&quot;?\n\nHành động này không thể hoàn tác!')">🗑️ Xóa</a>
+											</c:if>
+											<c:if test="${category.userid != currentUser.id}">
+												<span style="color: #6c757d; font-style: italic;">Không có quyền</span>
+											</c:if>
+										</c:if>
+										
+										<!-- User: Chỉ xem, không có quyền edit/delete -->
+										<c:if test="${currentUser.roleid == 5}">
+											<span style="color: #6c757d; font-style: italic;">Chỉ xem</span>
+										</c:if>
+										
+										<!-- Download image - tất cả roles -->
+										<c:if test="${not empty category.icon}">
 											<c:url var="dlUrl" value="/image">
 												<c:param name="fname" value="${category.icon}" />
 												<c:param name="download" value="1" />
 											</c:url>
-											<a href="${dlUrl}" class="btn btn-secondary" title="Tải ảnh">⬇️
-												Tải ảnh</a>
-										</c:if></td>
+											<a href="${dlUrl}" class="btn btn-secondary" title="Tải ảnh">⬇️ Tải ảnh</a>
+										</c:if>
+									</td>
 
 								</tr>
 							</c:forEach>

@@ -39,7 +39,7 @@ public class CategoryListController extends HttpServlet {
 		
 		req.setAttribute("cateList", cateList);
 		req.setAttribute("currentUser", currentUser);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/list-category.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-list.jsp");
 		dispatcher.forward(req, resp);
 	}
 }

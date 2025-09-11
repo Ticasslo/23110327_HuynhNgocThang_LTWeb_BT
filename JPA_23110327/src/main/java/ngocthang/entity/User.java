@@ -1,36 +1,33 @@
 package ngocthang.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name = "email", columnDefinition = "NVARCHAR(255)")
 	private String email;
 	
-	@Column(name = "userName", columnDefinition = "NVARCHAR(255)")
+	@Column(name = "username", columnDefinition = "NVARCHAR(255)")
 	private String userName;
 	
-	@Column(name = "fullName", columnDefinition = "NVARCHAR(255)")
+	@Column(name = "fullname", columnDefinition = "NVARCHAR(255)")
 	private String fullName;
 	
-	@Column(name = "passWord", columnDefinition = "NVARCHAR(255)")
+	@Column(name = "password", columnDefinition = "NVARCHAR(255)")
 	private String passWord;
 	
 	@Column(name = "avatar", columnDefinition = "NVARCHAR(MAX)")
@@ -43,14 +40,14 @@ public class User implements Serializable {
 	private String phone;
 	
 	@Column(name = "createdDate")
-	private Date createdDate;
+	private Timestamp createdDate;
 
 	public User() {
 		super();
 	}
 
 	public User(int id, String email, String userName, String fullName, String passWord, String avatar, int roleid,
-			String phone, Date createdDate) {
+			String phone, Timestamp createdDate) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -64,7 +61,7 @@ public class User implements Serializable {
 	}
 
 	public User(String email, String userName, String fullName, String passWord, String avatar, int roleid,
-			String phone, Date createdDate) {
+			String phone, Timestamp createdDate) {
 		super();
 		this.email = email;
 		this.userName = userName;
@@ -141,11 +138,11 @@ public class User implements Serializable {
 		this.phone = phone;
 	}
 
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 

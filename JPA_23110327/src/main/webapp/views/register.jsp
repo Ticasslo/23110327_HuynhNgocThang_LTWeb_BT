@@ -37,7 +37,7 @@
 								<label class="form-label">Tài khoản <span
 									class="text-danger">*</span></label>
 								<div class="input-group">
-									<span class="input-group-text"> < i class="fa fa-user"></i>
+									<span class="input-group-text"> <i class="fa fa-user"></i>
 									</span> <input type="text" placeholder="Nhập tài khoản"
 										name="username" class="form-control" required
 										value="${username}">
@@ -50,7 +50,7 @@
 								<label class="form-label">Email <span
 									class="text-danger">*</span></label>
 								<div class="input-group">
-									<span class="input-group-text"> < i
+									<span class="input-group-text"> <i
 										class="fa fa-envelope"></i>
 									</span> <input type="email" placeholder="Nhập email" name="email"
 										class="form-control" required value="${email}">
@@ -65,7 +65,7 @@
 								<label class="form-label">Họ và tên <span
 									class="text-danger">*</span></label>
 								<div class="input-group">
-									<span class="input-group-text"> < i class="fa fa-id-card"></i>
+									<span class="input-group-text"> <i class="fa fa-id-card"></i>
 									</span> <input type="text" placeholder="Nhập họ và tên"
 										name="fullname" class="form-control" required
 										value="${fullname}">
@@ -77,7 +77,7 @@
 							<div class="mb-3">
 								<label class="form-label">Số điện thoại</label>
 								<div class="input-group">
-									<span class="input-group-text"> < i class="fa fa-phone"></i>
+									<span class="input-group-text"> <i class="fa fa-phone"></i>
 									</span> <input type="tel" placeholder="Nhập số điện thoại"
 										name="phone" class="form-control" value="${phone}">
 								</div>
@@ -91,7 +91,7 @@
 								<label class="form-label">Mật khẩu <span
 									class="text-danger">*</span></label>
 								<div class="input-group">
-									<span class="input-group-text"> < i class="fa fa-lock"></i>
+									<span class="input-group-text"> <i class="fa fa-lock"></i>
 									</span> <input type="password" placeholder="Nhập mật khẩu"
 										name="password" class="form-control" required>
 								</div>
@@ -105,7 +105,7 @@
 								<label class="form-label">Xác nhận mật khẩu <span
 									class="text-danger">*</span></label>
 								<div class="input-group">
-									<span class="input-group-text"> < i class="fa fa-lock"></i>
+									<span class="input-group-text"> <i class="fa fa-lock"></i>
 									</span> <input type="password" placeholder="Nhập lại mật khẩu"
 										name="confirmPassword" class="form-control" required>
 								</div>

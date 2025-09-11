@@ -9,13 +9,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import ngocthang.entity.Category;
 import ngocthang.entity.User;
 import ngocthang.services.ICategoryService;
 import ngocthang.services.impl.CategoryServiceImpl;
-import ngocthang.utils.UploadUtils;
 import ngocthang.utils.SessionUtils;
+import ngocthang.utils.UploadUtils;
 
 @WebServlet(urlPatterns = { "/admin/category/edit", "/manager/category/edit" })
 @MultipartConfig(
@@ -46,7 +45,7 @@ public class CategoryEditController extends HttpServlet {
 		
 		req.setAttribute("category", category);
 		req.setAttribute("currentUser", currentUser);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-edit.jsp");
 		dispatcher.forward(req, resp);
 	}
 
@@ -60,13 +59,13 @@ public class CategoryEditController extends HttpServlet {
 			req.setCharacterEncoding("UTF-8");
 
 			String idStr = UploadUtils.getFieldValue(req, "id");
-			String catename = UploadUtils.getFieldValue(req, "catename");
+			String catename = UploadUtils.getFieldValue(req, "name");
 			String icon = UploadUtils.uploadFile(req, "icon", "category");
 
 			if (idStr == null || idStr.trim().isEmpty()) {
 				req.setAttribute("error", "ID danh mục không hợp lệ!");
 				req.setAttribute("currentUser", currentUser);
-				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-edit.jsp");
 				dispatcher.forward(req, resp);
 				return;
 			}
@@ -74,7 +73,7 @@ public class CategoryEditController extends HttpServlet {
 			if (catename == null || catename.trim().isEmpty()) {
 				req.setAttribute("error", "Tên danh mục không được để trống!");
 				req.setAttribute("currentUser", currentUser);
-				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-edit.jsp");
 				dispatcher.forward(req, resp);
 				return;
 			}
@@ -85,7 +84,7 @@ public class CategoryEditController extends HttpServlet {
 			if (category == null) {
 				req.setAttribute("error", "Không tìm thấy danh mục!");
 				req.setAttribute("currentUser", currentUser);
-				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-edit.jsp");
 				dispatcher.forward(req, resp);
 				return;
 			}
@@ -99,12 +98,23 @@ public class CategoryEditController extends HttpServlet {
 				return;
 			}
 
+			// Lấy thông tin category cũ để giữ userid
+			Category oldCategory = cateService.get(id);
+			
 			// Cập nhật thông tin
 			category.setName(catename.trim());
 			if (icon != null && !icon.trim().isEmpty()) {
 				category.setIcon(icon);
 			}
-			category.setUserid(currentUser.getId());
+			
+			// Xử lý userid theo logic tham khảo
+			if (SessionUtils.isAdmin(req)) {
+				// Admin KHÔNG claim ownership, giữ nguyên owner cũ
+				category.setUserid(oldCategory.getUserid());
+			} else {
+				// Manager sửa category của mình, giữ nguyên ownership
+				category.setUserid(currentUser.getId());
+			}
 
 			// Lưu vào database
 			cateService.edit(category);
@@ -120,7 +130,7 @@ public class CategoryEditController extends HttpServlet {
 			e.printStackTrace();
 			req.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
 			req.setAttribute("currentUser", currentUser);
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-edit.jsp");
 			dispatcher.forward(req, resp);
 		}
 	}

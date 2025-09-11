@@ -11,20 +11,20 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
 @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cateid")
+	@Column(name = "cate_id")
 	private int cateid;
 
-	@Column(name = "catename", columnDefinition = "NVARCHAR(255)")
+	@Column(name = "cate_name", columnDefinition = "NVARCHAR(255)")
 	private String catename;
 
-	@Column(name = "icon", columnDefinition = "NVARCHAR(MAX)")
+	@Column(name = "icons", columnDefinition = "NVARCHAR(MAX)")
 	private String icon;
 
 	@Column(name = "userid")
