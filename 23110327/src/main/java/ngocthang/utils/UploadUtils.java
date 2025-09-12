@@ -126,7 +126,7 @@ public class UploadUtils {
         
         // Kiểm tra có phải ảnh không (dựa vào MIME type)
         if (!isImageFile(filePart)) {
-            return "File được chọn không phải là ảnh hợp lệ. Vui lòng chọn file ảnh (JPG, PNG, GIF, WebP)";
+            return "File được chọn không phải là ảnh hợp lệ. Vui lòng chọn file ảnh (JPG, PNG, GIF, WebP, JFIF)";
         }
         
         return null; // Hợp lệ

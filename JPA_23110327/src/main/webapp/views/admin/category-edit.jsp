@@ -124,6 +124,13 @@ input[type="text"]:focus, input[type="file"]:focus {
 	<div class="container">
 		<h1>✏️ Chỉnh sửa danh mục</h1>
 
+		<!-- Hiển thị lỗi -->
+		<c:if test="${not empty error}">
+			<div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+				<strong>❌ Lỗi:</strong> ${error}
+			</div>
+		</c:if>
+
 		<form role="form" action="edit" method="post"
 			enctype="multipart/form-data">
 			<!-- Hidden field để gửi ID của category -->
@@ -160,8 +167,20 @@ input[type="text"]:focus, input[type="file"]:focus {
 				<button type="submit" class="btn btn-success">💾 Lưu thay
 					đổi</button>
 				<button type="reset" class="btn btn-secondary">🔄 Reset</button>
-				<a href="<c:url value='/admin/category/list'/>"
-					class="btn btn-secondary">🔙 Quay lại</a>
+				<c:choose>
+					<c:when test="${currentUser.roleid == 1}">
+						<a href="<c:url value='/admin/category/list'/>"
+							class="btn btn-secondary">🔙 Quay lại danh sách</a>
+					</c:when>
+					<c:when test="${currentUser.roleid == 2}">
+						<a href="<c:url value='/manager/category/list'/>"
+							class="btn btn-secondary">🔙 Quay lại danh sách</a>
+					</c:when>
+					<c:otherwise>
+						<a href="<c:url value='/user/home'/>"
+							class="btn btn-secondary">🔙 Quay lại trang chủ</a>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</form>
 	</div>

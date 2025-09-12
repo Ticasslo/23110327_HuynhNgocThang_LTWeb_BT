@@ -60,7 +60,7 @@ public class CategoryAddController extends HttpServlet {
             category.setUserid(currentUser.getId());
             
             // Validate và upload file icon
-            String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp"};
+            String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp", "jfif"};
             String validationError = UploadUtils.validateUpload(req, "icon", 5, allowedExtensions);
             
             if (validationError != null) {

@@ -91,7 +91,7 @@ public class CategoryEditController extends HttpServlet {
 			}
 			
 			// Validate và upload file icon (nếu có)
-			String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp"};
+			String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp", "jfif"};
 			String validationError = UploadUtils.validateUpload(req, "icon", 5, allowedExtensions);
 			
 			if (validationError != null) {

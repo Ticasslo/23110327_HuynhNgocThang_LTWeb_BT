@@ -50,8 +50,7 @@ public class CategoryAddController extends HttpServlet {
             req.setCharacterEncoding("UTF-8");
 
             String catename = UploadUtils.getFieldValue(req, "name");
-            String icon = UploadUtils.uploadFile(req, "icon", "category");
-
+            
             if (catename == null || catename.trim().isEmpty()) {
                 req.setAttribute("error", "Tên danh mục không được để trống!");
                 req.setAttribute("currentUser", currentUser);
@@ -59,6 +58,21 @@ public class CategoryAddController extends HttpServlet {
                 dispatcher.forward(req, resp);
                 return;
             }
+
+            // Validate và upload file icon
+            String[] allowedExtensions = {"jpg", "jpeg", "png", "gif", "webp", "jfif"};
+            String validationError = UploadUtils.validateUpload(req, "icon", 5, allowedExtensions);
+            
+            if (validationError != null) {
+                req.setAttribute("error", validationError);
+                req.setAttribute("currentUser", currentUser);
+                RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-add.jsp");
+                dispatcher.forward(req, resp);
+                return;
+            }
+            
+            // Upload file icon
+            String icon = UploadUtils.uploadFile(req, "icon", "category");
 
             // Tạo Category object
             Category category = new Category();
@@ -76,6 +90,16 @@ public class CategoryAddController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin/category/list");
             }
 
+        } catch (IllegalStateException e) {
+            // Xử lý lỗi file quá lớn từ Tomcat
+            if (e.getMessage() != null && e.getMessage().contains("SizeLimitExceededException")) {
+                req.setAttribute("error", "File không được quá 5MB. Vui lòng chọn file nhỏ hơn.");
+            } else {
+                req.setAttribute("error", "File quá lớn hoặc không hợp lệ. Vui lòng thử lại.");
+            }
+            req.setAttribute("currentUser", currentUser);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/category-add.jsp");
+            dispatcher.forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
             req.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());

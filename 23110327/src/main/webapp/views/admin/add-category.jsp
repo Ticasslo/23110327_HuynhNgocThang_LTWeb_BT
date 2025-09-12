@@ -212,7 +212,7 @@ input[type="file"] {
 					<input type="file" id="categoryIcon" name="icon" accept="image/*"
 						onchange="updateFileName(this)" /> <label for="categoryIcon"
 						class="file-input-label" id="fileLabel"> 📁 Chọn hình ảnh
-						(PNG, JPG, GIF...) </label>
+						(PNG, JPG, GIF, JFIF...) </label>
 				</div>
 				<small class="note" style="color: #dc3545; display: block; margin-top: 8px;">⚠️ Kích thước file tối đa: 5MB</small>
 			</div>
@@ -247,7 +247,7 @@ input[type="file"] {
 
 		function resetFileLabel() {
 			const label = document.getElementById('fileLabel');
-			label.textContent = '📁 Chọn hình ảnh (PNG, JPG, GIF...)';
+			label.textContent = '📁 Chọn hình ảnh (PNG, JPG, GIF, JFIF...)';
 			label.style.background = 'linear-gradient(135deg, #6c757d 0%, #495057 100%)';
 		}
 

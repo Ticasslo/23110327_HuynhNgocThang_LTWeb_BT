@@ -109,7 +109,7 @@ public class UserDAOImpl implements IUserDAO {
             try {
                 trans.begin();
                 String jpql = "UPDATE User u SET u.passWord = :newPassword WHERE u.userName = :username";
-                TypedQuery<User> query = enma.createQuery(jpql, User.class);
+                jakarta.persistence.Query query = enma.createQuery(jpql);
                 query.setParameter("newPassword", newPassword);
                 query.setParameter("username", username);
                 int result = query.executeUpdate();
@@ -117,6 +117,7 @@ public class UserDAOImpl implements IUserDAO {
                 return result > 0;
             } catch (Exception e) {
                 trans.rollback();
+                e.printStackTrace();
                 return false;
             }
         }
