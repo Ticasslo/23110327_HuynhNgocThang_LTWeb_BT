@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
+
+<sitemesh:write property="head">
     <title>Admin Home</title>
     <style>
         * {
@@ -231,52 +229,14 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Kiểm tra đăng nhập -->
-    <c:if test="${empty sessionScope.account}">
-        <c:redirect url="${pageContext.request.contextPath}/login" />
-    </c:if>
+</sitemesh:write>
 
-    <!-- Header -->
-    <div class="header">
-        <h1><strong>Admin Panel</strong></h1>
-        <div class="user-info">
-            <div class="user-name">👤 ${sessionScope.account.fullName}</div>
-            <div class="user-role">@${sessionScope.account.userName} • Administrator</div>
-            <a href="${pageContext.request.contextPath}/logout" 
-               class="logout-btn"
-               onclick="return confirm('🚪 Bạn có chắc chắn muốn đăng xuất?')">
-                🚪 Đăng xuất
-            </a>
-        </div>
-    </div>
+<!-- Kiểm tra đăng nhập -->
+<c:if test="${empty sessionScope.account}">
+    <c:redirect url="${pageContext.request.contextPath}/login" />
+</c:if>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar Menu -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h3>📂 Quản lý danh mục</h3>
-            </div>
-            <div class="menu-section">
-                <a href="<c:url value='/admin/category/list'/>" class="menu-item">
-                    📋 Danh sách danh mục
-                </a>
-                <a href="<c:url value='/admin/category/add'/>" class="menu-item">
-                    ➕ Thêm danh mục mới
-                </a>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <div class="welcome-card">
-                <h2>🎉 Chào mừng đến với Admin Panel</h2>
-                <p>Sử dụng menu bên trái để quản lý các chức năng hệ thống.</p>
-                
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<div class="welcome-card">
+    <h2>🎉 Chào mừng đến với Admin Panel</h2>
+    <p>Sử dụng menu bên trái để quản lý các chức năng hệ thống.</p>
+</div>

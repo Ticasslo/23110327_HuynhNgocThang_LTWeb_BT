@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
+
+<sitemesh:write property="head">
     <title>User Home</title>
     <style>
         * {
@@ -14,12 +12,12 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff9a56 0%, #ffad56 100%);
+            background: linear-gradient(135deg, #eef7ff 0%, #e5f2ff 100%);
             min-height: 100vh;
         }
         
         .header {
-            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            background: linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%);
             color: white;
             padding: 20px 30px;
             display: flex;
@@ -117,16 +115,16 @@
         }
         
         .menu-item:hover {
-            background: linear-gradient(90deg, #fff3e0 0%, #ffe0b2 100%);
-            color: #e65100;
-            border-left-color: #ff9800;
+            background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+            border-left-color: #2196f3;
             transform: translateX(5px);
         }
         
         .menu-item.active {
-            background: linear-gradient(90deg, #e65100 0%, #ef6c00 100%);
+            background: linear-gradient(90deg, #1e3a8a 0%, #1d4ed8 100%);
             color: white;
-            border-left-color: #bf360c;
+            border-left-color: #0d47a1;
         }
         
         .content {
@@ -151,7 +149,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #ff9a56 0%, #ffad56 100%);
+            background: linear-gradient(90deg, #1d4ed8 0%, #0ea5e9 100%);
         }
         
         .welcome-card h2 {
@@ -177,7 +175,7 @@
         
         .feature-item {
             padding: 20px;
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-radius: 10px;
             text-align: center;
             transition: all 0.3s ease;
@@ -195,7 +193,7 @@
         }
         
         .feature-title {
-            color: #e65100;
+            color: #0d47a1;
             font-weight: 600;
             margin-bottom: 10px;
         }
@@ -231,57 +229,23 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Kiểm tra đăng nhập -->
-    <c:if test="${empty sessionScope.account}">
-        <c:redirect url="${pageContext.request.contextPath}/login" />
-    </c:if>
+</sitemesh:write>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>👤 <strong>User Panel</strong></h1>
-        <div class="user-info">
-            <div class="user-name">👤 ${sessionScope.account.fullName}</div>
-            <div class="user-role">@${sessionScope.account.userName} • User</div>
-            <a href="${pageContext.request.contextPath}/logout" 
-               class="logout-btn"
-               onclick="return confirm('🚪 Bạn có chắc chắn muốn đăng xuất?')">
-                🚪 Đăng xuất
-            </a>
+<!-- Kiểm tra đăng nhập -->
+<c:if test="${empty sessionScope.account}">
+    <c:redirect url="${pageContext.request.contextPath}/login" />
+</c:if>
+
+<div class="welcome-card">
+    <h2>🎉 Chào mừng đến với User Panel</h2>
+    <p>Xem các danh mục sản phẩm và quản lý tài khoản cá nhân.</p>
+    
+    <!-- Hiển thị danh sách tất cả categories -->
+    <div style="margin-top: 30px;">
+        <h3 style="color: #e65100; margin-bottom: 20px;">📂 Tất cả danh mục:</h3>
+        <div id="categoryList">
+            <!-- Categories sẽ được load ở đây -->
+            <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
         </div>
     </div>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar Menu -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h3>👤 Tài khoản cá nhân</h3>
-            </div>
-            <div class="menu-section">
-                <a href="<c:url value='/user/category/list'/>" class="menu-item">
-                    📋 Xem danh mục
-                </a>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <div class="welcome-card">
-                <h2>🎉 Chào mừng đến với User Panel</h2>
-                <p>Xem các danh mục sản phẩm và quản lý tài khoản cá nhân.</p>
-                
-                <!-- Hiển thị danh sách tất cả categories -->
-                <div style="margin-top: 30px;">
-                    <h3 style="color: #e65100; margin-bottom: 20px;">📂 Tất cả danh mục:</h3>
-                    <div id="categoryList">
-                        <!-- Categories sẽ được load ở đây -->
-                        <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+</div>

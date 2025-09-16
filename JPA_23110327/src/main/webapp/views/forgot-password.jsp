@@ -1,49 +1,52 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Quên mật khẩu</title>
+<sitemesh:write property="head">
+    <title>Quên mật khẩu</title>
+    <style>
+        .forgot-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .forgot-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .forgot-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 300;
+        }
+        .password-requirements {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .password-requirements .requirement {
+            margin: 2px 0;
+        }
+        .password-requirements .requirement.valid {
+            color: #28a745;
+        }
+        .password-requirements .requirement.invalid {
+            color: #dc3545;
+        }
+    </style>
+</sitemesh:write>
 
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<style>
-.password-requirements {
-	font-size: 0.875rem;
-	color: #6c757d;
-}
-.password-requirements .requirement {
-	margin: 2px 0;
-}
-.password-requirements .requirement.valid {
-	color: #28a745;
-}
-.password-requirements .requirement.invalid {
-	color: #dc3545;
-}
-</style>
-
-</head>
-<body>
-
-	<!-- Include topbar -->
-	<jsp:include page="topbar.jsp" />
-
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						<h3 class="card-title text-center mb-4">Quên mật khẩu</h3>
+<div class="forgot-container">
+    <div class="forgot-card">
+		<h3 class="forgot-title">
+			<i class="bi bi-key"></i> Quên mật khẩu
+		</h3>
 
 						<c:if test="${alert != null}">
 							<div class="alert alert-success">${alert}</div>
@@ -194,12 +197,10 @@
 							</a>
 						</div>
 
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
+</div>
 
+<sitemesh:write property="page.scripts">
 	<script>
 		// Toggle hiển thị mật khẩu
 		function togglePassword(inputId, button) {
@@ -241,6 +242,4 @@
 			});
 		}
 	</script>
-
-</body>
-</html>
+</sitemesh:write>

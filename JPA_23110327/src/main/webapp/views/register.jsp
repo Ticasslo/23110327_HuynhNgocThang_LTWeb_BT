@@ -1,31 +1,53 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Đăng ký</title>
+<sitemesh:write property="head">
+    <title>Đăng ký</title>
+    <style>
+        .register-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .register-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .register-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 300;
+        }
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+    </style>
+</sitemesh:write>
 
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-</head>
-<body>
-
-	<jsp:include page="topbar.jsp" />
-
-	<div class="container mt-5">
+<div class="register-container">
+    <div class="register-card">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<form action="register" method="post">
-					<h2 class="text-center mb-4">Tạo tài khoản mới</h2>
+					<h2 class="register-title">
+						<i class="bi bi-person-plus"></i> Tạo tài khoản mới
+					</h2>
 
 					<c:if test="${alert != null}">
 						<div class="alert alert-danger">${alert}</div>
@@ -113,8 +135,9 @@
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-primary w-100 mb-3">Tạo
-						tài khoản</button>
+					<button type="submit" class="btn btn-primary btn-register w-100 mb-3">
+						<i class="bi bi-person-plus"></i> Tạo tài khoản
+					</button>
 
 					<div class="text-center">
 						<p>
@@ -127,11 +150,9 @@
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!-- Bootstrap JS -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<sitemesh:write property="page.scripts">
 	<!-- Validation -->
 	<script>
 		document
@@ -157,6 +178,4 @@
 							}
 						});
 	</script>
-
-</body>
-</html>
+</sitemesh:write>

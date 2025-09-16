@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
+
+<sitemesh:write property="head">
     <title>Manager Home</title>
     <style>
         * {
@@ -29,7 +27,7 @@
         }
         
         .header h1 {
-            font-size: 28px;
+            font-size: 2.2em;
             font-weight: 300;
             display: flex;
             align-items: center;
@@ -231,60 +229,23 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Kiểm tra đăng nhập -->
-    <c:if test="${empty sessionScope.account}">
-        <c:redirect url="${pageContext.request.contextPath}/login" />
-    </c:if>
+</sitemesh:write>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>🏢 <strong>Manager Panel</strong></h1>
-        <div class="user-info">
-            <div class="user-name">👤 ${sessionScope.account.fullName}</div>
-            <div class="user-role">@${sessionScope.account.userName} • Manager</div>
-            <a href="${pageContext.request.contextPath}/logout" 
-               class="logout-btn"
-               onclick="return confirm('🚪 Bạn có chắc chắn muốn đăng xuất?')">
-                🚪 Đăng xuất
-            </a>
+<!-- Kiểm tra đăng nhập -->
+<c:if test="${empty sessionScope.account}">
+    <c:redirect url="${pageContext.request.contextPath}/login" />
+</c:if>
+
+<div class="welcome-card">
+    <h2>🎉 Chào mừng đến với Manager Panel</h2>
+    <p>Quản lý các danh mục sản phẩm của bạn trong hệ thống.</p>
+    
+    <!-- Hiển thị danh sách categories của Manager -->
+    <div style="margin-top: 30px;">
+        <h3 style="color: #2e7d32; margin-bottom: 20px;">📂 Danh mục của tôi:</h3>
+        <div id="categoryList">
+            <!-- Categories sẽ được load ở đây -->
+            <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
         </div>
     </div>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar Menu -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h3>📂 Quản lý danh mục</h3>
-            </div>
-            <div class="menu-section">
-                <a href="<c:url value='/manager/category/list'/>" class="menu-item">
-                    📋 Danh sách danh mục của tôi
-                </a>
-                <a href="<c:url value='/manager/category/add'/>" class="menu-item">
-                    ➕ Thêm danh mục mới
-                </a>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <div class="welcome-card">
-                <h2>🎉 Chào mừng đến với Manager Panel</h2>
-                <p>Quản lý các danh mục sản phẩm của bạn trong hệ thống.</p>
-                
-                <!-- Hiển thị danh sách categories của Manager -->
-                <div style="margin-top: 30px;">
-                    <h3 style="color: #2e7d32; margin-bottom: 20px;">📂 Danh mục của tôi:</h3>
-                    <div id="categoryList">
-                        <!-- Categories sẽ được load ở đây -->
-                        <p style="color: #6c757d; font-style: italic;">Đang tải danh sách danh mục...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+</div>
