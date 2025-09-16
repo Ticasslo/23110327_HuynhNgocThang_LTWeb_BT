@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="D:\SpringTools\workspace03\23110327_HuynhNgocThang_LTWeb_BT02\SiteMeshDecorators_23110327"/>
 			<item value="D:\SpringTools\workspace02\JPA_23110327"/>
 			<item value="D:\SpringTools\workspace02\Servers"/>
 		</list>
@@ -46,13 +47,16 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="SiteMesh3_23110327"/>
 			<item value="JPA_23110327"/>
 			<item value="23110327_HuynhNgocThang"/>
 		</list>
 		<list key="name">
+			<item value="23110327 Huynh Ngoc Thang SiteMesh3"/>
 			<item value="Huynh Ngoc Thang"/>
 		</list>
 		<list key="artifactId">
+			<item value="SiteMesh3_23110327"/>
 			<item value="JPA_23110327"/>
 			<item value="23110327"/>
 		</list>
@@ -65,9 +69,9 @@
 			<item value="[name]"/>
 		</list>
 		<list key="version">
+			<item value="1.0"/>
 			<item value="0.0.1-SNAPSHOT"/>
 			<item value="1"/>
-			<item value="1.0"/>
 		</list>
 	</section>
 	<section name="org.eclipse.m2e.core.pom.overview">
