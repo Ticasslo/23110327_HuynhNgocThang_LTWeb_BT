@@ -1,1 +1,1 @@
-{"net":{"http_server_properties":{"servers":[],"supports_quic":{"address":"2001:ee0:263:b084:e0f3:9bf3:8c61:e697","used_quic":true},"version":5},"network_qualities":{"CAISABiAgICA+P////8B":"4G","CAYSABiAgICA+P////8B":"Offline"}}}
+{"net":{"http_server_properties":{"servers":[],"supports_quic":{"address":"2001:ee0:263:b084:7df8:b712:ffff:4d20","used_quic":true},"version":5},"network_qualities":{"CAISABiAgICA+P////8B":"4G","CAYSABiAgICA+P////8B":"Offline"}}}
