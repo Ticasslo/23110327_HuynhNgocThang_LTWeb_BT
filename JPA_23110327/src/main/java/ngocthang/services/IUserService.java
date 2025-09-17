@@ -23,4 +23,7 @@ public interface IUserService {
 	User findByUsernameOrEmail(String identifier);
 
 	boolean updatePassword(String username, String newPassword);
+	
+	// Cập nhật profile user
+	boolean updateProfile(User user);
 }

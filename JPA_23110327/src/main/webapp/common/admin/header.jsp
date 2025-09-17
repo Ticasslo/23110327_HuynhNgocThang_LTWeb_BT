@@ -14,7 +14,18 @@
         <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/category/list">Danh mục</a></li>
       </ul>
       <ul class="navbar-nav">
-        <li class="nav-item"><span class="navbar-text me-3">👤 ${sessionScope.account.fullName}</span></li>
+        <li class="nav-item d-flex align-items-center me-3">
+          <c:choose>
+            <c:when test="${not empty sessionScope.account.avatar}">
+              <c:url value="/image?fname=${sessionScope.account.avatar}" var="avatarUrl"></c:url>
+              <img src="${avatarUrl}" alt="Avatar" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
+            </c:when>
+            <c:otherwise>
+              <i class="bi bi-person-circle me-2" style="font-size: 24px;"></i>
+            </c:otherwise>
+          </c:choose>
+          <span class="navbar-text">${sessionScope.account.fullName}</span>
+        </li>
         <li class="nav-item"><a class="btn btn-outline-light" href="${pageContext.request.contextPath}/logout" onclick="return confirm('Đăng xuất?')">Đăng xuất</a></li>
       </ul>
     </div>

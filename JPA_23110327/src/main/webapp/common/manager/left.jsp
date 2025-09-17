@@ -4,4 +4,5 @@
 <div class="list-group list-group-flush">
   <a href="${pageContext.request.contextPath}/manager/category/list" class="list-group-item list-group-item-action${fn:endsWith(pageContext.request.requestURI, '/manager/category/list') ? ' active' : ''}">📋 Danh sách danh mục</a>
   <a href="${pageContext.request.contextPath}/manager/category/add" class="list-group-item list-group-item-action${fn:endsWith(pageContext.request.requestURI, '/manager/category/add') ? ' active' : ''}">➕ Thêm danh mục</a>
+  <a href="${pageContext.request.contextPath}/manager/profile" class="list-group-item list-group-item-action${fn:endsWith(pageContext.request.requestURI, '/manager/profile') ? ' active' : ''}">👤 Thông tin cá nhân</a>
 </div>

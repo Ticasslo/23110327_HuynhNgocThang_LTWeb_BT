@@ -16,4 +16,7 @@ public interface IUserDAO {
     User findByUserName(String username);
     User findByEmail(String email);
     boolean updatePassword(String username, String newPassword);
+    
+    // Cập nhật profile user
+    boolean updateProfile(User user);
 }

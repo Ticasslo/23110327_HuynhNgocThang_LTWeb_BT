@@ -122,4 +122,21 @@ public class UserDAOImpl implements IUserDAO {
             }
         }
     }
+    
+    @Override
+    public boolean updateProfile(User user) {
+        try (EntityManager enma = JPAConfig.getEntityManager()) {
+            EntityTransaction trans = enma.getTransaction();
+            try {
+                trans.begin();
+                enma.merge(user);
+                trans.commit();
+                return true;
+            } catch (Exception e) {
+                trans.rollback();
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
 }
