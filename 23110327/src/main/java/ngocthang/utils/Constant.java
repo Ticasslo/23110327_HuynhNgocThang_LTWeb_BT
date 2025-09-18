@@ -17,5 +17,5 @@ public class Constant {
         public static final String USER_HOME = "/views/user/home.jsp";
     }
     //Shopping constant to upload image
-    public static final String DIR = "E:\\upload";
+    public static final String DIR = "uploads";
 }

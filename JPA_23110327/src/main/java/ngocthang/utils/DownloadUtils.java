@@ -38,7 +38,9 @@ public class DownloadUtils {
      */
     private static void downloadImage(HttpServletRequest request, HttpServletResponse response, String fileName) 
             throws IOException {
-        Path filePath = Paths.get(Constant.DIR, fileName);
+        // Lấy đường dẫn tương đối từ thư mục dự án
+        String projectRoot = System.getProperty("user.dir");
+        Path filePath = Paths.get(projectRoot, Constant.DIR, fileName);
         
         if (!Files.exists(filePath)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "File không tồn tại");

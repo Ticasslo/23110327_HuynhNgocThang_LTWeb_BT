@@ -52,9 +52,9 @@ public class UploadUtils {
             String fileExtension = getFileExtension(originalFileName);
             String newFileName = generateFileName(fileExtension);
             
-            // Tạo đường dẫn đầy đủ
-            String fullUploadDir = Constant.DIR + "/" + uploadDir;
-            Path uploadPath = Paths.get(fullUploadDir);
+            // Tạo đường dẫn tương đối từ thư mục dự án
+            String projectRoot = System.getProperty("user.dir");
+            Path uploadPath = Paths.get(projectRoot, Constant.DIR, uploadDir);
             
             // Tạo thư mục nếu chưa tồn tại
             if (!Files.exists(uploadPath)) {

@@ -13,56 +13,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <sitemesh:write property="head"/>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="bi bi-play-circle"></i> Video Manager
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/videos">Video</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories">Danh mục</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.account}">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle"></i> ${sessionScope.account.fullName}
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
-                                </ul>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="nav-item">
-                                <a class="btn btn-outline-light me-2" href="/login">Đăng nhập</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-light" href="/register">Đăng ký</a>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div>
+        <%@ include file="/common/web/header.jsp"%>
+    </div>
     
     <!-- Main Content -->
     <div class="container-fluid flex-fill px-0">
@@ -70,14 +33,11 @@
     </div>
     
     <!-- Footer -->
-    <footer class="bg-dark text-light text-center py-3 mt-auto">
-        <div class="container">
-            <small>&copy; 2024 Video Manager System. All rights reserved.</small>
-        </div>
-    </footer>
+    <div>
+        <%@ include file="/common/web/footer.jsp"%>
+    </div>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <sitemesh:write property="page.scripts"/>
 </body>
 </html>

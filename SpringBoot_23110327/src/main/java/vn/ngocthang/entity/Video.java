@@ -33,7 +33,7 @@ public class Video implements Serializable {
     private String poster;
 
     @Column(name = "views")
-    private long views;
+    private Long views;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -43,7 +43,7 @@ public class Video implements Serializable {
         super();
     }
 
-    public Video(String title, String description, String poster, long views, Category category) {
+    public Video(String title, String description, String poster, Long views, Category category) {
         this.title = title;
         this.description = description;
         this.poster = poster;
@@ -83,11 +83,11 @@ public class Video implements Serializable {
         this.poster = poster;
     }
 
-    public long getViews() {
+    public Long getViews() {
         return views;
     }
 
-    public void setViews(long views) {
+    public void setViews(Long views) {
         this.views = views;
     }
 

@@ -39,7 +39,7 @@ public class User implements Serializable {
 	@Column(name = "phone", columnDefinition = "NVARCHAR(20)")
 	private String phone;
 	
-	@Column(name = "createdDate")
+	@Column(name = "createdDate", columnDefinition = "DATETIME")
 	private Timestamp createdDate;
 
 	public User() {

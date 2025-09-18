@@ -39,7 +39,7 @@ public class LoginController {
             }
         }
 
-        // Hiển thị trang đăng nhập
+        model.addAttribute("pageTitle", "Đăng nhập - Video Manager");
         return "web/login";
     }
 
@@ -51,12 +51,9 @@ public class LoginController {
                        HttpServletResponse response,
                        Model model) throws IOException {
         
-        String alertMsg = "";
-
         // Validate input
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            alertMsg = "Tài khoản hoặc mật khẩu không được rỗng";
-            model.addAttribute("alert", alertMsg);
+            model.addAttribute("alert", "Tài khoản hoặc mật khẩu không được rỗng");
             return "web/login";
         }
 
@@ -84,8 +81,7 @@ public class LoginController {
 
         } else {
             // Đăng nhập thất bại
-            alertMsg = "Tài khoản hoặc mật khẩu không đúng";
-            model.addAttribute("alert", alertMsg);
+            model.addAttribute("alert", "Tài khoản hoặc mật khẩu không đúng");
             model.addAttribute("username", username); // Giữ lại username đã nhập
             return "web/login";
         }

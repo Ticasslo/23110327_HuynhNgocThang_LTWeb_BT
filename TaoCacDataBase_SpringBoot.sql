@@ -1,5 +1,16 @@
 -- TaoCacDataBase_SpringBoot.sql
 -- SQL Server DDL for Spring Boot project (simple DROP/CREATE)
+-- Database: baitapWeb2
+
+-- Create database if not exists
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'baitapWeb2')
+BEGIN
+    CREATE DATABASE baitapWeb2;
+END
+GO
+
+USE baitapWeb2;
+GO
 
 -- Drop tables if exist (respect FK order)
 IF OBJECT_ID('dbo.Video', 'U') IS NOT NULL DROP TABLE dbo.Video;
@@ -47,4 +58,27 @@ CREATE TABLE dbo.Video (
 
 CREATE INDEX IX_Video_title ON dbo.Video(title);
 CREATE INDEX IX_Video_category_id ON dbo.Video(category_id);
+
+-- Insert sample data
+-- Admin user (roleid = 1)
+INSERT INTO dbo.Users (id, email, username, fullname, password, avatar, roleid, phone, createdDate) VALUES
+(100001, 'thang@example.com', 'thang', 'Huynh Ngoc Thang', '123456', NULL, 1, '0123456789', GETDATE());
+
+-- User (roleid = 2)  
+INSERT INTO dbo.Users (id, email, username, fullname, password, avatar, roleid, phone, createdDate) VALUES
+(100002, 'jack@example.com', 'jack', 'Jack User', '123456', NULL, 2, '0987654321', GETDATE());
+
+-- Sample categories
+INSERT INTO dbo.Category (categoryName, images) VALUES
+(N'Giáo dục', NULL),
+(N'Giải trí', NULL),
+(N'Thể thao', NULL),
+(N'Âm nhạc', NULL);
+
+-- Sample videos
+INSERT INTO dbo.Video (title, description, poster, views, category_id) VALUES
+(N'Video học Spring Boot', N'Hướng dẫn cơ bản về Spring Boot', N'bi-play-circle', 150, 1),
+(N'Video giải trí vui nhộn', N'Những video hài hước nhất', N'bi-emoji-laughing', 300, 2),
+(N'Video bóng đá hay', N'Highlight bóng đá tuần này', N'bi-trophy', 500, 3),
+(N'Video nhạc mới', N'Bài hát hot nhất hiện tại', N'bi-music-note', 200, 4);
 

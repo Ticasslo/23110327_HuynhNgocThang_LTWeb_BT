@@ -1,4 +1,18 @@
-﻿-- Drop tables
+﻿-- TaoCacDataBase.sql
+-- SQL Server DDL for JPA project
+-- Database: baitapWeb
+
+-- Create database if not exists
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'baitapWeb')
+BEGIN
+    CREATE DATABASE baitapWeb;
+END
+GO
+
+USE baitapWeb;
+GO
+
+-- Drop tables
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS Users;
 

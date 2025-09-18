@@ -3,7 +3,6 @@ package vn.ngocthang.filter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.SessionUtils;
 
 import java.io.IOException;

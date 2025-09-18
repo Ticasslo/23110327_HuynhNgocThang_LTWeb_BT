@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
-    <mapping path="/*" name="web" decorator="web.jsp"/>
+    <!-- Specific mappings first -->
+    <mapping path="/admin" name="admin" decorator="admin.jsp"/>
     <mapping path="/admin/*" name="admin" decorator="admin.jsp"/>
+    <mapping path="/user" name="user" decorator="user.jsp"/>
     <mapping path="/user/*" name="user" decorator="user.jsp"/>
+    <mapping path="/user/search" name="user" decorator="user.jsp"/>
+    <!-- Generic mapping last -->
+    <mapping path="/*" name="web" decorator="web.jsp"/>
     <!-- Exclude path from decoration. -->
     <mapping path="/api*" exclude="true"/>
 </sitemesh>

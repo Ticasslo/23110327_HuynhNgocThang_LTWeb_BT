@@ -3,7 +3,6 @@ package vn.ngocthang.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.SessionUtils;
 
 @Controller

@@ -126,7 +126,19 @@
         </div>
     </c:if>
     
-    <form action="${pageContext.request.contextPath}/profile" method="post" enctype="multipart/form-data">
+    <c:choose>
+        <c:when test="${user.roleid == 1}">
+            <c:set var="profileAction" value="${pageContext.request.contextPath}/admin/profile" />
+        </c:when>
+        <c:when test="${user.roleid == 2}">
+            <c:set var="profileAction" value="${pageContext.request.contextPath}/manager/profile" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="profileAction" value="${pageContext.request.contextPath}/user/profile" />
+        </c:otherwise>
+    </c:choose>
+    
+    <form action="${profileAction}" method="post" enctype="multipart/form-data">
         <div class="row">
             <!-- Avatar -->
             <div class="col-12 text-center mb-4">

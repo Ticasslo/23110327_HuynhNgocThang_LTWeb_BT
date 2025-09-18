@@ -38,6 +38,7 @@ public class RegisterController {
             }
         }
         
+        model.addAttribute("pageTitle", "Đăng ký - Video Manager");
         return "web/register";
     }
 
@@ -49,19 +50,15 @@ public class RegisterController {
                           @RequestParam String phone,
                           Model model) {
         
-        String alertMsg = "";
-
         // Check email tồn tại
         if (userService.checkExistEmail(email)) {
-            alertMsg = "Email đã tồn tại!";
-            model.addAttribute("alert", alertMsg);
+            model.addAttribute("alert", "Email đã tồn tại!");
             return "web/register";
         }
 
         // Check username tồn tại
         if (userService.checkExistUsername(username)) {
-            alertMsg = "Tài khoản đã tồn tại!";
-            model.addAttribute("alert", alertMsg);
+            model.addAttribute("alert", "Tài khoản đã tồn tại!");
             return "web/register";
         }
 
@@ -70,8 +67,7 @@ public class RegisterController {
         if (isSuccess) {
             return "redirect:/login";
         } else {
-            alertMsg = "System error!";
-            model.addAttribute("alert", alertMsg);
+            model.addAttribute("alert", "System error!");
             return "web/register";
         }
     }

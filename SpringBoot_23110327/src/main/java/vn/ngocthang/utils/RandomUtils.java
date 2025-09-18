@@ -28,4 +28,12 @@ public class RandomUtils {
         }
         return sb.toString();
     }
+    
+    /**
+     * Tạo ID ngẫu nhiên cho user (100000-999999)
+     * @return ID ngẫu nhiên
+     */
+    public static int getRandomId() {
+        return generateUserId(100000, 999999);
+    }
 }

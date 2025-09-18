@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.ngocthang.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,4 +33,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // Tìm user theo username hoặc email
     @Query("SELECT u FROM User u WHERE u.userName = :identifier OR u.email = :identifier")
     Optional<User> findByUserNameOrEmail(@Param("identifier") String identifier);
+    
+    // Tìm user theo tên hoặc username (cho search)
+    List<User> findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(String fullName, String userName);
 }

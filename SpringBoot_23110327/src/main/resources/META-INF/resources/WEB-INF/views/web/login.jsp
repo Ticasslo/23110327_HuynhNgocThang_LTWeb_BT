@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<sitemesh:write property="head">
-<title>Đăng nhập - Video Manager</title>
 <style>
     .login-container {
         min-height: 80vh;
@@ -10,7 +8,6 @@
         align-items: center;
     }
 </style>
-</sitemesh:write>
 <div class="container login-container">
     <div class="row justify-content-center w-100">
         <div class="col-md-6 col-lg-4">

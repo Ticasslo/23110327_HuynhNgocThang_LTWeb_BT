@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><sitemesh:write property="title"/> - User Panel</title>
+    <title><sitemesh:write property="title"/></title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -44,43 +44,14 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- User Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg,#1d4ed8 0%, #0ea5e9 100%);">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/user">
-                <i class="bi bi-person-circle"></i> User Panel
-            </a>
-            <div class="navbar-nav ms-auto">
-                <c:choose>
-                    <c:when test="${not empty sessionScope.account}">
-                        <li class="nav-item d-flex align-items-center me-3">
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.account.avatar}">
-                                    <img src="/image?fname=${sessionScope.account.avatar}" alt="Avatar" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
-                                </c:when>
-                                <c:otherwise>
-                                    <i class="bi bi-person-circle me-2" style="font-size: 24px;"></i>
-                                </c:otherwise>
-                            </c:choose>
-                            <span class="navbar-text">${sessionScope.account.fullName}</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-light" href="/logout" onclick="return confirm('Đăng xuất?')">Đăng xuất</a>
-                        </li>
-                    </c:when>
-                </c:choose>
-            </div>
-        </div>
-    </nav>
+    <div>
+        <%@ include file="/common/user/header.jsp"%>
+    </div>
     
     <div class="container-fluid px-0 flex-fill">
         <div class="row g-0">
             <div class="col-12 col-md-2 col-lg-2 layout-sidebar p-0 sidebar-wrap">
-                <div class="list-group list-group-flush">
-                    <a href="/user" class="list-group-item list-group-item-action">🏠 Trang chủ</a>
-                    <a href="/user/videos" class="list-group-item list-group-item-action">🎬 Video của tôi</a>
-                    <a href="/user/categories" class="list-group-item list-group-item-action">📂 Danh mục</a>
-                    <a href="/user/profile" class="list-group-item list-group-item-action">👤 Thông tin cá nhân</a>
-                </div>
+                <%@ include file="/common/user/left.jsp"%>
             </div>
             <div class="col-12 col-md-10 col-lg-10 p-3 user-content">
                 <sitemesh:write property="body"/>
@@ -88,11 +59,10 @@
         </div>
     </div>
     
-    <footer class="text-light text-center py-3 mt-auto" style="background: linear-gradient(90deg,#1d4ed8 0%, #0ea5e9 100%);">
-        <small>User Area - Video Manager System</small>
-    </footer>
+    <div>
+        <%@ include file="/common/user/footer.jsp"%>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <sitemesh:write property="page.scripts"/>
 </body>
 </html>
