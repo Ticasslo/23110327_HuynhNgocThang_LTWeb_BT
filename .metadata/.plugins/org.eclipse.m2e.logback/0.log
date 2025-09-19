@@ -7523,3 +7523,149 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact org.apache.to
 2025-09-19 22:29:57,000 [Worker-39: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace03\23110327_HuynhNgocThang_LTWeb_BT02\SpringBoot_23110327\src\test\resources
 2025-09-19 22:35:37,136 [Stop Help Server] INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@545125ab{STOPPING}[12.0.21,sto=0]
 2025-09-19 22:35:37,153 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@4ea52997{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2025-09-19 22:45:21,936 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-09-19 22:45:55,079 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-19 22:45:59,695 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 22:46:07,413 [Worker-14: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 22:46:16,292 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-19 22:46:16,301 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:46:16,359 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:46:16,397 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-19 22:46:16,401 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-19 22:46:26,915 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 1 poms: local refresh takes 0,00 sec, refresh facades takes 10,00 sec, update config takes 21,00 sec 
+2025-09-19 22:46:26,922 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-19 22:46:30,690 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 22:46:33,292 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 22:46:39,052 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/main/java
+2025-09-19 22:46:39,055 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 22:46:39,097 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 22:46:39,129 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/test/java
+2025-09-19 22:46:39,133 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/test/resources
+2025-09-19 22:46:39,907 [Worker-11: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:39,911 [Worker-11: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\main\resources
+2025-09-19 22:46:39,926 [Worker-11: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:39,930 [Worker-11: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\test\resources
+2025-09-19 22:46:47,427 [Worker-4: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 22:46:49,098 [Worker-4: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:49,117 [Worker-4: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:46:49,157 [Worker-4: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:49,162 [Worker-4: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-19 22:46:51,546 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-19 22:46:51,549 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:46:51,552 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:46:51,553 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-19 22:46:51,556 [Worker-5: Update Maven projects configuration] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-19 22:46:56,321 [Worker-5: Update Maven projects configuration] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 2 poms: local refresh takes 0,00 sec, refresh facades takes 11,00 sec, update config takes 17,00 sec 
+2025-09-19 22:46:57,319 [Worker-4: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:57,323 [Worker-4: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:46:57,337 [Worker-4: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:46:57,340 [Worker-4: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-19 22:46:59,184 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:46:59,247 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 22:46:59,423 [Worker-0: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 22:47:01,732 [Worker-20: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:47:01,795 [Worker-20: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 22:47:01,810 [Worker-20: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 22:48:04,375 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-19 22:48:07,419 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 22:48:07,932 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 22:48:08,301 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 22:48:09,668 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 22:48:15,670 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/main/java
+2025-09-19 22:48:15,673 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/main/resources
+2025-09-19 22:48:15,674 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/test/java
+2025-09-19 22:48:15,675 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/test/resources
+2025-09-19 22:48:16,382 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/main/java
+2025-09-19 22:48:16,384 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/main/resources
+2025-09-19 22:48:16,386 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/test/java
+2025-09-19 22:48:16,388 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/test/resources
+2025-09-19 22:48:17,141 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-19 22:48:17,143 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:48:17,146 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 22:48:17,147 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-19 22:48:17,150 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-19 22:48:24,169 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/main/java
+2025-09-19 22:48:24,171 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 22:48:24,173 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 22:48:24,174 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/test/java
+2025-09-19 22:48:24,176 [Worker-13: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/test/resources
+2025-09-19 22:48:30,752 [Worker-13: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for 23110327
+2025-09-19 22:48:30,860 [Worker-13: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for JPA_23110327
+2025-09-19 22:48:31,295 [Worker-13: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 4 poms: local refresh takes 0,00 sec, refresh facades takes 10,00 sec, update config takes 14,00 sec 
+2025-09-19 22:48:32,014 [Worker-30: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:48:32,032 [Worker-30: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\main\resources
+2025-09-19 22:48:32,038 [Worker-30: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:48:32,056 [Worker-30: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\test\resources
+2025-09-19 22:48:32,057 [Worker-30: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of 23110327
+2025-09-19 22:48:32,059 [Worker-30: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for 23110327
+2025-09-19 22:48:34,644 [Worker-7: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:48:34,663 [Worker-7: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:48:34,676 [Worker-7: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 22:48:34,693 [Worker-7: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-19 22:48:34,694 [Worker-7: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of JPA_23110327
+2025-09-19 22:48:34,695 [Worker-7: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for JPA_23110327
+2025-09-19 22:48:36,957 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:48:37,008 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 22:48:37,166 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 22:48:38,393 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 22:48:38,442 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 22:48:38,456 [Worker-8: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 22:55:34,533 [Start Help Server] INFO  org.eclipse.jetty.server.Server - jetty-12.0.21; built: 2025-05-09T00:32:00.688Z; git: 1c4719601e31b05b7d68910d2edd980259f1f53c; jvm 21.0.7+6-LTS
+2025-09-19 22:55:34,710 [Start Help Server] INFO  o.e.j.server.handler.ContextHandler - Started oeje8n.ContextHandler$CoreContextHandler@a2e3f17{/help,/help,b=null,a=AVAILABLE,h=oeje8n.ContextHandler$CoreContextHandler$CoreToNestedHandler@7eca1c59{STARTED}}
+2025-09-19 22:55:34,711 [Start Help Server] INFO  o.e.j.s.DefaultSessionIdManager - Session workerName=node0
+2025-09-19 22:55:34,792 [Start Help Server] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@2d188f8c{HTTP/1.1, (http/1.1)}{127.0.0.1:54969}
+2025-09-19 22:55:34,848 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started oejs.Server@668d4cd1{STARTING}[12.0.21,sto=0] @688123ms
+2025-09-19 22:58:57,264 [Stop Help Server] INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@668d4cd1{STOPPING}[12.0.21,sto=0]
+2025-09-19 22:58:57,276 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@2d188f8c{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2025-09-19 23:00:29,489 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-09-19 23:00:45,544 [Worker-18: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:00:45,879 [Worker-21: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:00:53,748 [Worker-1: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 23:01:02,433 [Worker-18: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:01:03,788 [Worker-18: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 23:01:06,501 [Worker-18: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 23:01:07,066 [Worker-18: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 23:01:23,676 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-19 23:01:26,723 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:01:27,217 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 23:01:27,532 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 23:01:28,856 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 23:01:34,613 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/main/java
+2025-09-19 23:01:34,620 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/main/resources
+2025-09-19 23:01:34,622 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/test/java
+2025-09-19 23:01:34,625 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/test/resources
+2025-09-19 23:01:35,445 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/main/java
+2025-09-19 23:01:35,447 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/main/resources
+2025-09-19 23:01:35,448 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/test/java
+2025-09-19 23:01:35,451 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/test/resources
+2025-09-19 23:01:36,853 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-19 23:01:36,856 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 23:01:36,858 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-19 23:01:36,860 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-19 23:01:36,863 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-19 23:01:39,887 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/main/java
+2025-09-19 23:01:39,889 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 23:01:39,891 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-19 23:01:39,892 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/test/java
+2025-09-19 23:01:39,894 [Worker-5: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/test/resources
+2025-09-19 23:01:43,177 [Worker-5: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for 23110327
+2025-09-19 23:01:43,362 [Worker-5: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for JPA_23110327
+2025-09-19 23:01:43,953 [Worker-5: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 4 poms: local refresh takes 0,00 sec, refresh facades takes 10,00 sec, update config takes 8,00 sec 
+2025-09-19 23:01:45,235 [Worker-22: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:01:45,238 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\main\resources
+2025-09-19 23:01:45,247 [Worker-22: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:01:45,251 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\test\resources
+2025-09-19 23:01:45,252 [Worker-22: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of 23110327
+2025-09-19 23:01:45,254 [Worker-22: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for 23110327
+2025-09-19 23:01:47,970 [Worker-25: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:01:47,987 [Worker-25: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:01:48,015 [Worker-25: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:01:48,018 [Worker-25: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-19 23:01:48,019 [Worker-25: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of JPA_23110327
+2025-09-19 23:01:48,019 [Worker-25: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for JPA_23110327
+2025-09-19 23:01:50,119 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:01:50,166 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:01:50,354 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:01:53,099 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:01:53,168 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 23:01:53,182 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources

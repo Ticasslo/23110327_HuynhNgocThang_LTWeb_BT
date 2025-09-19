@@ -1,3 +1,2 @@
-2025/09/19-22:31:31.584 980 Reusing MANIFEST D:\SpringTools\workspace03\23110327_HuynhNgocThang_LTWeb_BT02\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
-2025/09/19-22:31:31.670 980 Recovering log #3
-2025/09/19-22:31:31.678 980 Reusing old log D:\SpringTools\workspace03\23110327_HuynhNgocThang_LTWeb_BT02\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 
+2025/09/19-22:54:47.501 3d50 Creating DB D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb since it was missing.
+2025/09/19-22:54:47.552 3d50 Reusing MANIFEST D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
