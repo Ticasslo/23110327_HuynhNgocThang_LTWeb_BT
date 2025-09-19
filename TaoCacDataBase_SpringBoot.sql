@@ -77,8 +77,8 @@ INSERT INTO dbo.Category (categoryName, images) VALUES
 
 -- Sample videos
 INSERT INTO dbo.Video (title, description, poster, views, category_id) VALUES
-(N'Video học Spring Boot', N'Hướng dẫn cơ bản về Spring Boot', N'bi-play-circle', 150, 1),
-(N'Video giải trí vui nhộn', N'Những video hài hước nhất', N'bi-emoji-laughing', 300, 2),
-(N'Video bóng đá hay', N'Highlight bóng đá tuần này', N'bi-trophy', 500, 3),
-(N'Video nhạc mới', N'Bài hát hot nhất hiện tại', N'bi-music-note', 200, 4);
+(N'Video học Spring Boot', N'Hướng dẫn cơ bản về Spring Boot', NULL, 150, 1),
+(N'Video giải trí vui nhộn', N'Những video hài hước nhất', NULL, 300, 2),
+(N'Video bóng đá hay', N'Highlight bóng đá tuần này', NULL, 500, 3),
+(N'Video nhạc mới', N'Bài hát hot nhất hiện tại', NULL, 200, 4);
 

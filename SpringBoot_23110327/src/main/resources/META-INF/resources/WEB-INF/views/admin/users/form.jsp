@@ -6,7 +6,7 @@
         <h3 class="m-0">
             <i class="bi bi-people"></i> 
             <c:choose>
-                <c:when test="${empty user.id}">
+                <c:when test="${user.id == 0}">
                     Thêm người dùng mới
                 </c:when>
                 <c:otherwise>
@@ -19,7 +19,18 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="/admin/users/${empty user.id ? 'add' : 'edit/' concat user.id}" method="post">
+            <c:if test="${not empty alert}">
+                <div class="alert alert-warning mb-3">${alert}</div>
+            </c:if>
+            <c:choose>
+                <c:when test="${user.id == 0}">
+                    <c:set var="formAction" value="/admin/users/add"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="formAction" value="/admin/users/edit/${user.id}"/>
+                </c:otherwise>
+            </c:choose>
+            <form action="${formAction}" method="post" accept-charset="UTF-8">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="userName" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
@@ -50,7 +61,7 @@
                         </select>
                     </div>
                     
-                    <c:if test="${empty user.id}">
+                    <c:if test="${user.id == 0}">
                         <div class="col-md-6 mb-3">
                             <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                             <input type="password" class="form-control" id="password" name="password" required>

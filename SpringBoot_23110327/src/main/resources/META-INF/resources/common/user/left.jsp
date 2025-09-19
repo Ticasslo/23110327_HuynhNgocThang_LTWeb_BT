@@ -10,18 +10,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link ${fn:endsWith(pageContext.request.requestURI, '/user/videos') ? 'active' : ''}" href="/user/videos">
-                <i class="bi bi-collection-play"></i> Video của tôi
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link ${fn:endsWith(pageContext.request.requestURI, '/user/search') ? 'active' : ''}" href="/user/search">
                 <i class="bi bi-search"></i> Tìm kiếm
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link ${fn:endsWith(pageContext.request.requestURI, '/user/profile') ? 'active' : ''}" href="/user/profile">
-                <i class="bi bi-person"></i> Thông tin cá nhân
             </a>
         </li>
     </ul>

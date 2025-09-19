@@ -30,8 +30,6 @@
                         <i class="bi bi-person-circle"></i> ${sessionScope.account.fullName}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/admin/profile">Thông tin cá nhân</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
                     </ul>
                 </li>

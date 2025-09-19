@@ -33,7 +33,7 @@
                 <tbody>
                     <c:forEach var="v" items="${items}">
                         <tr>
-                            <td>${v.video_id}</td>
+                            <td>${v.id}</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${not empty v.poster}">
@@ -65,8 +65,8 @@
                                 <span class="badge bg-secondary">${v.views}</span>
                             </td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="/admin/videos/edit/${v.video_id}"><i class="bi bi-pencil"></i></a>
-                                <form action="/admin/videos/delete/${v.video_id}" method="post" class="d-inline" onsubmit="return confirm('Xóa video này?')">
+                                <a class="btn btn-sm btn-outline-secondary" href="/admin/videos/edit/${v.id}"><i class="bi bi-pencil"></i></a>
+                                <form action="/admin/videos/delete/${v.id}" method="post" class="d-inline" onsubmit="return confirm('Xóa video này?')">
                                     <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>

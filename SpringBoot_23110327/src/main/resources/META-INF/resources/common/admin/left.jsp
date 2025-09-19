@@ -24,11 +24,7 @@
                 <i class="bi bi-people"></i> Người dùng
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link ${fn:endsWith(pageContext.request.requestURI, '/admin/profile') ? 'active' : ''}" href="/admin/profile">
-                <i class="bi bi-person"></i> Thông tin cá nhân
-            </a>
-        </li>
+        
     </ul>
     
     <style>

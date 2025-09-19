@@ -79,7 +79,15 @@
                             <div class="col-md-3 mb-4">
                                 <div class="card video-card h-100">
                                     <div class="video-thumbnail">
-                                        <i class="bi bi-play-circle"></i>
+                                        <c:choose>
+                                            <c:when test="${not empty video.poster}">
+                                                <img src="/image?fname=${video.poster}" alt="${video.title}"
+                                                     style="width:100%; height:100%; object-fit:cover; border-top-left-radius:.375rem; border-top-right-radius:.375rem;" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-play-circle"></i>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                     <div class="card-body">
                                         <h6 class="card-title">${video.title}</h6>

@@ -15,9 +15,6 @@
                     <a class="nav-link" href="/user">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/videos">Video của tôi</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/user/search">Tìm kiếm</a>
                 </li>
             </ul>
@@ -27,8 +24,6 @@
                         <i class="bi bi-person-circle"></i> ${sessionScope.account.fullName}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/user/profile">Thông tin cá nhân</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
                     </ul>
                 </li>
