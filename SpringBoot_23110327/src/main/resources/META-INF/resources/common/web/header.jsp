@@ -18,6 +18,26 @@
                     <a class="nav-link" href="/search">Tìm kiếm</a>
                 </li>
             </ul>
+            
+            <!-- Thông tin tác giả -->
+            <div class="navbar-nav me-3">
+                <div class="nav-item d-flex align-items-center">
+                    <c:if test="${not empty authorAvatar}">
+                        <img src="/image?fname=${authorAvatar}" alt="Author Avatar" 
+                             style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #ffffff20; display: none; align-items: center; justify-content: center; margin-right: 8px; color: white; font-weight: bold;">
+                            ${authorName.substring(0,1)}
+                        </div>
+                    </c:if>
+                    <small class="text-light">
+                        <strong>Tên: ${authorName}</strong>
+                        <br>
+                        <span style="font-size: 0.75em;">MSSV: ${authorStudentId}</span>
+                    </small>
+                </div>
+            </div>
+            
             <ul class="navbar-nav">
                 <c:choose>
                     <c:when test="${not empty sessionScope.account}">

@@ -1,19 +1,21 @@
 package vn.ngocthang.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import vn.ngocthang.entity.User;
 import vn.ngocthang.services.UserService;
+import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.CookieUtils;
 import vn.ngocthang.utils.SessionUtils;
-
-import java.io.IOException;
 
 @Controller
 public class LoginController {
@@ -40,6 +42,12 @@ public class LoginController {
         }
 
         model.addAttribute("pageTitle", "Đăng nhập - Video Manager");
+        
+        // Thêm thông tin tác giả
+        model.addAttribute("authorName", Constants.AUTHOR_NAME);
+        model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+        model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+        
         return "web/login";
     }
 
@@ -83,6 +91,12 @@ public class LoginController {
             // Đăng nhập thất bại
             model.addAttribute("alert", "Tài khoản hoặc mật khẩu không đúng");
             model.addAttribute("username", username); // Giữ lại username đã nhập
+            
+            // Thêm thông tin tác giả khi có lỗi
+            model.addAttribute("authorName", Constants.AUTHOR_NAME);
+            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+            
             return "web/login";
         }
     }

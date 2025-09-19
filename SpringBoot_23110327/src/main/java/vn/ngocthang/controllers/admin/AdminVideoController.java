@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.ngocthang.entity.Video;
 import vn.ngocthang.entity.Category;
-import vn.ngocthang.repository.VideoRepository;
-import vn.ngocthang.repository.CategoryRepository;
+import vn.ngocthang.services.VideoService;
+import vn.ngocthang.services.CategoryService;
 import vn.ngocthang.utils.UploadHelper;
 
 import java.io.IOException;
@@ -20,18 +20,18 @@ import java.util.Optional;
 public class AdminVideoController {
 
     @Autowired
-    private VideoRepository videoRepository;
+    private VideoService videoService;
     
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @GetMapping
     public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<Video> items;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            items = videoRepository.findByTitleContainingIgnoreCase(keyword.trim());
+            items = videoService.findByTitleContainingIgnoreCase(keyword.trim());
         } else {
-            items = videoRepository.findAll();
+            items = videoService.findAll();
         }
 
         model.addAttribute("items", items);
@@ -42,7 +42,7 @@ public class AdminVideoController {
 
     @GetMapping("/add")
     public String addForm(Model model) {
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("video", new Video());
         model.addAttribute("categories", categories);
         model.addAttribute("pageTitle", "Thêm video");
@@ -61,7 +61,7 @@ public class AdminVideoController {
         }
         
         // Set category
-        Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
+        Optional<Category> categoryOpt = categoryService.findById(categoryId);
         if (categoryOpt.isPresent()) {
             video.setCategory(categoryOpt.get());
         }
@@ -71,18 +71,18 @@ public class AdminVideoController {
             video.setViews(0L);
         }
         
-        videoRepository.save(video);
+        videoService.save(video);
         return "redirect:/admin/videos";
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable("id") Integer id, Model model) {
-        Optional<Video> opt = videoRepository.findById(id);
+        Optional<Video> opt = videoService.findById(id);
         if (opt.isEmpty()) {
             return "redirect:/admin/videos";
         }
         
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("video", opt.get());
         model.addAttribute("categories", categories);
         model.addAttribute("pageTitle", "Chỉnh sửa video");
@@ -94,7 +94,7 @@ public class AdminVideoController {
                       @ModelAttribute Video input,
                       @RequestParam("posterFile") MultipartFile posterFile,
                       @RequestParam("category_id") Integer categoryId) throws IOException {
-        Optional<Video> opt = videoRepository.findById(id);
+        Optional<Video> opt = videoService.findById(id);
         if (opt.isPresent()) {
             Video exist = opt.get();
             exist.setTitle(input.getTitle());
@@ -122,25 +122,25 @@ public class AdminVideoController {
             }
             
             // Set category
-            Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
+            Optional<Category> categoryOpt = categoryService.findById(categoryId);
             if (categoryOpt.isPresent()) {
                 exist.setCategory(categoryOpt.get());
             }
             
-            videoRepository.save(exist);
+            videoService.save(exist);
         }
         return "redirect:/admin/videos";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
-        Optional<Video> opt = videoRepository.findById(id);
+        Optional<Video> opt = videoService.findById(id);
         if (opt.isPresent()) {
             Video video = opt.get();
             if (video.getPoster() != null && !video.getPoster().isEmpty()) {
                 UploadHelper.delete(video.getPoster());
             }
-            videoRepository.deleteById(id);
+            videoService.deleteById(id);
         }
         return "redirect:/admin/videos";
     }

@@ -7,6 +7,7 @@ import vn.ngocthang.repository.UserRepository;
 import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.RandomUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,6 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public User create(User user) {
         return userRepository.save(user);
     }
@@ -63,6 +69,52 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(int id) {
         userRepository.deleteById(id);
+    }
+
+    // Methods for AdminUserController
+    @Override
+    public Optional<User> findById(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User saveAndFlush(User user) {
+        return userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public boolean existsByUserName(String username) {
+        return userRepository.existsByUserName(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
+    }
+
+    @Override
+    public List<User> findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(String fullName, String userName) {
+        return userRepository.findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(fullName, userName);
     }
 
     @Override

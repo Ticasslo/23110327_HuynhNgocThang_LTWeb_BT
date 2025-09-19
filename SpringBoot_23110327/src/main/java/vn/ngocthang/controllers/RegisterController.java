@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.ngocthang.entity.User;
 import vn.ngocthang.services.UserService;
+import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.CookieUtils;
 import vn.ngocthang.utils.SessionUtils;
 
@@ -39,6 +40,12 @@ public class RegisterController {
         }
         
         model.addAttribute("pageTitle", "Đăng ký - Video Manager");
+        
+        // Thêm thông tin tác giả
+        model.addAttribute("authorName", Constants.AUTHOR_NAME);
+        model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+        model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+        
         return "web/register";
     }
 
@@ -53,12 +60,20 @@ public class RegisterController {
         // Check email tồn tại
         if (userService.checkExistEmail(email)) {
             model.addAttribute("alert", "Email đã tồn tại!");
+            // Thêm thông tin tác giả khi có lỗi
+            model.addAttribute("authorName", Constants.AUTHOR_NAME);
+            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
             return "web/register";
         }
 
         // Check username tồn tại
         if (userService.checkExistUsername(username)) {
             model.addAttribute("alert", "Tài khoản đã tồn tại!");
+            // Thêm thông tin tác giả khi có lỗi
+            model.addAttribute("authorName", Constants.AUTHOR_NAME);
+            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
             return "web/register";
         }
 
@@ -68,6 +83,10 @@ public class RegisterController {
             return "redirect:/login";
         } else {
             model.addAttribute("alert", "System error!");
+            // Thêm thông tin tác giả khi có lỗi
+            model.addAttribute("authorName", Constants.AUTHOR_NAME);
+            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
+            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
             return "web/register";
         }
     }

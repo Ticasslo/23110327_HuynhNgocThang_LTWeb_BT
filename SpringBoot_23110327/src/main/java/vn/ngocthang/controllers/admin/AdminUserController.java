@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import vn.ngocthang.entity.User;
-import vn.ngocthang.repository.UserRepository;
+import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.RandomUtils;
 
 @Controller
@@ -22,15 +22,15 @@ import vn.ngocthang.utils.RandomUtils;
 public class AdminUserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<User> items;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            items = userRepository.findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(keyword.trim(), keyword.trim());
+            items = userService.findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(keyword.trim(), keyword.trim());
         } else {
-            items = userRepository.findAll();
+            items = userService.findAll();
         }
 
         model.addAttribute("items", items);
@@ -50,7 +50,7 @@ public class AdminUserController {
     public String add(@ModelAttribute User user, @RequestParam(name = "password", required = false) String password, Model model) {
         // Tạo ID mới
         int newId = RandomUtils.getRandomId();
-        while (userRepository.existsById(newId)) {
+        while (userService.existsById(newId)) {
             newId = RandomUtils.getRandomId();
         }
         user.setId(newId);
@@ -87,19 +87,19 @@ public class AdminUserController {
         user.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis()));
         
         // Validate unique
-        if (userRepository.existsByUserName(user.getUserName())) {
+        if (userService.existsByUserName(user.getUserName())) {
             model.addAttribute("alert", "Tên đăng nhập đã tồn tại");
             model.addAttribute("user", user);
             model.addAttribute("pageTitle", "Thêm người dùng");
             return "admin/users/form";
         }
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userService.existsByEmail(user.getEmail())) {
             model.addAttribute("alert", "Email đã tồn tại");
             model.addAttribute("user", user);
             model.addAttribute("pageTitle", "Thêm người dùng");
             return "admin/users/form";
         }
-        if (user.getPhone() != null && !user.getPhone().isEmpty() && userRepository.existsByPhone(user.getPhone())) {
+        if (user.getPhone() != null && !user.getPhone().isEmpty() && userService.existsByPhone(user.getPhone())) {
             model.addAttribute("alert", "Số điện thoại đã tồn tại");
             model.addAttribute("user", user);
             model.addAttribute("pageTitle", "Thêm người dùng");
@@ -107,7 +107,7 @@ public class AdminUserController {
         }
 
         try {
-            userRepository.saveAndFlush(user);
+            userService.saveAndFlush(user);
             return "redirect:/admin/users?success=1";
         } catch (Exception ex) {
             model.addAttribute("alert", "Không thể tạo người dùng: " + ex.getMessage());
@@ -119,7 +119,7 @@ public class AdminUserController {
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable("id") Integer id, Model model) {
-        Optional<User> opt = userRepository.findById(id);
+        Optional<User> opt = userService.findById(id);
         if (opt.isEmpty()) {
             return "redirect:/admin/users";
         }
@@ -130,7 +130,7 @@ public class AdminUserController {
 
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, @ModelAttribute User input, Model model) {
-        Optional<User> opt = userRepository.findById(id);
+        Optional<User> opt = userService.findById(id);
         if (opt.isPresent()) {
             User exist = opt.get();
             
@@ -152,7 +152,7 @@ public class AdminUserController {
             }
             
             // Kiểm tra trùng username (khác user hiện tại)
-            if (!exist.getUserName().equals(input.getUserName()) && userRepository.existsByUserName(input.getUserName())) {
+            if (!exist.getUserName().equals(input.getUserName()) && userService.existsByUserName(input.getUserName())) {
                 input.setId(exist.getId());
                 model.addAttribute("alert", "Tên đăng nhập đã tồn tại");
                 model.addAttribute("user", input);
@@ -161,7 +161,7 @@ public class AdminUserController {
             }
 
             // Kiểm tra trùng email (khác user hiện tại)
-            if (!exist.getEmail().equals(input.getEmail()) && userRepository.existsByEmail(input.getEmail())) {
+            if (!exist.getEmail().equals(input.getEmail()) && userService.existsByEmail(input.getEmail())) {
                 input.setId(exist.getId());
                 model.addAttribute("alert", "Email đã tồn tại");
                 model.addAttribute("user", input);
@@ -171,7 +171,7 @@ public class AdminUserController {
             
             // Kiểm tra trùng phone (khác user hiện tại)
             if (input.getPhone() != null && !input.getPhone().isEmpty() && 
-                !input.getPhone().equals(exist.getPhone()) && userRepository.existsByPhone(input.getPhone())) {
+                !input.getPhone().equals(exist.getPhone()) && userService.existsByPhone(input.getPhone())) {
                 input.setId(exist.getId());
                 model.addAttribute("alert", "Số điện thoại đã tồn tại");
                 model.addAttribute("user", input);
@@ -188,7 +188,7 @@ public class AdminUserController {
             // Không cập nhật password và avatar ở đây
             
             try {
-                userRepository.saveAndFlush(exist);
+                userService.saveAndFlush(exist);
             } catch (Exception ex) {
                 input.setId(exist.getId());
                 model.addAttribute("alert", "Không thể cập nhật người dùng: " + ex.getMessage());
@@ -202,7 +202,7 @@ public class AdminUserController {
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
-        userRepository.deleteById(id);
+        userService.deleteById(id);
         return "redirect:/admin/users";
     }
 }

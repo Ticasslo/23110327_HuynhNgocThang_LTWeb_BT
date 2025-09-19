@@ -7669,3 +7669,155 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact org.apache.to
 2025-09-19 23:01:53,099 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2025-09-19 23:01:53,168 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
 2025-09-19 23:01:53,182 [Worker-22: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 23:06:58,278 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-09-19 23:07:35,901 [Worker-13: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:07:35,901 [Worker-15: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:07:47,574 [Worker-11: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 23:07:59,726 [Worker-24: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-19 23:08:03,978 [Worker-24: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 23:08:08,271 [Worker-24: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-19 23:08:08,926 [Worker-24: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 23:09:36,316 [Start Help Server] INFO  org.eclipse.jetty.server.Server - jetty-12.0.21; built: 2025-05-09T00:32:00.688Z; git: 1c4719601e31b05b7d68910d2edd980259f1f53c; jvm 21.0.7+6-LTS
+2025-09-19 23:09:36,555 [Start Help Server] INFO  o.e.j.server.handler.ContextHandler - Started oeje8n.ContextHandler$CoreContextHandler@6a253420{/help,/help,b=null,a=AVAILABLE,h=oeje8n.ContextHandler$CoreContextHandler$CoreToNestedHandler@685ccb29{STARTED}}
+2025-09-19 23:09:36,558 [Start Help Server] INFO  o.e.j.s.DefaultSessionIdManager - Session workerName=node0
+2025-09-19 23:09:36,685 [Start Help Server] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@4f4f77bc{HTTP/1.1, (http/1.1)}{127.0.0.1:55279}
+2025-09-19 23:09:36,758 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started oejs.Server@5eab2a5e{STARTING}[12.0.21,sto=0] @301709ms
+2025-09-19 23:14:21,504 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:14:21,547 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\main\resources
+2025-09-19 23:14:21,585 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:14:21,615 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\test\resources
+2025-09-19 23:14:24,346 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:14:24,656 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:14:24,695 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-19 23:14:24,745 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-19 23:14:25,745 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:14:25,900 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:14:25,957 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:14:30,006 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:14:30,846 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 23:14:30,885 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 23:14:40,111 [Worker-36: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-19 23:14:45,558 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:14:45,620 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:14:45,866 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:14:49,220 [Worker-36: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-19 23:14:54,648 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:14:54,738 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 23:14:54,759 [Worker-36: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 23:24:30,254 [Worker-38: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:24:30,390 [Worker-38: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:24:30,473 [Worker-38: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:35:37,512 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:35:37,965 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:35:38,100 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:48:14,671 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:48:15,117 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 23:48:15,141 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-19 23:50:12,702 [Worker-43: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:50:12,769 [Worker-43: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-19 23:50:12,831 [Worker-43: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-19 23:54:31,403 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-19 23:54:31,930 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-19 23:54:31,976 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:02:48,768 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:02:48,857 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:02:48,876 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:02:51,412 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:02:51,561 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:02:51,576 [Worker-47: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:02:58,306 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:02:58,443 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:02:59,413 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:23:55,039 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:23:55,418 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:23:55,507 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:23:58,169 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:23:58,499 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:23:58,511 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:28:41,350 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:28:41,567 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:28:41,580 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:29:16,151 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:29:16,410 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:29:16,474 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:39:00,874 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:39:01,006 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:39:01,049 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:39:01,935 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:39:02,045 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:39:02,055 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:44:12,323 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:44:12,521 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:44:12,579 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:44:13,734 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:44:13,748 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:44:13,758 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:48:08,087 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:48:08,388 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:48:08,470 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:50:43,172 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:50:43,256 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:50:43,315 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:50:44,881 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:50:44,902 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:50:44,929 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:52:14,857 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-20 00:52:20,670 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: 23110327_HuynhNgocThang:23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml.
+2025-09-20 00:52:21,968 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: JPA_23110327:JPA_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\pom.xml.
+2025-09-20 00:52:22,596 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-20 00:52:24,491 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_Thymeleaf_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\pom.xml.
+2025-09-20 00:52:33,957 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/main/java
+2025-09-20 00:52:33,965 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/main/resources
+2025-09-20 00:52:33,967 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /23110327/src/test/java
+2025-09-20 00:52:33,970 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /23110327/src/test/resources
+2025-09-20 00:52:34,891 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/main/java
+2025-09-20 00:52:34,894 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/main/resources
+2025-09-20 00:52:34,896 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /JPA_23110327/src/test/java
+2025-09-20 00:52:34,898 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /JPA_23110327/src/test/resources
+2025-09-20 00:52:36,128 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-20 00:52:36,132 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-20 00:52:36,135 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-20 00:52:36,137 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-20 00:52:36,140 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-20 00:52:46,385 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/main/java
+2025-09-20 00:52:46,389 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-20 00:52:46,392 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/main/resources
+2025-09-20 00:52:46,394 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_Thymeleaf_23110327/src/test/java
+2025-09-20 00:52:46,397 [Worker-51: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_Thymeleaf_23110327/src/test/resources
+2025-09-20 00:52:56,822 [Worker-51: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for 23110327
+2025-09-20 00:52:57,012 [Worker-51: Updating Maven Project] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for JPA_23110327
+2025-09-20 00:52:57,688 [Worker-51: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 4 poms: local refresh takes 0,00 sec, refresh facades takes 18,00 sec, update config takes 22,00 sec 
+2025-09-20 00:53:01,354 [Worker-59: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-20 00:53:03,015 [Worker-59: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\main\resources
+2025-09-20 00:53:03,030 [Worker-59: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-20 00:53:03,489 [Worker-59: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\src\test\resources
+2025-09-20 00:53:03,491 [Worker-59: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of 23110327
+2025-09-20 00:53:03,494 [Worker-59: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for 23110327
+2025-09-20 00:53:13,375 [Worker-69: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-20 00:53:13,566 [Worker-69: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:53:13,616 [Worker-69: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-09-20 00:53:13,802 [Worker-69: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\JPA_23110327\src\test\resources
+2025-09-20 00:53:13,805 [Worker-69: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of JPA_23110327
+2025-09-20 00:53:13,805 [Worker-69: Building] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for JPA_23110327
+2025-09-20 00:53:17,742 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:53:19,115 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:53:21,492 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:53:25,374 [Worker-76: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:53:25,538 [Worker-76: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:53:25,552 [Worker-76: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_Thymeleaf_23110327\src\test\resources
+2025-09-20 00:59:16,917 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:59:16,961 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-09-20 00:59:16,973 [Worker-49: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 00:59:32,193 [Worker-54: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2025-09-20 00:59:34,361 [Worker-54: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: vn.ngocthang:SpringBoot_23110327:1.0 @ D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\pom.xml.
+2025-09-20 00:59:40,569 [Worker-54: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/main/java
+2025-09-20 00:59:40,572 [Worker-54: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-20 00:59:40,574 [Worker-54: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/main/resources
+2025-09-20 00:59:40,575 [Worker-54: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /SpringBoot_23110327/src/test/java
+2025-09-20 00:59:40,578 [Worker-54: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /SpringBoot_23110327/src/test/resources
+2025-09-20 00:59:46,996 [Worker-54: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed for 1 poms: local refresh takes 0,00 sec, refresh facades takes 8,00 sec, update config takes 6,00 sec 
+2025-09-20 00:59:48,543 [Worker-87: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-09-20 00:59:48,618 [Worker-87: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 25 resources from src\main\resources to target\classes
+2025-09-20 00:59:48,858 [Worker-87: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\SpringBoot_23110327\src\test\resources
+2025-09-20 01:00:28,981 [Stop Help Server] INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@5eab2a5e{STOPPING}[12.0.21,sto=0]
+2025-09-20 01:00:29,003 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@4f4f77bc{HTTP/1.1, (http/1.1)}{127.0.0.1:0}

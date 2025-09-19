@@ -4,29 +4,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import vn.ngocthang.repository.CategoryRepository;
-import vn.ngocthang.repository.UserRepository;
-import vn.ngocthang.repository.VideoRepository;
+import vn.ngocthang.services.CategoryService;
+import vn.ngocthang.services.UserService;
+import vn.ngocthang.services.VideoService;
 
 @Controller
 public class AdminController {
 
     @Autowired
-    private VideoRepository videoRepository;
+    private VideoService videoService;
     
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
     
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/admin")
     public String adminHome(Model model) {
         // Thống kê cho admin dashboard
-        long totalVideos = videoRepository.count();
-        long totalCategories = categoryRepository.count();
-        long totalUsers = userRepository.count();
-        Long totalViews = videoRepository.sumViews();
+        long totalVideos = videoService.count();
+        long totalCategories = categoryService.findAll().size();
+        long totalUsers = userService.findAll().size();
+        Long totalViews = videoService.sumViews();
         
         model.addAttribute("totalVideos", totalVideos);
         model.addAttribute("totalCategories", totalCategories);

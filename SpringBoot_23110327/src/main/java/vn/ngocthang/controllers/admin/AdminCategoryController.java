@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.ngocthang.entity.Category;
-import vn.ngocthang.repository.CategoryRepository;
+import vn.ngocthang.services.CategoryService;
 import vn.ngocthang.utils.UploadHelper;
 
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.Optional;
 public class AdminCategoryController {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @GetMapping
     public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<Category> items;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            items = categoryRepository.findByCategoryNameContainingIgnoreCase(keyword.trim());
+            items = categoryService.findByCategoryNameContainingIgnoreCase(keyword.trim());
         } else {
-            items = categoryRepository.findAll();
+            items = categoryService.findAll();
         }
 
         model.addAttribute("items", items);
@@ -47,13 +47,13 @@ public class AdminCategoryController {
             String saved = UploadHelper.save(file);
             category.setImages(saved);
         }
-        categoryRepository.save(category);
+        categoryService.save(category);
         return "redirect:/admin/categories";
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable("id") Integer id, Model model) {
-        Optional<Category> opt = categoryRepository.findById(id);
+        Optional<Category> opt = categoryService.findById(id);
         if (opt.isEmpty()) {
             return "redirect:/admin/categories";
         }
@@ -64,7 +64,7 @@ public class AdminCategoryController {
 
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, @ModelAttribute Category input, @RequestParam(value = "file", required = false) MultipartFile file) {
-        Optional<Category> opt = categoryRepository.findById(id);
+        Optional<Category> opt = categoryService.findById(id);
         if (opt.isPresent()) {
             Category exist = opt.get();
             exist.setCategoryName(input.getCategoryName());
@@ -72,14 +72,14 @@ public class AdminCategoryController {
                 String saved = UploadHelper.save(file);
                 exist.setImages(saved);
             }
-            categoryRepository.save(exist);
+            categoryService.save(exist);
         }
         return "redirect:/admin/categories";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
-        categoryRepository.deleteById(id);
+        categoryService.deleteById(id);
         return "redirect:/admin/categories";
     }
 }
