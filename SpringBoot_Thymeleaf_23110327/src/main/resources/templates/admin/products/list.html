@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout.html}">
+<head>
+    <title>Quản lý sản phẩm - Admin Panel</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0"><i class="bi bi-box"></i> Sản phẩm</h3>
+                <a th:href="@{/admin/products/add}" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm sản phẩm</a>
+            </div>
+
+            <div th:if="${alert}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> <span th:text="${alert}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${param.success == '1'}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle"></i> Thao tác thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <form class="row g-2 mb-3" method="get" th:action="@{/admin/products/search}">
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm theo tên..." />
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                    <a th:href="@{/admin/products/searchpaginated}" class="btn btn-outline-success ms-2">
+                        <i class="bi bi-search"></i> Tìm kiếm phân trang
+                    </a>
+                </div>
+            </form>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 80px;">ID</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th style="width: 120px;">Giá</th>
+                                <th style="width: 100px;">Tồn kho</th>
+                                <th style="width: 100px;">Lượt mua</th>
+                                <th style="width: 140px;">Hình ảnh</th>
+                                <th style="width: 160px;" class="text-end">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${products}">
+                                <td th:text="${p.id}">1</td>
+                                <td>
+                                    <div>
+                                        <strong th:text="${p.productName}">Tên sản phẩm</strong>
+                                        <br>
+                                        <small class="text-muted" th:text="${p.description}">Mô tả</small>
+                                    </div>
+                                </td>
+                                <td th:text="${p.category.categoryName}">Danh mục</td>
+                                <td>
+                                    <span class="text-primary fw-bold" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info" th:text="${p.purchases}">0</span>
+                                </td>
+                                <td>
+                                    <span th:class="${p.stock > 10 ? 'text-success fw-bold' : (p.stock > 0 ? 'text-warning fw-bold' : 'text-danger fw-bold')}" 
+                                          th:text="${p.stock}">0</span>
+                                </td>
+                                <td>
+                                    <img th:if="${p.image != null and !p.image.isEmpty()}" 
+                                         th:src="@{/image(fname=${p.image})}" 
+                                         alt="Product Image" 
+                                         style="height:40px; width:60px; object-fit:cover; border-radius:4px;"/>
+                                    <span th:if="${p.image == null or p.image.isEmpty()}" class="text-muted">(chưa có)</span>
+                                </td>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/products/edit/{productId}(productId=${p.id})}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form th:action="@{/admin/products/delete/{id}(id=${p.id})}" method="post" class="d-inline" 
+                                          onsubmit="return confirm('Xóa sản phẩm này?')">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(products)}">
+                                <td colspan="8" class="text-center text-muted py-4">Không có dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

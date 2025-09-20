@@ -141,6 +141,7 @@ public class UserServiceImpl implements UserService {
             newUser.setFullName(fullname);
             newUser.setPhone(phone);
             newUser.setRoleid(2); // Default role là User (2)
+            newUser.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis())); // Set createdDate
             
             userRepository.save(newUser);
             return true;

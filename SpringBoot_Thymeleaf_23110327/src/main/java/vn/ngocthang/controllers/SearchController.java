@@ -18,12 +18,11 @@ public class SearchController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping({"/search", "/user/search"})
+    @GetMapping("/search")
     public String search(@RequestParam(required = false) String keyword, Model model) {
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // Tìm kiếm sản phẩm theo tên hoặc mô tả
-            List<Product> products = productService.findByProductNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-                keyword.trim(), keyword.trim());
+            // Tìm kiếm sản phẩm theo tên
+            List<Product> products = productService.findByProductNameContainingIgnoreCase(keyword.trim());
             model.addAttribute("products", products);
         }
         model.addAttribute("pageTitle", "Tìm kiếm - Product Manager");
@@ -34,5 +33,22 @@ public class SearchController {
         model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
         
         return "web/search";
+    }
+    
+    @GetMapping("/user/search")
+    public String userSearch(@RequestParam(required = false) String keyword, Model model, 
+                            jakarta.servlet.http.HttpServletRequest request) {
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // Tìm kiếm sản phẩm theo tên
+            List<Product> products = productService.findByProductNameContainingIgnoreCase(keyword.trim());
+            model.addAttribute("products", products);
+        }
+        model.addAttribute("pageTitle", "Tìm kiếm - Product Manager");
+        
+        // Thêm thông tin user đăng nhập
+        Object user = request.getSession().getAttribute(Constants.SESSION_ACCOUNT);
+        model.addAttribute("user", user);
+        
+        return "user/search";
     }
 }

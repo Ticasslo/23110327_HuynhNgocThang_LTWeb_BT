@@ -1,10 +1,15 @@
 package vn.ngocthang.services.impl;
 
+// import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.ngocthang.entity.User;
 import vn.ngocthang.repository.UserRepository;
 import vn.ngocthang.services.UserService;
+
+import java.sql.Timestamp;
 import vn.ngocthang.utils.RandomUtils;
 
 import java.util.List;
@@ -53,7 +58,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
+        // Gọi hàm findAll() trong repository
         return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
@@ -79,7 +90,52 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return userRepository.save(user);
+        // Nếu là entity mới (id == 0)
+        if (user.getId() == 0) {
+            // Set createdDate cho user mới
+            if (user.getCreatedDate() == null) {
+                user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            }
+            return userRepository.save(user);
+        } else {
+            // Nếu là update entity
+            Optional<User> opt = findById(user.getId());
+            if (opt.isPresent()) {
+                // Nếu username trống, giữ lại username cũ
+                if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
+                    user.setUserName(opt.get().getUserName());
+                }
+                // Nếu fullName trống, giữ lại fullName cũ
+                if (user.getFullName() == null || user.getFullName().trim().isEmpty()) {
+                    user.setFullName(opt.get().getFullName());
+                }
+                // Nếu email trống, giữ lại email cũ
+                if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+                    user.setEmail(opt.get().getEmail());
+                }
+                // Nếu password trống, giữ lại password cũ
+                if (user.getPassWord() == null || user.getPassWord().trim().isEmpty()) {
+                    user.setPassWord(opt.get().getPassWord());
+                }
+                // Nếu phone trống, giữ lại phone cũ
+                if (user.getPhone() == null || user.getPhone().trim().isEmpty()) {
+                    user.setPhone(opt.get().getPhone());
+                }
+                // Nếu avatar trống, giữ lại avatar cũ
+                if (user.getAvatar() == null || user.getAvatar().trim().isEmpty()) {
+                    user.setAvatar(opt.get().getAvatar());
+                }
+                // Nếu roleid không hợp lệ, giữ lại roleid cũ
+                if (user.getRoleid() != 1 && user.getRoleid() != 2) {
+                    user.setRoleid(opt.get().getRoleid());
+                }
+                // Nếu createdDate null, giữ lại createdDate cũ
+                if (user.getCreatedDate() == null) {
+                    user.setCreatedDate(opt.get().getCreatedDate());
+                }
+            }
+            return userRepository.save(user);
+        }
     }
 
     @Override
@@ -118,6 +174,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(String fullName, String userName, Pageable pageable) {
+        return userRepository.findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(fullName, userName, pageable);
+    }
+
+    @Override
     public boolean checkExistEmail(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -141,6 +202,7 @@ public class UserServiceImpl implements UserService {
             newUser.setFullName(fullname);
             newUser.setPhone(phone);
             newUser.setRoleid(2); // Default role là User (2)
+            newUser.setCreatedDate(new java.sql.Timestamp(System.currentTimeMillis())); // Set createdDate
             
             userRepository.save(newUser);
             return true;

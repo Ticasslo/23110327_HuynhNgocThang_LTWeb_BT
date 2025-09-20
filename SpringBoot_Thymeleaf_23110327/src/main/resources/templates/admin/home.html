@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout.html}">
+<head>
+    <title>Dashboard - Admin Panel</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+                <div class="text-muted">
+                    <i class="bi bi-calendar"></i> <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}">Hôm nay</span>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 th:text="${totalProducts != null ? totalProducts : 0}">0</h4>
+                                    <p class="mb-0">Tổng sản phẩm</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="bi bi-box display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 th:text="${totalCategories != null ? totalCategories : 0}">0</h4>
+                                    <p class="mb-0">Danh mục</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="bi bi-folder2-open display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 th:text="${totalUsers != null ? totalUsers : 0}">0</h4>
+                                    <p class="mb-0">Người dùng</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="bi bi-people display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 th:text="${totalPurchases != null ? totalPurchases : 0}">0</h4>
+                                    <p class="mb-0">Tổng lượt mua</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="bi bi-cart display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Recent Products -->
+            <div class="row" th:if="${recentProducts != null and !recentProducts.isEmpty()}">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-clock"></i> Sản phẩm mới nhất</h5>
+                            <a th:href="@{/admin/products}" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Danh mục</th>
+                                            <th>Giá</th>
+                                            <th>Lượt mua</th>
+                                            <th>Tồn kho</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="product : ${recentProducts}">
+                                            <td th:text="${product.id}">1</td>
+                                            <td th:text="${product.productName}">Tên sản phẩm</td>
+                                            <td th:text="${product.category.categoryName}">Danh mục</td>
+                                            <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</td>
+                                            <td th:text="${product.purchases}">0</td>
+                                            <td th:text="${product.stock}">0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome Message -->
+            <div class="row" th:if="${recentProducts == null or recentProducts.isEmpty()}">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="bi bi-shield-check display-1 text-primary mb-3"></i>
+                            <h3>Chào mừng đến với Admin Panel</h3>
+                            <p class="text-muted">Quản lý hệ thống Product Manager một cách hiệu quả</p>
+                            <a th:href="@{/admin/products/add}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Bắt đầu thêm sản phẩm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

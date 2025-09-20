@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.ngocthang.entity.Category;
+import vn.ngocthang.entity.Video;
 import vn.ngocthang.services.CategoryService;
+import vn.ngocthang.services.VideoService;
 import vn.ngocthang.utils.UploadHelper;
 
 import java.util.List;
@@ -18,6 +20,9 @@ public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private VideoService videoService;
 
     @GetMapping
     public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
@@ -78,9 +83,21 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id, Model model) {
+        // Kiểm tra xem category có video hay không
+        List<Video> videosInCategory = videoService.findByCategoryId(id);
+        if (!videosInCategory.isEmpty()) {
+            // Không cho phép xóa nếu còn video
+            model.addAttribute("alert", "Không thể xóa danh mục này vì còn " + videosInCategory.size() + " video thuộc danh mục này!");
+            List<Category> items = categoryService.findAll();
+            model.addAttribute("items", items);
+            model.addAttribute("pageTitle", "Quản lý danh mục");
+            return "admin/categories/list";
+        }
+        
+        // Nếu không có video, cho phép xóa
         categoryService.deleteById(id);
-        return "redirect:/admin/categories";
+        return "redirect:/admin/categories?success=1";
     }
 }
 

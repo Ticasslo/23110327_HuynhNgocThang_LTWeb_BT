@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left Navigation</title>
+</head>
+<body>
+    <div th:fragment="left" class="list-group list-group-flush">
+        <h6 class="px-3 py-2 text-muted border-bottom">Menu chính</h6>
+        <a th:href="@{/user}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-person me-2"></i> Trang chủ người dùng
+        </a>
+        <a th:href="@{/search}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-search me-2"></i> Tìm kiếm
+        </a>
+        <a th:href="@{/login}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Đăng nhập
+        </a>
+        <a th:href="@{/register}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-person-plus me-2"></i> Đăng ký
+        </a>
+    </div>
+</body>
+</html>

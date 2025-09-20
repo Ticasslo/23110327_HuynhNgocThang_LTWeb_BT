@@ -1,5 +1,7 @@
 package vn.ngocthang.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,8 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // Tìm kiếm sản phẩm theo tên
     List<Product> findByProductNameContainingIgnoreCase(String productName);
     
-    // Tìm kiếm sản phẩm theo tên hoặc mô tả
-    List<Product> findByProductNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String productName, String description);
+    // Tìm kiếm sản phẩm theo tên và Phân trang
+    Page<Product> findByProductNameContainingIgnoreCase(String productName, Pageable pageable);
+    
     
     // Tìm sản phẩm theo category
     List<Product> findByCategoryId(Integer categoryId);
@@ -35,6 +38,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByStockGreaterThan(Integer stock);
     
     // Đếm tổng số sản phẩm
+    @Override
     long count();
     
     // Đếm tổng số lượng đã bán

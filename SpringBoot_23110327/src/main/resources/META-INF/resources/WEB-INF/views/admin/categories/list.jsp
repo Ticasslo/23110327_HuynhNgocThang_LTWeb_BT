@@ -7,6 +7,20 @@
         <a href="/admin/categories/add" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm danh mục</a>
     </div>
 
+    <c:if test="${not empty alert}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> ${alert}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </c:if>
+
+    <c:if test="${param.success == '1'}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> Xóa danh mục thành công!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </c:if>
+
     <form class="row g-2 mb-3" method="get">
         <div class="col-sm-4 col-md-3">
             <input type="text" name="keyword" value="${keyword}" class="form-control" placeholder="Tìm theo tên..." />

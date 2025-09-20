@@ -1,152 +1,175 @@
 package vn.ngocthang.controllers.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import vn.ngocthang.entity.Product;
-import vn.ngocthang.entity.Category;
-import vn.ngocthang.repository.ProductRepository;
-import vn.ngocthang.repository.CategoryRepository;
-import vn.ngocthang.utils.UploadHelper;
-
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import vn.ngocthang.entity.Category;
+import vn.ngocthang.entity.Product;
+import vn.ngocthang.services.CategoryService;
+import vn.ngocthang.services.ProductService;
+import vn.ngocthang.utils.Constants;
+import vn.ngocthang.utils.UploadHelper;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin/products")
 public class AdminProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
     
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
-    @GetMapping
-    public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<Product> items;
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            items = productRepository.findByProductNameContainingIgnoreCase(keyword.trim());
-        } else {
-            items = productRepository.findAll();
-        }
+    // Tự động thêm user vào tất cả các view
+    @ModelAttribute("user")
+    public Object addUserToModel(HttpServletRequest request) {
+        return request.getSession().getAttribute(Constants.SESSION_ACCOUNT);
+    }
 
-        model.addAttribute("items", items);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("pageTitle", "Quản lý sản phẩm");
+    @GetMapping("")
+    public String list(ModelMap model) {
+        // Gọi hàm findAll() trong service
+        List<Product> list = productService.findAll();
+        // Chuyển dữ liệu từ list lên biến products
+        model.addAttribute("products", list);
         return "admin/products/list";
     }
 
     @GetMapping("/add")
-    public String addForm(Model model) {
-        List<Category> categories = categoryRepository.findAll();
-        model.addAttribute("product", new Product());
+    public String add(ModelMap model) {
+        List<Category> categories = categoryService.findAll();
+        Product product = new Product();
+        // Chuyển dữ liệu từ model vào biến product để đưa lên view
+        model.addAttribute("product", product);
         model.addAttribute("categories", categories);
-        model.addAttribute("pageTitle", "Thêm sản phẩm");
-        return "admin/products/form";
+        return "admin/products/addOrEdit";
     }
 
-    @PostMapping("/add")
-    public String add(@ModelAttribute Product product, 
-                     @RequestParam("imageFile") MultipartFile imageFile,
-                     @RequestParam("category_id") Integer categoryId) throws IOException {
+    @PostMapping("/saveOrUpdate")
+    public ModelAndView saveOrUpdate(ModelMap model, @ModelAttribute("product") Product product, 
+                                   @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                   @RequestParam("categoryId") Integer categoryId) {
         
         // Xử lý upload image
-        if (!imageFile.isEmpty()) {
+        if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = UploadHelper.save(imageFile);
             product.setImage(fileName);
         }
         
         // Set category
-        Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
-        if (categoryOpt.isPresent()) {
-            product.setCategory(categoryOpt.get());
-        }
+        Category category = categoryService.findById(categoryId).orElse(null);
+        product.setCategory(category);
         
-        // Set default values
-        if (product.getPurchases() == null) {
-            product.setPurchases(0L);
-        }
-        if (product.getStock() == null) {
-            product.setStock(0);
-        }
-        if (product.getPrice() == null) {
-            product.setPrice(BigDecimal.ZERO);
-        }
+        // Gọi hàm save trong service
+        productService.save(product);
         
-        productRepository.save(product);
-        return "redirect:/admin/products";
+        // Đưa thông báo về cho biến message
+        String message = "Product is saved!!!!!!!!";
+        model.addAttribute("message", message);
+        
+        // Redirect về URL controller
+        return new ModelAndView("redirect:/admin/products/searchpaginated");
     }
 
-    @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable("id") Integer id, Model model) {
-        Optional<Product> opt = productRepository.findById(id);
-        if (opt.isEmpty()) {
-            return "redirect:/admin/products";
-        }
+    @GetMapping("/edit/{productId}")
+    public ModelAndView edit(ModelMap model, @PathVariable("productId") Integer productId) {
+        // Kiểm tra sự tồn tại của product
+        Optional<Product> optProduct = productService.findById(productId);
+        Product product = new Product();
+        List<Category> categories = categoryService.findAll();
         
-        List<Category> categories = categoryRepository.findAll();
-        model.addAttribute("product", opt.get());
-        model.addAttribute("categories", categories);
-        model.addAttribute("pageTitle", "Chỉnh sửa sản phẩm");
-        return "admin/products/form";
-    }
-
-    @PostMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, 
-                      @ModelAttribute Product input,
-                      @RequestParam("imageFile") MultipartFile imageFile,
-                      @RequestParam("category_id") Integer categoryId) throws IOException {
-        Optional<Product> opt = productRepository.findById(id);
-        if (opt.isPresent()) {
-            Product exist = opt.get();
-            exist.setProductName(input.getProductName());
-            exist.setDescription(input.getDescription());
-            exist.setPrice(input.getPrice());
-            exist.setPurchases(input.getPurchases());
-            exist.setStock(input.getStock());
-
-            // Xử lý upload image mới
-            if (!imageFile.isEmpty()) {
-                // Xóa image cũ nếu có
-                if (exist.getImage() != null && !exist.getImage().isEmpty()) {
-                    UploadHelper.delete(exist.getImage());
-                }
-                String fileName = UploadHelper.save(imageFile);
-                exist.setImage(fileName);
-            } else if (input.getImage() == null || input.getImage().isEmpty()) {
-                // Nếu không upload file mới và trường image trong form rỗng, xóa image cũ
-                if (exist.getImage() != null && !exist.getImage().isEmpty()) {
-                    UploadHelper.delete(exist.getImage());
-                }
-                exist.setImage(null);
-            }
-            
-            // Set category
-            Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
-            if (categoryOpt.isPresent()) {
-                exist.setCategory(categoryOpt.get());
-            }
-            
-            productRepository.save(exist);
+        if (optProduct.isPresent()) {
+            // Copy từ entity sang product
+            product = optProduct.get();
+            // Đẩy dữ liệu ra view
+            model.addAttribute("product", product);
+            model.addAttribute("categories", categories);
+            return new ModelAndView("admin/products/addOrEdit", model);
+        } else {
+            model.addAttribute("message", "Product is not existed!!!!");
+            return new ModelAndView("redirect:/admin/products");
         }
-        return "redirect:/admin/products";
     }
+
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
-        Optional<Product> opt = productRepository.findById(id);
+    public String delete(@PathVariable("id") Integer id, ModelMap model) {
+        Optional<Product> opt = productService.findById(id);
         if (opt.isPresent()) {
             Product product = opt.get();
             if (product.getImage() != null && !product.getImage().isEmpty()) {
                 UploadHelper.delete(product.getImage());
             }
-            productRepository.deleteById(id);
+            productService.deleteById(id);
         }
-        return "redirect:/admin/products";
+        return "redirect:/admin/products?success=1";
     }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "keyword", required = false) String keyword, ModelMap model) {
+        List<Product> items;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            items = productService.findByProductNameContainingIgnoreCase(keyword.trim());
+        } else {
+            items = productService.findAll();
+        }
+
+        model.addAttribute("products", items);
+        model.addAttribute("keyword", keyword);
+        return "admin/products/search";
+    }
+
+    @GetMapping("/searchpaginated")
+    public String searchPaginated(@RequestParam(value = "keyword", required = false) String keyword,
+                                 @RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "size", defaultValue = "5") int size,
+                                 ModelMap model) {
+        
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("productName"));
+        Page<Product> resultPage;
+        
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            resultPage = productService.findByProductNameContainingIgnoreCase(keyword.trim(), pageable);
+            model.addAttribute("keyword", keyword);
+        } else {
+            resultPage = productService.findAll(pageable);
+        }
+        
+        int totalPages = resultPage.getTotalPages();
+        if (totalPages > 0) {
+            int start = Math.max(1, page - 2);
+            int end = Math.min(page + 2, totalPages);
+            
+            if (end == totalPages) start = Math.max(1, end - 4);
+            else if (start == 1) end = Math.min(start + 4, totalPages);
+            
+            List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        
+        model.addAttribute("productPage", resultPage);
+        return "admin/products/searchpaginated";
+    }
+
 }

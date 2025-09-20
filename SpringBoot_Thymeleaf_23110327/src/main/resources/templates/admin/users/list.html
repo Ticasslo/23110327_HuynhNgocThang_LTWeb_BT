@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout.html}">
+<head>
+    <title>Quản lý người dùng - Admin Panel</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0"><i class="bi bi-people"></i> Người dùng</h3>
+                <a th:href="@{/admin/users/add}" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm người dùng</a>
+            </div>
+
+            <div th:if="${alert}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> <span th:text="${alert}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${param.success == '1'}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle"></i> Thao tác thành công!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <form class="row g-2 mb-3" method="get" th:action="@{/admin/users/search}">
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm theo tên..." />
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                    <a th:href="@{/admin/users/searchpaginated}" class="btn btn-outline-success ms-2">
+                        <i class="bi bi-search"></i> Tìm kiếm phân trang
+                    </a>
+                </div>
+            </form>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 80px;">ID</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th style="width: 100px;">Vai trò</th>
+                                <th style="width: 120px;">Ngày tạo</th>
+                                <th style="width: 140px;">Ảnh đại diện</th>
+                                <th style="width: 160px;" class="text-end">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u : ${users}">
+                                <td th:text="${u.id}">1</td>
+                                <td>
+                                    <strong th:text="${u.userName}">username</strong>
+                                </td>
+                                <td th:text="${u.fullName}">Họ tên</td>
+                                <td th:text="${u.email}">email@example.com</td>
+                                <td th:text="${u.phone}">0123456789</td>
+                                <td>
+                                    <span th:if="${u.roleid == 1}" class="badge bg-danger">Admin</span>
+                                    <span th:if="${u.roleid == 2}" class="badge bg-primary">User</span>
+                                </td>
+                                <td>
+                                    <small th:text="${u.createdDate != null ? #dates.format(u.createdDate, 'dd/MM/yyyy') : 'N/A'}">01/01/2024</small>
+                                </td>
+                                <td>
+                                    <img th:if="${u.avatar != null and !u.avatar.isEmpty()}" 
+                                         th:src="@{/image(fname=${u.avatar})}" 
+                                         alt="avatar" 
+                                         style="height:32px; border-radius:50%;"/>
+                                    <span th:if="${u.avatar == null or u.avatar.isEmpty()}" class="text-muted">(chưa có)</span>
+                                </td>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/users/edit/{userId}(userId=${u.id})}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form th:action="@{/admin/users/delete/{id}(id=${u.id})}" method="post" class="d-inline" 
+                                          onsubmit="return confirm('Xóa người dùng này?')">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(users)}">
+                                <td colspan="9" class="text-center text-muted py-4">Không có dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
