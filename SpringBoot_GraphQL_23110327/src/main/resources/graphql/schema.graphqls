@@ -1,0 +1,110 @@
+# GraphQL Schema cho hệ thống quản lý sản phẩm
+# Định nghĩa các kiểu dữ liệu và operations
+
+# ===========================================
+# TYPES (Kiểu dữ liệu)
+# ===========================================
+
+type User {
+  id: Int!
+  email: String!
+  userName: String!
+  fullName: String!
+  avatar: String
+  roleid: Int!
+  phone: String
+  createdDate: String
+  products: [Product!]!
+}
+
+type Category {
+  id: Int!
+  categoryName: String!
+  images: String
+  products: [Product!]!
+}
+
+type Product {
+  id: Int!
+  productName: String!
+  description: String
+  image: String
+  price: Float!
+  purchases: Long!
+  stock: Int
+  category: Category
+  user: User
+}
+
+# ===========================================
+# INPUT TYPES (Kiểu dữ liệu đầu vào)
+# ===========================================
+
+input UserInput {
+  email: String!
+  userName: String!
+  fullName: String!
+  password: String!
+  avatar: String
+  roleid: Int!
+  phone: String
+}
+
+input CategoryInput {
+  categoryName: String!
+  images: String
+}
+
+input ProductInput {
+  productName: String!
+  description: String
+  image: String
+  price: Float!
+  purchases: Long
+  stock: Int
+  categoryId: Int!
+  userId: Int!
+}
+
+# ===========================================
+# QUERIES (Đọc dữ liệu)
+# ===========================================
+
+type Query {
+  # User Queries
+  users: [User!]!
+  user(id: Int!): User
+  userByUsername(username: String!): User
+
+  # Category Queries
+  categories: [Category!]!
+  category(id: Int!): Category
+
+  # Product Queries
+  products: [Product!]!
+  product(id: Int!): Product
+  productsByCategory(categoryId: Int!): [Product!]!
+  productsByUser(userId: Int!): [Product!]!
+  searchProducts(keyword: String!): [Product!]!
+}
+
+# ===========================================
+# MUTATIONS (Thay đổi dữ liệu)
+# ===========================================
+
+type Mutation {
+  # User Mutations
+  createUser(input: UserInput!): User!
+  updateUser(id: Int!, input: UserInput!): User!
+  deleteUser(id: Int!): Boolean!
+
+  # Category Mutations
+  createCategory(input: CategoryInput!): Category!
+  updateCategory(id: Int!, input: CategoryInput!): Category!
+  deleteCategory(id: Int!): Boolean!
+
+  # Product Mutations
+  createProduct(input: ProductInput!): Product!
+  updateProduct(id: Int!, input: ProductInput!): Product!
+  deleteProduct(id: Int!): Boolean!
+}

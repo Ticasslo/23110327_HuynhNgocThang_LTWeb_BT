@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout.html}">
+<head>
+    <title>Trang cá nhân - User Panel</title>
+    <style>
+        .product-card {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-thumbnail {
+            height: 200px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <!-- Welcome Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h2 class="mb-2">
+                                        <i class="bi bi-person-circle"></i> 
+                                        Chào mừng, <span th:text="${user.fullName}">User</span>!
+                                    </h2>
+                                    <p class="mb-0">Chào mừng bạn đến với Product Manager System</p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <i class="bi bi-box display-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Products Section -->
+            <div class="row mb-4" th:if="${recentProducts != null and !recentProducts.isEmpty()}">
+                <div class="col-12">
+                    <h4 class="mb-3"><i class="bi bi-clock"></i> Sản phẩm mới nhất</h4>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3 mb-4" th:each="product : ${recentProducts}">
+                            <div class="card product-card h-100">
+                                <div class="product-thumbnail">
+                                    <img th:if="${product.image != null and !product.image.isEmpty()}" 
+                                         th:src="@{/image(fname=${product.image})}" 
+                                         th:alt="${product.productName}"
+                                         style="width:100%; height:100%; object-fit:cover; border-top-left-radius:.375rem; border-top-right-radius:.375rem;" />
+                                    <i th:if="${product.image == null or product.image.isEmpty()}" class="bi bi-box"></i>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title" th:text="${product.productName}">Tên sản phẩm</h6>
+                                    <p class="card-text text-muted small" th:text="${product.description}">Mô tả sản phẩm</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-primary fw-bold" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</span>
+                                        <small class="text-muted">
+                                            <i class="bi bi-cart"></i> <span th:text="${product.purchases}">0</span> lượt mua
+                                        </small>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            <i class="bi bi-tag"></i> <span th:text="${product.category.categoryName}">Danh mục</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- User Info -->
+            <div class="row" th:if="${user != null}">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-person"></i> Thông tin tài khoản</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Tên đăng nhập:</strong> <span th:text="${user.userName}">username</span></p>
+                                    <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Họ tên:</strong> <span th:text="${user.fullName}">Họ tên</span></p>
+                                    <p><strong>Số điện thoại:</strong> <span th:text="${user.phone != null ? user.phone : 'Chưa cập nhật'}">Chưa cập nhật</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

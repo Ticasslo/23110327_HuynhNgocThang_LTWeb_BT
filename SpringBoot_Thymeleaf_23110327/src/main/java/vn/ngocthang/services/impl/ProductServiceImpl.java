@@ -67,6 +67,10 @@ public class ProductServiceImpl implements ProductService {
                 if (product.getCategory() == null) {
                     product.setCategory(opt.get().getCategory());
                 }
+                // Nếu user null, giữ lại user cũ
+                if (product.getUser() == null) {
+                    product.setUser(opt.get().getUser());
+                }
                 // Nếu purchases null, giữ lại purchases cũ
                 if (product.getPurchases() == null) {
                     product.setPurchases(opt.get().getPurchases());

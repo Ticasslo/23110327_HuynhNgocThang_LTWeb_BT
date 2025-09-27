@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST vs GraphQL Comparison</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .comparison-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .rest-card {
+            border-left: 5px solid #dc3545;
+        }
+        
+        .graphql-card {
+            border-left: 5px solid #28a745;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .performance-meter {
+            height: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .performance-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .rest-performance {
+            background: linear-gradient(90deg, #dc3545, #ff6b6b);
+        }
+        
+        .graphql-performance {
+            background: linear-gradient(90deg, #28a745, #51cf66);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div th:replace="common/admin/header :: header"></div>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="common/admin/left :: left"></div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="bi bi-bar-chart"></i> REST vs GraphQL Comparison
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a href="/admin/graphql-demo" class="btn btn-outline-primary">
+                            <i class="bi bi-lightning"></i> GraphQL Demo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Performance Comparison -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card comparison-card rest-card">
+                            <div class="card-header bg-danger text-white">
+                                <h5><i class="bi bi-arrow-left-right"></i> REST API Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Network Requests:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar rest-performance" style="width: 100%"></div>
+                                    </div>
+                                    <small class="text-muted">3 requests</small>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Data Transfer:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar rest-performance" style="width: 85%"></div>
+                                    </div>
+                                    <small class="text-muted">~2.5KB</small>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Loading Time:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar rest-performance" style="width: 90%"></div>
+                                    </div>
+                                    <small class="text-muted">~450ms</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card comparison-card graphql-card">
+                            <div class="card-header bg-success text-white">
+                                <h5><i class="bi bi-lightning"></i> GraphQL Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Network Requests:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar graphql-performance" style="width: 33%"></div>
+                                    </div>
+                                    <small class="text-muted">1 request</small>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Data Transfer:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar graphql-performance" style="width: 60%"></div>
+                                    </div>
+                                    <small class="text-muted">~1.8KB</small>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Loading Time:</strong>
+                                    <div class="performance-meter mt-2">
+                                        <div class="performance-bar graphql-performance" style="width: 40%"></div>
+                                    </div>
+                                    <small class="text-muted">~200ms</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Comparison -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card comparison-card rest-card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-arrow-left-right"></i> REST API (Cách cũ)</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>Để lấy thông tin sản phẩm với danh mục và người tạo:</h6>
+                                
+                                <div class="code-block mb-3">
+                                    <strong>Request 1:</strong><br>
+                                    GET /api/products<br>
+                                    <strong>Response:</strong><br>
+                                    [
+                      {
+                        "id": 1,
+                        "productName": "iPhone 15",
+                        "price": 25000000,
+                        "categoryId": 1,
+                        "userId": 100001
+                      }
+                    ]
+                                </div>
+                                
+                                <div class="code-block mb-3">
+                                    <strong>Request 2:</strong><br>
+                                    GET /api/categories/1<br>
+                                    <strong>Response:</strong><br>
+                    {
+                      "id": 1,
+                      "categoryName": "Điện tử"
+                    }
+                                </div>
+                                
+                                <div class="code-block mb-3">
+                                    <strong>Request 3:</strong><br>
+                                    GET /api/users/100001<br>
+                                    <strong>Response:</strong><br>
+                    {
+                      "id": 100001,
+                      "fullName": "Huynh Ngoc Thang"
+                    }
+                                </div>
+                                
+                                <div class="alert alert-danger">
+                                    <strong>Vấn đề:</strong>
+                                    <ul class="mb-0">
+                                        <li>3 requests riêng biệt</li>
+                                        <li>Over-fetching (lấy dữ liệu thừa)</li>
+                                        <li>Under-fetching (thiếu dữ liệu)</li>
+                                        <li>Chậm và tốn băng thông</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card comparison-card graphql-card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-lightning"></i> GraphQL (Cách mới)</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>Để lấy thông tin sản phẩm với danh mục và người tạo:</h6>
+                                
+                                <div class="code-block mb-3">
+                                    <strong>Request (1 request duy nhất):</strong><br>
+                                    POST /graphql<br>
+                    {
+                      "query": "query {
+                        products {
+                          id
+                          productName
+                          price
+                          category {
+                            categoryName
+                          }
+                          user {
+                            fullName
+                          }
+                        }
+                      }"
+                    }
+                                </div>
+                                
+                                <div class="code-block mb-3">
+                                    <strong>Response:</strong><br>
+                    {
+                      "data": {
+                        "products": [
+                          {
+                            "id": "1",
+                            "productName": "iPhone 15",
+                            "price": 25000000,
+                            "category": {
+                              "categoryName": "Điện tử"
+                            },
+                            "user": {
+                              "fullName": "Huynh Ngoc Thang"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                                </div>
+                                
+                                <div class="alert alert-success">
+                                    <strong>Ưu điểm:</strong>
+                                    <ul class="mb-0">
+                                        <li>1 request duy nhất</li>
+                                        <li>Chỉ lấy dữ liệu cần thiết</li>
+                                        <li>Không over-fetching</li>
+                                        <li>Nhanh và tiết kiệm băng thông</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Cases -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-list-check"></i> Khi nào dùng REST vs GraphQL?</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="text-danger">Dùng REST khi:</h6>
+                                        <ul>
+                                            <li>API đơn giản, ít phức tạp</li>
+                                            <li>Cần cache HTTP responses</li>
+                                            <li>Team chưa quen GraphQL</li>
+                                            <li>Microservices architecture</li>
+                                            <li>Cần HTTP status codes</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="text-success">Dùng GraphQL khi:</h6>
+                                        <ul>
+                                            <li>Frontend cần dữ liệu phức tạp</li>
+                                            <li>Mobile app cần tiết kiệm băng thông</li>
+                                            <li>API có nhiều relationships</li>
+                                            <li>Cần type safety</li>
+                                            <li>Real-time subscriptions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Demo Button -->
+                <div class="row mt-4">
+                    <div class="col-12 text-center">
+                        <a href="/admin/graphql-demo" class="btn btn-success btn-lg">
+                            <i class="bi bi-play-circle"></i> Xem Live Demo GraphQL
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="common/admin/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

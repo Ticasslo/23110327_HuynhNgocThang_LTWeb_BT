@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL Demo - Quản lý sản phẩm</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .graphql-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        
+        .query-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .response-box {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .btn-graphql {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-graphql:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div th:replace="common/admin/header :: header"></div>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="common/admin/left :: left"></div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="bi bi-diagram-3"></i> GraphQL Demo
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a href="/admin/products" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Quay lại REST
+                        </a>
+                    </div>
+                </div>
+
+                <!-- GraphQL Introduction -->
+                <div class="graphql-section">
+                    <h2><i class="bi bi-lightning"></i> GraphQL vs REST API</h2>
+                    <p class="mb-0">
+                        GraphQL cho phép bạn lấy chính xác dữ liệu cần thiết với một request duy nhất. 
+                        Không cần nhiều API calls như REST!
+                    </p>
+                </div>
+
+                <!-- GraphQL Query Builder -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-code-slash"></i> GraphQL Query Builder</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Chọn Query:</label>
+                                    <select class="form-select" id="queryType" onchange="updateQuery()">
+                                        <option value="allProducts">Lấy tất cả sản phẩm</option>
+                                        <option value="productById">Lấy sản phẩm theo ID</option>
+                                        <option value="productsByCategory">Lấy sản phẩm theo danh mục</option>
+                                        <option value="searchProducts">Tìm kiếm sản phẩm</option>
+                                        <option value="allCategories">Lấy tất cả danh mục</option>
+                                        <option value="allUsers">Lấy tất cả người dùng</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3" id="paramInput" style="display: none;">
+                                    <label class="form-label">Tham số:</label>
+                                    <input type="text" class="form-control" id="paramValue" placeholder="Nhập ID hoặc từ khóa...">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">GraphQL Query:</label>
+                                    <div class="query-box" id="queryDisplay">
+                                        query {
+                                          products {
+                                            id
+                                            productName
+                                            price
+                                            stock
+                                            category {
+                                              categoryName
+                                            }
+                                            user {
+                                              fullName
+                                            }
+                                          }
+                                        }
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-graphql w-100" onclick="executeGraphQLQuery()">
+                                    <span class="loading spinner-border spinner-border-sm" role="status"></span>
+                                    <i class="bi bi-play-circle"></i> Execute GraphQL Query
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-terminal"></i> Response</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="responseContainer">
+                                    <div class="text-muted text-center py-4">
+                                        <i class="bi bi-arrow-up"></i> Click "Execute GraphQL Query" để xem kết quả
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div class="row mt-4" id="resultsContainer" style="display: none;">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-list-ul"></i> Kết quả hiển thị</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="productsDisplay"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GraphQL vs REST Comparison -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                                <h5><i class="bi bi-arrow-left-right"></i> REST API (Cách cũ)</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Nhiều API calls:</strong></p>
+                                <ol>
+                                    <li>GET /api/products (lấy danh sách)</li>
+                                    <li>GET /api/categories/1 (lấy thông tin danh mục)</li>
+                                    <li>GET /api/users/100001 (lấy thông tin user)</li>
+                                </ol>
+                                <p class="text-danger"><strong>3 requests = 3 lần gọi server</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5><i class="bi bi-lightning"></i> GraphQL (Cách mới)</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Một API call duy nhất:</strong></p>
+                                <div class="query-box">
+                                    query {
+                                      products {
+                                        id
+                                        productName
+                                        price
+                                        category {
+                                          categoryName
+                                        }
+                                        user {
+                                          fullName
+                                        }
+                                      }
+                                    }
+                                </div>
+                                <p class="text-success"><strong>1 request = 1 lần gọi server</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="common/admin/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GraphQL Client -->
+    <script>
+        // GraphQL endpoint
+        const GRAPHQL_ENDPOINT = '/graphql';
+        
+        // Query templates
+        const queries = {
+            allProducts: `query {
+                products {
+                    id
+                    productName
+                    description
+                    price
+                    stock
+                    purchases
+                    image
+                    category {
+                        id
+                        categoryName
+                    }
+                    user {
+                        id
+                        fullName
+                        userName
+                    }
+                }
+            }`,
+            
+            productById: `query($id: ID!) {
+                product(id: $id) {
+                    id
+                    productName
+                    description
+                    price
+                    stock
+                    purchases
+                    image
+                    category {
+                        id
+                        categoryName
+                    }
+                    user {
+                        id
+                        fullName
+                        userName
+                    }
+                }
+            }`,
+            
+            productsByCategory: `query($categoryId: ID!) {
+                productsByCategory(categoryId: $categoryId) {
+                    id
+                    productName
+                    price
+                    stock
+                    category {
+                        categoryName
+                    }
+                    user {
+                        fullName
+                    }
+                }
+            }`,
+            
+            searchProducts: `query($keyword: String!) {
+                searchProducts(keyword: $keyword) {
+                    id
+                    productName
+                    price
+                    stock
+                    category {
+                        categoryName
+                    }
+                    user {
+                        fullName
+                    }
+                }
+            }`,
+            
+            allCategories: `query {
+                categories {
+                    id
+                    categoryName
+                    images
+                    products {
+                        id
+                        productName
+                        price
+                    }
+                }
+            }`,
+            
+            allUsers: `query {
+                users {
+                    id
+                    fullName
+                    userName
+                    email
+                    roleid
+                    products {
+                        id
+                        productName
+                        price
+                    }
+                }
+            }`
+        };
+        
+        // Update query based on selection
+        function updateQuery() {
+            const queryType = document.getElementById('queryType').value;
+            const paramInput = document.getElementById('paramInput');
+            const queryDisplay = document.getElementById('queryDisplay');
+            
+            // Show/hide parameter input
+            if (['productById', 'productsByCategory', 'searchProducts'].includes(queryType)) {
+                paramInput.style.display = 'block';
+            } else {
+                paramInput.style.display = 'none';
+            }
+            
+            // Update query display
+            queryDisplay.textContent = queries[queryType];
+        }
+        
+        // Execute GraphQL query
+        async function executeGraphQLQuery() {
+            const queryType = document.getElementById('queryType').value;
+            const paramValue = document.getElementById('paramValue').value;
+            const responseContainer = document.getElementById('responseContainer');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const loading = document.querySelector('.loading');
+            
+            // Show loading
+            loading.style.display = 'inline-block';
+            
+            try {
+                let query = queries[queryType];
+                let variables = {};
+                
+                // Add variables for parameterized queries
+                if (queryType === 'productById') {
+                    variables = { id: paramValue };
+                } else if (queryType === 'productsByCategory') {
+                    variables = { categoryId: paramValue };
+                } else if (queryType === 'searchProducts') {
+                    variables = { keyword: paramValue };
+                }
+                
+                // Execute GraphQL request
+                console.log('Sending GraphQL request:', { query, variables });
+                
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: variables
+                    })
+                });
+                
+                console.log('GraphQL response status:', response.status);
+                const result = await response.json();
+                console.log('GraphQL response:', result);
+                
+                // Display response
+                if (result.errors) {
+                    responseContainer.innerHTML = `
+                        <div class="error-box">
+                            <strong>GraphQL Errors:</strong><br>
+                            ${JSON.stringify(result.errors, null, 2)}
+                        </div>
+                    `;
+                } else if (result.data) {
+                    responseContainer.innerHTML = `
+                        <div class="response-box">
+                            <strong>GraphQL Response:</strong><br>
+                            ${JSON.stringify(result.data, null, 2)}
+                        </div>
+                    `;
+                    
+                    // Display formatted results
+                    displayResults(result.data, queryType);
+                    resultsContainer.style.display = 'block';
+                } else {
+                    responseContainer.innerHTML = `
+                        <div class="error-box">
+                            <strong>Error:</strong><br>
+                            No data returned from GraphQL endpoint
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                responseContainer.innerHTML = `
+                    <div class="error-box">
+                        <strong>Error:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            } finally {
+                // Hide loading
+                loading.style.display = 'none';
+            }
+        }
+        
+        // Display formatted results
+        function displayResults(data, queryType) {
+            const productsDisplay = document.getElementById('productsDisplay');
+            
+            if (queryType === 'allProducts' || queryType === 'productsByCategory' || queryType === 'searchProducts') {
+                const products = queryType === 'allProducts' ? data.products : 
+                                queryType === 'productsByCategory' ? data.productsByCategory : 
+                                data.searchProducts;
+                
+                if (products && products.length > 0) {
+                    productsDisplay.innerHTML = `
+                        <div class="row">
+                            ${products.map(product => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card product-card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${product.productName}</h6>
+                                            <p class="card-text">
+                                                <strong>Giá:</strong> ${formatPrice(product.price)} VNĐ<br>
+                                                <strong>Tồn kho:</strong> ${product.stock}<br>
+                                                <strong>Danh mục:</strong> ${product.category?.categoryName || 'N/A'}<br>
+                                                <strong>Người tạo:</strong> ${product.user?.fullName || 'N/A'}
+                                            </p>
+                                            <small class="text-muted">ID: ${product.id}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    productsDisplay.innerHTML = '<div class="alert alert-info">Không tìm thấy sản phẩm nào!</div>';
+                }
+            } else if (queryType === 'productById') {
+                const product = data.product;
+                if (product) {
+                    productsDisplay.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card product-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${product.productName}</h5>
+                                        <p class="card-text">${product.description || 'Không có mô tả'}</p>
+                                        <p><strong>Giá:</strong> ${formatPrice(product.price)} VNĐ</p>
+                                        <p><strong>Tồn kho:</strong> ${product.stock}</p>
+                                        <p><strong>Đã bán:</strong> ${product.purchases}</p>
+                                        <p><strong>Danh mục:</strong> ${product.category?.categoryName || 'N/A'}</p>
+                                        <p><strong>Người tạo:</strong> ${product.user?.fullName || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    productsDisplay.innerHTML = '<div class="alert alert-warning">Không tìm thấy sản phẩm!</div>';
+                }
+            } else if (queryType === 'allCategories') {
+                const categories = data.categories;
+                if (categories && categories.length > 0) {
+                    productsDisplay.innerHTML = `
+                        <div class="row">
+                            ${categories.map(category => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card product-card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${category.categoryName}</h6>
+                                            <p class="card-text">
+                                                <strong>Số sản phẩm:</strong> ${category.products?.length || 0}<br>
+                                                <strong>ID:</strong> ${category.id}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            } else if (queryType === 'allUsers') {
+                const users = data.users;
+                if (users && users.length > 0) {
+                    productsDisplay.innerHTML = `
+                        <div class="row">
+                            ${users.map(user => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card product-card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${user.fullName}</h6>
+                                            <p class="card-text">
+                                                <strong>Username:</strong> ${user.userName}<br>
+                                                <strong>Email:</strong> ${user.email}<br>
+                                                <strong>Role:</strong> ${user.roleid === 1 ? 'Admin' : 'User'}<br>
+                                                <strong>Số sản phẩm:</strong> ${user.products?.length || 0}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Format price
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN').format(price);
+        }
+        
+        // Initialize
+        updateQuery();
+    </script>
+</body>
+</html>

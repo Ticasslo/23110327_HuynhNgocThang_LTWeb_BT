@@ -54,8 +54,10 @@ CREATE TABLE dbo.Product (
     purchases BIGINT NOT NULL DEFAULT 0,  -- số lượng đã bán
     stock INT NOT NULL DEFAULT 0,  -- số lượng tồn kho
     category_id INT NOT NULL,
+    user_id INT NOT NULL,  -- ID của người tạo sản phẩm
     CONSTRAINT PK_Product PRIMARY KEY (product_id),
-    CONSTRAINT FK_Product_Category FOREIGN KEY (category_id) REFERENCES dbo.Category(category_id)
+    CONSTRAINT FK_Product_Category FOREIGN KEY (category_id) REFERENCES dbo.Category(category_id),
+    CONSTRAINT FK_Product_User FOREIGN KEY (user_id) REFERENCES dbo.Users(id)
 );
 
 CREATE INDEX IX_Product_productName ON dbo.Product(productName);
@@ -79,13 +81,13 @@ INSERT INTO dbo.Category (categoryName, images) VALUES
 (N'Gia dụng', NULL);
 
 -- Sample products
-INSERT INTO dbo.Product (productName, description, image, price, purchases, stock, category_id) VALUES
-(N'iPhone 15 Pro Max', N'Điện thoại thông minh cao cấp với camera 48MP', NULL, 29990000, 25, 50, 1),
-(N'Áo thun nam cao cấp', N'Áo thun cotton 100% thoáng mát', NULL, 299000, 150, 200, 2),
-(N'Giày thể thao Nike Air Max', N'Giày chạy bộ với công nghệ Air Max', NULL, 2500000, 80, 30, 3),
-(N'Máy lọc nước RO', N'Máy lọc nước công nghệ RO 5 cấp', NULL, 3500000, 45, 15, 4),
-(N'Laptop Dell XPS 13', N'Laptop cao cấp với màn hình 4K', NULL, 25000000, 12, 8, 1),
-(N'Quần jean nữ', N'Quần jean skinny chất liệu cao cấp', NULL, 450000, 95, 60, 2),
-(N'Bóng đá Adidas', N'Bóng đá chính hãng Adidas', NULL, 350000, 200, 100, 3),
-(N'Nồi cơm điện tử', N'Nồi cơm điện tử 1.8L công nghệ mới', NULL, 1200000, 35, 25, 4);
+INSERT INTO dbo.Product (productName, description, image, price, purchases, stock, category_id, user_id) VALUES
+(N'iPhone 15 Pro Max', N'Điện thoại thông minh cao cấp với camera 48MP', NULL, 29990000, 25, 50, 1, 100001),
+(N'Áo thun nam cao cấp', N'Áo thun cotton 100% thoáng mát', NULL, 299000, 150, 200, 2, 100001),
+(N'Giày thể thao Nike Air Max', N'Giày chạy bộ với công nghệ Air Max', NULL, 2500000, 80, 30, 3, 100002),
+(N'Máy lọc nước RO', N'Máy lọc nước công nghệ RO 5 cấp', NULL, 3500000, 45, 15, 4, 100001),
+(N'Laptop Dell XPS 13', N'Laptop cao cấp với màn hình 4K', NULL, 25000000, 12, 8, 1, 100002),
+(N'Quần jean nữ', N'Quần jean skinny chất liệu cao cấp', NULL, 450000, 95, 60, 2, 100002),
+(N'Bóng đá Adidas', N'Bóng đá chính hãng Adidas', NULL, 350000, 200, 100, 3, 100001),
+(N'Nồi cơm điện tử', N'Nồi cơm điện tử 1.8L công nghệ mới', NULL, 1200000, 35, 25, 4, 100002);
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Header</title>
+</head>
+<body>
+    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/admin}">
+                <i class="bi bi-shield-check"></i> Admin Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Admin Info -->
+                <div class="navbar-nav me-3">
+                    <div class="nav-item d-flex align-items-center">
+                        <img th:if="${user != null and user.avatar != null and !user.avatar.isEmpty()}" 
+                             th:src="@{/image(fname=${user.avatar})}" 
+                             alt="Admin Avatar" 
+                             style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                        <div th:if="${user == null or user.avatar == null or user.avatar.isEmpty()}" 
+                             style="width: 32px; height: 32px; border-radius: 50%; background-color: #dc3545; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; color: white; font-weight: bold;">
+                            <span th:text="${user != null and user.fullName != null ? user.fullName.substring(0,1) : 'A'}"></span>
+                        </div>
+                        <small class="text-muted">
+                            <strong>Admin: <span th:text="${user != null ? user.fullName : 'Administrator'}">Administrator</span></strong>
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="bi bi-house"></i> Về trang chủ hệ thống
+                    </a>
+                    <a class="nav-link" th:href="@{/logout}">
+                        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

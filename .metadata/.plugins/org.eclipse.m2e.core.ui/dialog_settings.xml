@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="D:\SpringTools\workspace04\23110327_HuynhNgocThang_LTWeb_BT\23110327\pom.xml"/>
 			<item value="D:\SpringTools\workspace03\23110327_HuynhNgocThang_LTWeb_BT02\SiteMeshDecorators_23110327"/>
 			<item value="D:\SpringTools\workspace02\JPA_23110327"/>
 			<item value="D:\SpringTools\workspace02\Servers"/>
@@ -47,15 +48,24 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="23110327_HuynhNgocThang_KiemTraJDBC"/>
+			<item value="23110327_HuynhNgocThang_KiemTraJPA"/>
+			<item value="23113027_HuynhNgocThang_JPA"/>
+			<item value="23110327_HuynhNgocThang_JDBC"/>
 			<item value="SiteMesh3_23110327"/>
 			<item value="JPA_23110327"/>
 			<item value="23110327_HuynhNgocThang"/>
 		</list>
 		<list key="name">
+			<item value="HuynhNgocThang"/>
 			<item value="23110327 Huynh Ngoc Thang SiteMesh3"/>
 			<item value="Huynh Ngoc Thang"/>
 		</list>
 		<list key="artifactId">
+			<item value="23110327_HuynhNgocThang_KiemTraJDBC"/>
+			<item value="23110327_HuynhNgocThang_KiemTraJPA"/>
+			<item value="23110327_HuynhNgocThang_JPA"/>
+			<item value="23110327_HuynhNgocThang_JDBC"/>
 			<item value="SiteMesh3_23110327"/>
 			<item value="JPA_23110327"/>
 			<item value="23110327"/>

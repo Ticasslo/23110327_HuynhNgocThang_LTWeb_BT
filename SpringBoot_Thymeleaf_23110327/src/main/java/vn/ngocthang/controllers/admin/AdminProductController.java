@@ -23,8 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import vn.ngocthang.entity.Category;
 import vn.ngocthang.entity.Product;
+import vn.ngocthang.entity.User;
 import vn.ngocthang.services.CategoryService;
 import vn.ngocthang.services.ProductService;
+import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.UploadHelper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +40,9 @@ public class AdminProductController {
     
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private UserService userService;
 
     // Tự động thêm user vào tất cả các view
     @ModelAttribute("user")
@@ -55,19 +60,22 @@ public class AdminProductController {
     }
 
     @GetMapping("/add")
-    public String add(ModelMap model) {
+    public String add(ModelMap model, HttpServletRequest request) {
         List<Category> categories = categoryService.findAll();
+        List<User> users = userService.findAll();
         Product product = new Product();
         // Chuyển dữ liệu từ model vào biến product để đưa lên view
         model.addAttribute("product", product);
         model.addAttribute("categories", categories);
+        model.addAttribute("users", users);
         return "admin/products/addOrEdit";
     }
 
     @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(ModelMap model, @ModelAttribute("product") Product product, 
                                    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-                                   @RequestParam("categoryId") Integer categoryId) {
+                                   @RequestParam("categoryId") Integer categoryId,
+                                   @RequestParam("userId") Integer userId) {
         
         // Xử lý upload image
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -78,6 +86,10 @@ public class AdminProductController {
         // Set category
         Category category = categoryService.findById(categoryId).orElse(null);
         product.setCategory(category);
+        
+        // Set user
+        User user = userService.findById(userId).orElse(null);
+        product.setUser(user);
         
         // Gọi hàm save trong service
         productService.save(product);
@@ -96,6 +108,7 @@ public class AdminProductController {
         Optional<Product> optProduct = productService.findById(productId);
         Product product = new Product();
         List<Category> categories = categoryService.findAll();
+        List<User> users = userService.findAll();
         
         if (optProduct.isPresent()) {
             // Copy từ entity sang product
@@ -103,6 +116,7 @@ public class AdminProductController {
             // Đẩy dữ liệu ra view
             model.addAttribute("product", product);
             model.addAttribute("categories", categories);
+            model.addAttribute("users", users);
             return new ModelAndView("admin/products/addOrEdit", model);
         } else {
             model.addAttribute("message", "Product is not existed!!!!");

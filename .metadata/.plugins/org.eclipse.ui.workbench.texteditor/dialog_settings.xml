@@ -5,6 +5,7 @@
 		<item key="selection" value="package ketNoiSQL;"/>
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="common"/>
 			<item value="java"/>
 			<item value="mysql"/>
 			<item value="/admin/category/list&apos;/"/>
