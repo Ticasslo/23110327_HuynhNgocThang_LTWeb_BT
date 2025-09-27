@@ -24,6 +24,7 @@ public class ImageController {
             
             // Kiểm tra file có tồn tại không
             if (!Files.exists(imagePath)) {
+                System.out.println("Image not found: " + imagePath.toAbsolutePath());
                 return ResponseEntity.notFound().build();
             }
             

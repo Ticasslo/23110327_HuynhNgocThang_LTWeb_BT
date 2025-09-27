@@ -1,22 +1,23 @@
-package vn.ngocthang.controllers;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.stereotype.Controller;
-import vn.ngocthang.entity.User;
-import vn.ngocthang.services.UserService;
+package vn.ngocthang.controllers.admin;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import vn.ngocthang.entity.User;
+import vn.ngocthang.services.UserService;
 
 /**
  * GraphQL Controller cho User
  * Chỉ xử lý các operations liên quan đến User
  */
 @Controller
-public class UserGraphQLController {
+public class AdminUserGraphQLController {
 
     @Autowired
     private UserService userService;
@@ -50,12 +51,22 @@ public class UserGraphQLController {
     }
 
     /**
+     * Query: Tìm kiếm users theo keyword
+     * GraphQL: searchUsers(keyword: String!): [User!]!
+     */
+    @QueryMapping
+    public List<User> searchUsers(@Argument("keyword") String keyword) {
+        return userService.findByFullNameContainingIgnoreCaseOrUserNameContainingIgnoreCase(keyword, keyword);
+    }
+
+    /**
      * Mutation: Tạo user mới
      * GraphQL: createUser(input: UserInput!): User!
      */
     @MutationMapping
     public User createUser(@Argument("input") UserInput input) {
         User user = new User();
+        // Không set ID để Hibernate tự động generate
         user.setEmail(input.getEmail());
         user.setUserName(input.getUserName());
         user.setFullName(input.getFullName());

@@ -4,38 +4,28 @@
       layout:decorate="~{admin/layout.html}">
 
 <div layout:fragment="content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="m-0">
-            <i class="bi bi-folder2-open"></i> 
-            <span th:if="${category.id == 0}">Thêm danh mục</span>
-            <span th:if="${category.id != 0}">Chỉnh sửa danh mục</span>
-        </h3>
-        <a th:href="@{/admin/categories}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Quay lại
-        </a>
-    </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="m-0">
+                    <i class="bi bi-folder2-open"></i> 
+                    <span id="pageTitle">Thêm danh mục (GraphQL)</span>
+                </h3>
+                <a href="/admin/categories" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+            </div>
 
     <!-- Alert Messages -->
-    <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle"></i> <span th:text="${message}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-
-    <div th:if="${alert != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-triangle"></i> <span th:text="${alert}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div id="alertContainer">
+        <!-- Alerts will be shown here via JavaScript -->
     </div>
 
     <!-- Form -->
     <div class="card">
         <div class="card-body">
-            <form th:action="@{/admin/categories/saveOrUpdate}" 
-                  th:object="${category}" 
-                  method="post" 
-                  enctype="multipart/form-data">
+            <form id="categoryForm">
                 
                 <!-- Hidden field for ID -->
-                <input type="hidden" th:field="*{id}">
+                <input type="hidden" id="categoryId">
                 
                 <div class="row">
                     <div class="col-md-8">
@@ -46,7 +36,6 @@
                             <input type="text" 
                                    class="form-control" 
                                    id="categoryName" 
-                                   th:field="*{categoryName}"
                                    placeholder="Nhập tên danh mục"
                                    required>
                         </div>
@@ -67,10 +56,10 @@
                 </div>
 
                 <!-- Current Image Display -->
-                <div th:if="${category.images != null and !category.images.isEmpty()}" class="mb-3">
+                <div id="currentImageContainer" class="mb-3" style="display: none;">
                     <label class="form-label">Hình ảnh hiện tại:</label>
                     <div>
-                        <img th:src="@{/image(fname=${category.images})}" 
+                        <img id="currentImage" 
                              alt="Current Image" 
                              class="img-thumbnail" 
                              style="max-width: 200px; max-height: 200px;">
@@ -78,16 +67,232 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
                         <i class="bi bi-check-lg"></i> 
-                        <span th:if="${category.id == 0}">Thêm mới</span>
-                        <span th:if="${category.id != 0}">Cập nhật</span>
+                        <span id="submitText">Thêm mới</span>
                     </button>
-                    <a th:href="@{/admin/categories}" class="btn btn-secondary">
+                    <a href="/admin/categories" class="btn btn-secondary">
                         <i class="bi bi-x-lg"></i> Hủy
                     </a>
                 </div>
             </form>
         </div>
     </div>
+</div>
+
+<div layout:fragment="scripts">
+    <script>
+        // GraphQL endpoint
+        const GRAPHQL_ENDPOINT = '/graphql';
+
+        // Get category ID from URL
+        function getCategoryId() {
+            const path = window.location.pathname;
+            const matches = path.match(/\/edit\/(\d+)/);
+            return matches ? parseInt(matches[1]) : null;
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'error' ? 'alert-danger' : 
+                             type === 'success' ? 'alert-success' : 'alert-info';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+        }
+
+        // Execute GraphQL query
+        async function executeGraphQL(query, variables = {}) {
+            try {
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: variables
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error('GraphQL Error:', error);
+                showAlert('Lỗi: ' + error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Load category by ID (for edit mode)
+        async function loadCategory() {
+            const categoryId = getCategoryId();
+            console.log('Loading category with ID:', categoryId);
+            
+            if (!categoryId) {
+                console.log('Add mode - setting default values');
+                return;
+            }
+
+            const query = `
+                query GetCategory($id: Int!) {
+                    category(id: $id) {
+                        id
+                        categoryName
+                        images
+                    }
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(query, { id: categoryId });
+                console.log('Category data loaded:', data.category);
+                
+                if (!data.category) {
+                    showAlert('Không tìm thấy danh mục!', 'error');
+                    return;
+                }
+
+                // Fill form with category data
+                const category = data.category;
+                document.getElementById('categoryId').value = category.id;
+                document.getElementById('categoryName').value = category.categoryName;
+
+                // Update submit button text
+                document.getElementById('submitText').textContent = 'Cập nhật';
+                
+                       // Update page title
+                       document.getElementById('pageTitle').textContent = 'Chỉnh sửa danh mục (GraphQL)';
+                
+                // Show current image if exists
+                if (category.images) {
+                    document.getElementById('currentImage').src = `/image?fname=${category.images}`;
+                    document.getElementById('currentImageContainer').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error loading category:', error);
+            }
+        }
+
+        // Create category
+        async function createCategory(categoryData) {
+            console.log('Creating category with data:', categoryData);
+            
+            const mutation = `
+                mutation CreateCategory($input: CategoryInput!) {
+                    createCategory(input: $input) {
+                        id
+                        categoryName
+                        images
+                    }
+                }
+            `;
+
+            const input = {
+                categoryName: categoryData.categoryName,
+                images: categoryData.images || null
+            };
+
+            try {
+                const data = await executeGraphQL(mutation, { input });
+                return data.createCategory;
+            } catch (error) {
+                console.error('Error creating category:', error);
+                throw error;
+            }
+        }
+
+        // Update category
+        async function updateCategory(categoryData) {
+            console.log('Updating category with data:', categoryData);
+            
+            const mutation = `
+                mutation UpdateCategory($id: Int!, $input: CategoryInput!) {
+                    updateCategory(id: $id, input: $input) {
+                        id
+                        categoryName
+                        images
+                    }
+                }
+            `;
+
+            const input = {
+                categoryName: categoryData.categoryName,
+                images: categoryData.images || null
+            };
+
+            const categoryId = parseInt(categoryData.id);
+
+            try {
+                const data = await executeGraphQL(mutation, { id: categoryId, input });
+                return data.updateCategory;
+            } catch (error) {
+                console.error('Error updating category:', error);
+                throw error;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('categoryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: document.getElementById('categoryId').value,
+                categoryName: document.getElementById('categoryName').value,
+                images: document.getElementById('imageFile').value || null
+            };
+
+            // Validation
+            if (!formData.categoryName) {
+                showAlert('Vui lòng nhập tên danh mục!', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const isEdit = !!formData.id;
+
+            submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>${isEdit ? 'Đang cập nhật...' : 'Đang thêm...'}`;
+            submitBtn.disabled = true;
+
+            try {
+                let result;
+                if (isEdit) {
+                    result = await updateCategory(formData);
+                    showAlert('Cập nhật danh mục thành công!', 'success');
+                } else {
+                    result = await createCategory(formData);
+                    showAlert('Thêm danh mục thành công!', 'success');
+                }
+                
+                // Redirect to list after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/admin/categories';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error saving category:', error);
+            } finally {
+                submitBtn.innerHTML = `<i class="bi bi-check-lg"></i> ${isEdit ? 'Cập nhật' : 'Thêm mới'}`;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategory();
+        });
+    </script>
 </div>

@@ -2,79 +2,272 @@
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/layout.html}">
-<head>
-    <title th:text="${pageTitle}">Quản lý danh mục</title>
-</head>
-<body>
-    <div layout:fragment="content">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="m-0"><i class="bi bi-folder2-open"></i> <span th:text="#{iotstar.value.listCate}">Danh sách danh mục</span></h3>
-                <a th:href="@{/admin/categories/add}" class="btn btn-primary"><i class="bi bi-plus"></i> <span th:text="#{iotstar.value.addCate}">Thêm danh mục</span></a>
+
+<div layout:fragment="content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="m-0">
+                    <i class="bi bi-folder2-open"></i> 
+                    Danh mục (GraphQL)
+                </h3>
+                <a href="/admin/categories/add" class="btn btn-primary">
+                    <i class="bi bi-plus"></i> Thêm danh mục
+                </a>
             </div>
 
-            <div th:if="${alert}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle"></i> <span th:text="${alert}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+    <!-- Alert Messages -->
+    <div id="alertContainer">
+        <!-- Alerts will be shown here via JavaScript -->
+    </div>
 
-            <div th:if="${param.success == '1'}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle"></i> Xóa danh mục thành công!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
-            <form class="row g-2 mb-3" method="get" th:action="@{/admin/categories/search}">
+    <!-- Search Form -->
+            <div class="row g-2 mb-3">
                 <div class="col-sm-4 col-md-3">
-                    <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm theo tên..." />
+                    <input type="text" id="searchKeyword" class="form-control" placeholder="Tìm theo tên..." />
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
-                    <a th:href="@{/admin/categories/searchpaginated}" class="btn btn-outline-success ms-2">
+                    <button class="btn btn-outline-primary" onclick="searchCategories()">
+                        <i class="bi bi-search"></i> Tìm kiếm
+                    </button>
+                    <a href="/admin/categories/searchpaginated" class="btn btn-outline-success ms-2">
                         <i class="bi bi-search"></i> Tìm kiếm phân trang
                     </a>
                 </div>
-            </form>
-
-            <div class="card">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width: 80px;">ID</th>
-                                <th>Tên danh mục</th>
-                                <th style="width: 140px;">Biểu tượng</th>
-                                <th style="width: 160px;" class="text-end">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="c : ${categories}">
-                                <td th:text="${c.id}"></td>
-                                <td th:text="${c.categoryName}"></td>
-                                <td>
-                                    <img th:if="${c.images != null and !c.images.isEmpty()}" 
-                                         th:src="@{/image(fname=${c.images})}" 
-                                         alt="icon" 
-                                         style="height:32px; border-radius:6px;"/>
-                                    <span th:if="${c.images == null or c.images.isEmpty()}" class="text-muted">(chưa có)</span>
-                                </td>
-                                <td class="text-end">
-                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/categories/edit/{categoryId}(categoryId=${c.id})}">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form th:action="@{/admin/categories/delete/{id}(id=${c.id})}" method="post" class="d-inline" 
-                                          onsubmit="return confirm('Xóa danh mục này?')">
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(categories)}">
-                                <td colspan="4" class="text-center text-muted py-4">Không có dữ liệu</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="text-center py-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải danh sách danh mục...</p>
+    </div>
+
+    <!-- Categories Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Danh sách danh mục</h5>
+            <span id="categoryCount" class="badge bg-primary">0 danh mục</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 80px;">ID</th>
+                        <th>Tên danh mục</th>
+                        <th style="width: 140px;">Biểu tượng</th>
+                        <th style="width: 160px;" class="text-end">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="categoriesTableBody">
+                    <!-- Categories will be loaded here via JavaScript -->
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<div layout:fragment="scripts">
+    <script>
+        // GraphQL endpoint
+        const GRAPHQL_ENDPOINT = '/graphql';
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'error' ? 'alert-danger' : 
+                             type === 'success' ? 'alert-success' : 'alert-info';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+        }
+
+        // Show/hide loading spinner
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            const table = document.querySelector('.card');
+            if (show) {
+                spinner.style.display = 'block';
+                table.style.display = 'none';
+            } else {
+                spinner.style.display = 'none';
+                table.style.display = 'block';
+            }
+        }
+
+        // Execute GraphQL query
+        async function executeGraphQL(query, variables = {}) {
+            try {
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: variables
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error('GraphQL Error:', error);
+                showAlert('Lỗi: ' + error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Load all categories
+        async function loadAllCategories() {
+            console.log('Loading all categories...');
+            showLoading(true);
+
+            const query = `
+                query {
+                    categories {
+                        id
+                        categoryName
+                        images
+                    }
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(query);
+                console.log('Categories loaded:', data.categories);
+                displayCategories(data.categories);
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Display categories in table
+        function displayCategories(categories) {
+            const tbody = document.getElementById('categoriesTableBody');
+            const countBadge = document.getElementById('categoryCount');
+            
+            if (!categories || categories.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="bi bi-folder-x"></i> Không có danh mục nào
+                        </td>
+                    </tr>
+                `;
+                countBadge.textContent = '0 danh mục';
+                return;
+            }
+
+            countBadge.textContent = `${categories.length} danh mục`;
+
+            tbody.innerHTML = categories.map(category => `
+                <tr>
+                    <td>${category.id}</td>
+                    <td>${category.categoryName}</td>
+                           <td>
+                               ${category.images ? 
+                                   `<img src="/image?fname=${category.images}" alt="Category Icon" style="height:40px; width:60px; object-fit:cover; border-radius:4px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                                   `<div style="display:none; height:40px; width:60px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:4px; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>` :
+                                   `<div style="height:40px; width:60px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:4px; display:flex; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>`
+                               }
+                           </td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary" href="/admin/categories/edit/${category.id}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${category.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Search categories
+        async function searchCategories() {
+            const keyword = document.getElementById('searchKeyword').value.trim();
+            console.log('Searching for keyword:', keyword);
+
+            if (!keyword) {
+                loadAllCategories();
+                return;
+            }
+
+            showLoading(true);
+
+            const query = `
+                query SearchCategories($keyword: String!) {
+                    searchCategories(keyword: $keyword) {
+                        id
+                        categoryName
+                        images
+                    }
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(query, { keyword });
+                console.log('Search results:', data.searchCategories);
+                displayCategories(data.searchCategories);
+            } catch (error) {
+                console.error('Error searching categories:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Delete category
+        async function deleteCategory(categoryId) {
+            if (!confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+                return;
+            }
+
+            console.log('Deleting category with ID:', categoryId);
+
+            const mutation = `
+                mutation DeleteCategory($id: Int!) {
+                    deleteCategory(id: $id)
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(mutation, { id: categoryId });
+                
+                if (data.deleteCategory) {
+                    showAlert('Xóa danh mục thành công!', 'success');
+                    loadAllCategories(); // Reload the list
+                } else {
+                    showAlert('Không thể xóa danh mục!', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showAlert('Lỗi xóa danh mục: ' + error.message, 'error');
+            }
+        }
+
+        // Search on Enter key
+        document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCategories();
+            }
+        });
+
+        // Load categories when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, starting to load categories...');
+            loadAllCategories();
+        });
+    </script>
+</div>

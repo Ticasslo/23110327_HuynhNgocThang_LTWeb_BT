@@ -9,33 +9,44 @@
     <div layout:fragment="content">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="m-0"><i class="bi bi-people"></i> Người dùng</h3>
-                <a th:href="@{/admin/users/add}" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm người dùng</a>
+                <h3 class="m-0"><i class="bi bi-people"></i> Người dùng (GraphQL)</h3>
+                <a href="/admin/users/add" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm người dùng</a>
             </div>
 
-            <div th:if="${alert}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle"></i> <span th:text="${alert}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <!-- Alert Messages -->
+            <div id="alertContainer">
+                <!-- Alerts will be shown here via JavaScript -->
             </div>
 
-            <div th:if="${param.success == '1'}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle"></i> Thao tác thành công!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
-            <form class="row g-2 mb-3" method="get" th:action="@{/admin/users/search}">
+            <!-- Search Form -->
+            <div class="row g-2 mb-3">
                 <div class="col-sm-4 col-md-3">
-                    <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Tìm theo tên..." />
+                    <input type="text" id="searchKeyword" class="form-control" placeholder="Tìm theo tên..." />
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
-                    <a th:href="@{/admin/users/searchpaginated}" class="btn btn-outline-success ms-2">
+                    <button class="btn btn-outline-primary" onclick="searchUsers()">
+                        <i class="bi bi-search"></i> Tìm kiếm
+                    </button>
+                    <a href="/admin/users/searchpaginated" class="btn btn-outline-success ms-2">
                         <i class="bi bi-search"></i> Tìm kiếm phân trang
                     </a>
                 </div>
-            </form>
+            </div>
 
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center py-4" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="mt-2">Đang tải danh sách người dùng...</p>
+            </div>
+
+            <!-- Users Table -->
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Danh sách người dùng</h5>
+                    <span id="userCount" class="badge bg-primary">0 người dùng</span>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
@@ -51,47 +62,238 @@
                                 <th style="width: 160px;" class="text-end">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr th:each="u : ${users}">
-                                <td th:text="${u.id}">1</td>
-                                <td>
-                                    <strong th:text="${u.userName}">username</strong>
-                                </td>
-                                <td th:text="${u.fullName}">Họ tên</td>
-                                <td th:text="${u.email}">email@example.com</td>
-                                <td th:text="${u.phone}">0123456789</td>
-                                <td>
-                                    <span th:if="${u.roleid == 1}" class="badge bg-danger">Admin</span>
-                                    <span th:if="${u.roleid == 2}" class="badge bg-primary">User</span>
-                                </td>
-                                <td>
-                                    <small th:text="${u.createdDate != null ? #dates.format(u.createdDate, 'dd/MM/yyyy') : 'N/A'}">01/01/2024</small>
-                                </td>
-                                <td>
-                                    <img th:if="${u.avatar != null and !u.avatar.isEmpty()}" 
-                                         th:src="@{/image(fname=${u.avatar})}" 
-                                         alt="avatar" 
-                                         style="height:32px; border-radius:50%;"/>
-                                    <span th:if="${u.avatar == null or u.avatar.isEmpty()}" class="text-muted">(chưa có)</span>
-                                </td>
-                                <td class="text-end">
-                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/users/edit/{userId}(userId=${u.id})}">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form th:action="@{/admin/users/delete/{id}(id=${u.id})}" method="post" class="d-inline" 
-                                          onsubmit="return confirm('Xóa người dùng này?')">
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(users)}">
-                                <td colspan="9" class="text-center text-muted py-4">Không có dữ liệu</td>
-                            </tr>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here via JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div layout:fragment="scripts">
+        <script>
+            // GraphQL endpoint
+            const GRAPHQL_ENDPOINT = '/graphql';
+
+            // Show alert message
+            function showAlert(message, type = 'info') {
+                const alertContainer = document.getElementById('alertContainer');
+                const alertClass = type === 'error' ? 'alert-danger' : 
+                                 type === 'success' ? 'alert-success' : 'alert-info';
+                
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+                alertDiv.innerHTML = `
+                    <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                alertContainer.appendChild(alertDiv);
+            }
+
+            // Show/hide loading spinner
+            function showLoading(show) {
+                const spinner = document.getElementById('loadingSpinner');
+                const table = document.querySelector('.card');
+                if (show) {
+                    spinner.style.display = 'block';
+                    table.style.display = 'none';
+                } else {
+                    spinner.style.display = 'none';
+                    table.style.display = 'block';
+                }
+            }
+
+            // Execute GraphQL query
+            async function executeGraphQL(query, variables = {}) {
+                try {
+                    const response = await fetch(GRAPHQL_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: query,
+                            variables: variables
+                        })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.errors) {
+                        throw new Error(result.errors[0].message);
+                    }
+                    
+                    return result.data;
+                } catch (error) {
+                    console.error('GraphQL Error:', error);
+                    showAlert('Lỗi: ' + error.message, 'error');
+                    throw error;
+                }
+            }
+
+            // Load all users
+            async function loadAllUsers() {
+                console.log('Loading all users...');
+                showLoading(true);
+
+                const query = `
+                    query {
+                        users {
+                            id
+                            email
+                            userName
+                            fullName
+                            avatar
+                            roleid
+                            phone
+                            createdDate
+                        }
+                    }
+                `;
+
+                try {
+                    const data = await executeGraphQL(query);
+                    console.log('Users loaded:', data.users);
+                    displayUsers(data.users);
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                } finally {
+                    showLoading(false);
+                }
+            }
+
+            // Display users in table
+            function displayUsers(users) {
+                const tbody = document.getElementById('usersTableBody');
+                const countBadge = document.getElementById('userCount');
+                
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4">
+                                <i class="bi bi-people"></i> Không có người dùng nào
+                            </td>
+                        </tr>
+                    `;
+                    countBadge.textContent = '0 người dùng';
+                    return;
+                }
+
+                countBadge.textContent = `${users.length} người dùng`;
+
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.userName}</td>
+                        <td>${user.fullName}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>
+                            <span class="badge ${user.roleid === 1 ? 'bg-danger' : 'bg-secondary'}">
+                                ${user.roleid === 1 ? 'Admin' : 'User'}
+                            </span>
+                        </td>
+                        <td>${user.createdDate ? new Date(user.createdDate).toLocaleDateString('vi-VN') : 'N/A'}</td>
+                        <td>
+                            ${user.avatar ? 
+                                `<img src="/image?fname=${user.avatar}" alt="User Avatar" style="height:40px; width:40px; object-fit:cover; border-radius:50%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                                `<div style="display:none; height:40px; width:40px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:50%; align-items:center; justify-content:center;"><i class="bi bi-person text-muted"></i></div>` :
+                                `<div style="height:40px; width:40px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:50%; display:flex; align-items:center; justify-content:center;"><i class="bi bi-person text-muted"></i></div>`
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary" href="/admin/users/edit/${user.id}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Search users
+            async function searchUsers() {
+                const keyword = document.getElementById('searchKeyword').value.trim();
+                console.log('Searching for keyword:', keyword);
+
+                if (!keyword) {
+                    loadAllUsers();
+                    return;
+                }
+
+                showLoading(true);
+
+                const query = `
+                    query SearchUsers($keyword: String!) {
+                        searchUsers(keyword: $keyword) {
+                            id
+                            email
+                            userName
+                            fullName
+                            avatar
+                            roleid
+                            phone
+                            createdDate
+                        }
+                    }
+                `;
+
+                try {
+                    const data = await executeGraphQL(query, { keyword });
+                    console.log('Search results:', data.searchUsers);
+                    displayUsers(data.searchUsers);
+                } catch (error) {
+                    console.error('Error searching users:', error);
+                } finally {
+                    showLoading(false);
+                }
+            }
+
+            // Delete user
+            async function deleteUser(userId) {
+                if (!confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+                    return;
+                }
+
+                console.log('Deleting user with ID:', userId);
+
+                const mutation = `
+                    mutation DeleteUser($id: Int!) {
+                        deleteUser(id: $id)
+                    }
+                `;
+
+                try {
+                    const data = await executeGraphQL(mutation, { id: userId });
+                    
+                    if (data.deleteUser) {
+                        showAlert('Xóa người dùng thành công!', 'success');
+                        loadAllUsers(); // Reload the list
+                    } else {
+                        showAlert('Không thể xóa người dùng!', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting user:', error);
+                    showAlert('Lỗi xóa người dùng: ' + error.message, 'error');
+                }
+            }
+
+            // Search on Enter key
+            document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchUsers();
+                }
+            });
+
+            // Load users when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Page loaded, starting to load users...');
+                loadAllUsers();
+            });
+        </script>
     </div>
 </body>
 </html>

@@ -1,27 +1,28 @@
-package vn.ngocthang.controllers;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.stereotype.Controller;
-import vn.ngocthang.entity.Product;
-import vn.ngocthang.entity.Category;
-import vn.ngocthang.entity.User;
-import vn.ngocthang.services.ProductService;
-import vn.ngocthang.services.CategoryService;
-import vn.ngocthang.services.UserService;
+package vn.ngocthang.controllers.admin;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import vn.ngocthang.entity.Category;
+import vn.ngocthang.entity.Product;
+import vn.ngocthang.entity.User;
+import vn.ngocthang.services.CategoryService;
+import vn.ngocthang.services.ProductService;
+import vn.ngocthang.services.UserService;
 
 /**
  * GraphQL Controller cho Product
  * Chỉ xử lý các operations liên quan đến Product
  */
 @Controller
-public class ProductGraphQLController {
+public class AdminProductGraphQLController {
 
     @Autowired
     private ProductService productService;
@@ -79,6 +80,15 @@ public class ProductGraphQLController {
     }
 
     /**
+     * Query: Lấy products theo giá tăng dần
+     * GraphQL: productsByPriceAsc: [Product!]!
+     */
+    @QueryMapping
+    public List<Product> productsByPriceAsc() {
+        return productService.findAllByOrderByPriceAsc();
+    }
+
+    /**
      * Mutation: Tạo product mới
      * GraphQL: createProduct(input: ProductInput!): Product!
      */
@@ -89,7 +99,7 @@ public class ProductGraphQLController {
         product.setDescription(input.getDescription());
         product.setImage(input.getImage());
         product.setPrice(BigDecimal.valueOf(input.getPrice()));
-        product.setPurchases(input.getPurchases() != null ? input.getPurchases() : 0L);
+        product.setPurchases(input.getPurchases() != null ? Long.valueOf(input.getPurchases().intValue()) : 0L);
         product.setStock(input.getStock() != null ? input.getStock() : 0);
         
         // Set Category
@@ -117,7 +127,7 @@ public class ProductGraphQLController {
             product.setDescription(input.getDescription());
             product.setImage(input.getImage());
             product.setPrice(BigDecimal.valueOf(input.getPrice()));
-            product.setPurchases(input.getPurchases() != null ? input.getPurchases() : product.getPurchases());
+            product.setPurchases(input.getPurchases() != null ? Long.valueOf(input.getPurchases().intValue()) : product.getPurchases());
             product.setStock(input.getStock() != null ? input.getStock() : product.getStock());
             
             // Update Category
@@ -155,7 +165,7 @@ public class ProductGraphQLController {
         private String description;
         private String image;
         private Double price;
-        private Long purchases;
+        private Integer purchases;
         private Integer stock;
         private Integer categoryId;
         private Integer userId;
@@ -176,8 +186,8 @@ public class ProductGraphQLController {
         public Double getPrice() { return price; }
         public void setPrice(Double price) { this.price = price; }
 
-        public Long getPurchases() { return purchases; }
-        public void setPurchases(Long purchases) { this.purchases = purchases; }
+        public Integer getPurchases() { return purchases; }
+        public void setPurchases(Integer purchases) { this.purchases = purchases; }
 
         public Integer getStock() { return stock; }
         public void setStock(Integer stock) { this.stock = stock; }

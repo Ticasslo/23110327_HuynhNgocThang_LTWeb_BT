@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="m-0"><i class="bi bi-box"></i> Danh sách sản phẩm</h3>
-                <a th:href="@{/admin/products/add}" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm sản phẩm</a>
+                <a href="/admin/products/add" class="btn btn-primary"><i class="bi bi-plus"></i> Thêm sản phẩm</a>
             </div>
 
             <!-- Hiển thị thông báo -->
@@ -21,26 +21,31 @@
 
             <div class="row mt-2 mb-2">
                 <div class="col-md-6">
-                    <form th:action="@{/admin/products/searchpaginated}" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control ml-2" name="keyword" id="keyword" 
-                                   th:value="${keyword}" placeholder="Nhập từ khóa để tìm" />
-                            <button class="btn btn-outline-primary ml-2" type="submit">
+                        <input type="text" class="form-control ml-2" id="keyword" 
+                               placeholder="Nhập từ khóa để tìm" />
+                        <button class="btn btn-outline-primary ml-2" type="button" onclick="searchProducts()">
                                 <i class="bi bi-search"></i> Tìm kiếm
                             </button>
-                            <a th:href="@{/admin/products}" class="btn btn-outline-info ml-2">
+                        <a href="/admin/products" class="btn btn-outline-info ml-2">
                                 <i class="bi bi-list"></i> Danh sách đầy đủ
                             </a>
                         </div>
-                    </form>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">Danh sách sản phẩm</div>
                 <div class="card-body">
-                    <!-- Hiển thị khi không có dữ liệu -->
-                    <div th:if="${!productPage.hasContent()}" class="row">
+                    <!-- Loading indicator -->
+                    <div id="loadingIndicator" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+
+                    <!-- No data message -->
+                    <div id="noDataMessage" class="row" style="display: none;">
                         <div class="col">
                             <div class="alert alert-danger" role="alert">
                                 <i class="bi bi-exclamation-triangle"></i> Không tìm thấy sản phẩm nào
@@ -48,8 +53,8 @@
                         </div>
                     </div>
 
-                    <!-- Bảng danh sách -->
-                    <table th:if="${productPage.hasContent()}" class="table table-striped table-inverse table-responsive">
+                    <!-- Products table -->
+                    <table id="productsTable" class="table table-striped table-inverse table-responsive" style="display: none;">
                         <thead class="thead-inverse">
                             <tr>
                                 <th style="width: 80px;">ID</th>
@@ -63,80 +68,32 @@
                                 <th style="width: 160px;" class="text-end">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr th:each="product, iStat: ${productPage.content}">
-                                <td scope="row">[[${product.id}]]</td>
-                                <td>
-                                    <div>
-                                        <strong th:text="${product.productName}">Tên sản phẩm</strong>
-                                        <br>
-                                        <small class="text-muted" th:text="${product.description}">Mô tả</small>
-                                    </div>
-                                </td>
-                                <td th:text="${product.category.categoryName}"></td>
-                                <td>
-                                    <span class="badge bg-secondary" th:text="${product.user.id}">UserID</span>
-                                </td>
-                                <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
-                                <td>
-                                    <span th:class="${product.stock > 10 ? 'text-success fw-bold' : (product.stock > 0 ? 'text-warning fw-bold' : 'text-danger fw-bold')}" 
-                                          th:text="${product.stock}">0</span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-info" th:text="${product.purchases != null ? product.purchases : 0}">0</span>
-                                </td>
-                                <td>
-                                    <img th:if="${product.image != null and !product.image.isEmpty()}" 
-                                         th:src="@{/image(fname=${product.image})}" 
-                                         alt="product" 
-                                         style="height:32px; border-radius:6px;"/>
-                                    <span th:if="${product.image == null or product.image.isEmpty()}" class="text-muted">(chưa có)</span>
-                                </td>
-                                <td class="text-end">
-                                    <a th:href="@{'/admin/products/edit/'+ ${product.id}}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post" class="d-inline" 
-                                          onsubmit="return confirm('Xóa sản phẩm này?')">
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tbody id="productsTableBody">
+                            <!-- Products will be loaded here via GraphQL + AJAX -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Pagination -->
-            <div class="card-footer text-muted">
+            <div class="card-footer text-muted" id="paginationContainer" style="display: none;">
                 <div class="row">
                     <div class="col-3">
-                        <form method="get" th:action="@{/admin/products/searchpaginated}">
                             <div class="mb-3 input-group float-left">
-                                <label for="size" class="mr-2">Kích thước trang:</label>
-                                <select class="form-select ml-2" name="size" aria-label="size" id="size" onchange="this.form.submit()">
-                                    <option th:selected="${productPage.size == 3}" value="3">3</option>
-                                    <option th:selected="${productPage.size == 5}" value="5">5</option>
-                                    <option th:selected="${productPage.size == 10}" value="10">10</option>
-                                    <option th:selected="${productPage.size == 15}" value="15">15</option>
-                                    <option th:selected="${productPage.size == 20}" value="20">20</option>
+                            <label for="pageSize" class="mr-2">Kích thước trang:</label>
+                            <select class="form-select ml-2" name="pageSize" aria-label="pageSize" id="pageSize">
+                                <option value="3">3</option>
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
                                 </select>
                             </div>
-                        </form>
                     </div>
                     <div class="col-7">
                         <nav aria-label="Page navigation">
-                            <ul th:if="${productPage.totalPages > 0}" class="pagination justify-content-center">
-                                <li th:class="${productPage.number + 1 == 1 ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/products/searchpaginated(keyword=${keyword}, size=${productPage.size}, page=${1})}">Đầu</a>
-                                </li>
-                                <li th:each="pageNumber: ${pageNumbers}" th:if="${productPage.totalPages > 1}" 
-                                    th:class="${pageNumber == productPage.number + 1 ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/products/searchpaginated(keyword=${keyword}, size=${productPage.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
-                                </li>
-                                <li th:class="${productPage.number + 1 == productPage.totalPages ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/products/searchpaginated(keyword=${keyword}, size=${productPage.size}, page=${productPage.totalPages})}">Cuối</a>
-                                </li>
+                            <ul id="pagination" class="pagination justify-content-center">
+                                <!-- Pagination will be generated here -->
                             </ul>
                         </nav>
                     </div>
@@ -144,7 +101,318 @@
             </div>
         </div>
     </div>
+</div>
 
+<div layout:fragment="scripts">
+    <script>
+        // GraphQL endpoint
+        const GRAPHQL_ENDPOINT = '/graphql';
 
-</body>
-</html>
+        // Pagination state
+        let currentPage = 1;
+        let pageSize = 5;
+        let totalPages = 0;
+        let currentKeyword = '';
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
+            document.getElementById('productsTable').style.display = show ? 'none' : 'block';
+            document.getElementById('noDataMessage').style.display = 'none';
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.querySelector('.container-fluid');
+            const alertClass = type === 'error' ? 'alert-danger' : 
+                             type === 'success' ? 'alert-success' : 'alert-info';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.insertBefore(alertDiv, alertContainer.firstChild);
+        }
+
+        // Execute GraphQL query
+        async function executeGraphQL(query, variables = {}) {
+            try {
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: variables
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error('GraphQL Error:', error);
+                showAlert('Lỗi: ' + error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Load products with pagination
+        async function loadProducts() {
+            console.log('Loading products - keyword:', currentKeyword, 'page:', currentPage, 'pageSize:', pageSize);
+            showLoading(true);
+            
+            try {
+                let products = [];
+                
+                if (currentKeyword) {
+                    // Use GraphQL search for keyword
+                    const searchQuery = `
+                        query SearchProducts($keyword: String!) {
+                            searchProducts(keyword: $keyword) {
+                                id
+                                productName
+                                description
+                                price
+                                stock
+                                purchases
+                                image
+                                category {
+                                    id
+                                    categoryName
+                                }
+                                user {
+                                    id
+                                    fullName
+                                    userName
+                                }
+                            }
+                        }
+                    `;
+                    
+                    const data = await executeGraphQL(searchQuery, { keyword: currentKeyword });
+                    products = data.searchProducts || [];
+                } else {
+                    // Load all products
+                    const query = `
+                        query {
+                            products {
+                                id
+                                productName
+                                description
+                                price
+                                stock
+                                purchases
+                                image
+                                category {
+                                    id
+                                    categoryName
+                                }
+                                user {
+                                    id
+                                    fullName
+                                    userName
+                                }
+                            }
+                        }
+                    `;
+                    
+                    const data = await executeGraphQL(query);
+                    products = data.products || [];
+                }
+
+                // Calculate pagination
+                totalPages = Math.ceil(products.length / pageSize);
+                const startIndex = (currentPage - 1) * pageSize;
+                const endIndex = startIndex + pageSize;
+                const paginatedProducts = products.slice(startIndex, endIndex);
+
+                console.log('Products loaded:', products.length, 'Total pages:', totalPages, 'Current page:', currentPage);
+                console.log('Paginated products:', paginatedProducts.length);
+
+                displayProducts(paginatedProducts);
+                updatePagination();
+
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showAlert('Lỗi tải dữ liệu: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Display products
+        function displayProducts(products) {
+            const tbody = document.getElementById('productsTableBody');
+            const noDataMessage = document.getElementById('noDataMessage');
+            const productsTable = document.getElementById('productsTable');
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            if (!products || products.length === 0) {
+                tbody.innerHTML = '';
+                noDataMessage.style.display = 'block';
+                productsTable.style.display = 'none';
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            tbody.innerHTML = products.map(product => `
+                <tr>
+                    <td scope="row">${product.id}</td>
+                    <td>
+                        <div>
+                            <strong>${product.productName}</strong>
+                            <br>
+                            <small class="text-muted">${product.description || ''}</small>
+                        </div>
+                    </td>
+                    <td>${product.category?.categoryName || 'N/A'}</td>
+                    <td>
+                        <span class="badge bg-secondary">${product.user?.id || 'N/A'}</span>
+                    </td>
+                    <td>${formatPrice(product.price)} VNĐ</td>
+                    <td>
+                        <span class="${product.stock > 10 ? 'text-success fw-bold' : product.stock > 0 ? 'text-warning fw-bold' : 'text-danger fw-bold'}">${product.stock || 0}</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-info">${product.purchases || 0}</span>
+                    </td>
+                    <td>
+                        ${                            product.image ? 
+                            `<img src="/image?fname=${product.image}" alt="product" style="height:32px; border-radius:6px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                            `<div style="display:none; height:32px; width:32px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:6px; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>` :
+                            `<div style="height:32px; width:32px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>`
+                        }
+                    </td>
+                    <td class="text-end">
+                        <a href="/admin/products/edit/${product.id}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${product.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            noDataMessage.style.display = 'none';
+            productsTable.style.display = 'table';
+            paginationContainer.style.display = 'block';
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // First page
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="goToPage(1)">Đầu</a>
+                </li>
+            `;
+
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="goToPage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Last page
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="goToPage(${totalPages})">Cuối</a>
+                </li>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Go to specific page
+        function goToPage(page) {
+            currentPage = page;
+            loadProducts();
+        }
+
+        // Format price
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN').format(price);
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                return;
+            }
+
+            console.log('Deleting product with ID:', productId);
+
+            const mutation = `
+                mutation DeleteProduct($id: Int!) {
+                    deleteProduct(id: $id)
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(mutation, { id: productId });
+                
+                if (data.deleteProduct) {
+                    showAlert('Xóa sản phẩm thành công!', 'success');
+                    loadProducts(); // Reload products
+                } else {
+                    showAlert('Không thể xóa sản phẩm!', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showAlert('Lỗi xóa sản phẩm: ' + error.message, 'error');
+            }
+        }
+
+        // Search products
+        function searchProducts() {
+            currentKeyword = document.getElementById('keyword').value.trim();
+            console.log('Searching for keyword:', currentKeyword);
+            currentPage = 1; // Reset to first page
+            loadProducts();
+        }
+
+        // Change page size
+        function changePageSize() {
+            pageSize = parseInt(document.getElementById('pageSize').value);
+            currentPage = 1; // Reset to first page
+            loadProducts();
+        }
+
+        // Event listeners
+        document.getElementById('pageSize').addEventListener('change', changePageSize);
+        document.getElementById('keyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
+    </script>
+</div>

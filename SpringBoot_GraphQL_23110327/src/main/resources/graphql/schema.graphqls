@@ -14,14 +14,12 @@ type User {
   roleid: Int!
   phone: String
   createdDate: String
-  products: [Product!]!
 }
 
 type Category {
   id: Int!
   categoryName: String!
   images: String
-  products: [Product!]!
 }
 
 type Product {
@@ -30,7 +28,7 @@ type Product {
   description: String
   image: String
   price: Float!
-  purchases: Long!
+  purchases: Int!
   stock: Int
   category: Category
   user: User
@@ -60,7 +58,7 @@ input ProductInput {
   description: String
   image: String
   price: Float!
-  purchases: Long
+  purchases: Int
   stock: Int
   categoryId: Int!
   userId: Int!
@@ -75,10 +73,12 @@ type Query {
   users: [User!]!
   user(id: Int!): User
   userByUsername(username: String!): User
+  searchUsers(keyword: String!): [User!]!
 
   # Category Queries
   categories: [Category!]!
   category(id: Int!): Category
+  searchCategories(keyword: String!): [Category!]!
 
   # Product Queries
   products: [Product!]!
@@ -86,6 +86,7 @@ type Query {
   productsByCategory(categoryId: Int!): [Product!]!
   productsByUser(userId: Int!): [Product!]!
   searchProducts(keyword: String!): [Product!]!
+  productsByPriceAsc: [Product!]!
 }
 
 # ===========================================

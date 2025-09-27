@@ -1,22 +1,23 @@
-package vn.ngocthang.controllers;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.stereotype.Controller;
-import vn.ngocthang.entity.Category;
-import vn.ngocthang.services.CategoryService;
+package vn.ngocthang.controllers.admin;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import vn.ngocthang.entity.Category;
+import vn.ngocthang.services.CategoryService;
 
 /**
  * GraphQL Controller cho Category
  * Chỉ xử lý các operations liên quan đến Category
  */
 @Controller
-public class CategoryGraphQLController {
+public class AdminCategoryGraphQLController {
 
     @Autowired
     private CategoryService categoryService;
@@ -38,6 +39,15 @@ public class CategoryGraphQLController {
     public Category category(@Argument("id") Integer id) {
         Optional<Category> category = categoryService.findById(id);
         return category.orElse(null);
+    }
+
+    /**
+     * Query: Tìm kiếm categories theo keyword
+     * GraphQL: searchCategories(keyword: String!): [Category!]!
+     */
+    @QueryMapping
+    public List<Category> searchCategories(@Argument("keyword") String keyword) {
+        return categoryService.findByCategoryNameContainingIgnoreCase(keyword);
     }
 
     /**

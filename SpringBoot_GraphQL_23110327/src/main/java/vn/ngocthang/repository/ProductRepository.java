@@ -34,6 +34,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p ORDER BY p.purchases DESC")
     List<Product> findTop4ByOrderByPurchasesDesc();
     
+    // Lấy sản phẩm theo giá tăng dần
+    @Query("SELECT p FROM Product p ORDER BY p.price ASC")
+    List<Product> findAllByOrderByPriceAsc();
+    
     // Tìm sản phẩm theo khoảng giá
     List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
     

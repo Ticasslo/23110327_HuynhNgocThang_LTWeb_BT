@@ -95,7 +95,7 @@
             <artifactId>thymeleaf-layout-dialect</artifactId>
         </dependency>
 		
-		 <!-- GraphQL Dependencies -->
+        <!-- GraphQL Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-graphql</artifactId>

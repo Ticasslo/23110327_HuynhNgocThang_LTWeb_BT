@@ -2,55 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/layout.html}">
-<head>
-    <title th:text="${pageTitle}">Tìm kiếm danh mục (Phân trang)</title>
-</head>
-<body>
+
     <div layout:fragment="content">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="m-0"><i class="bi bi-folder2-open"></i> <span th:text="#{iotstar.value.listCate}">Danh sách danh mục</span></h3>
-                <a th:href="@{/admin/categories/add}" class="btn btn-primary"><i class="bi bi-plus"></i> <span th:text="#{iotstar.value.addCate}">Thêm danh mục</span></a>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="m-0">
+                    <i class="bi bi-folder2-open"></i> 
+                    Tìm kiếm danh mục phân trang (GraphQL)
+                </h3>
+                <a href="/admin/categories/add" class="btn btn-primary">
+                    <i class="bi bi-plus"></i> Thêm danh mục
+                </a>
             </div>
 
-            <!-- Hiển thị thông báo -->
-            <div th:if="${message != null}" class="alert alert-primary" role="alert">
-                <i>[[${message}]]</i>
+    <!-- Alert Messages -->
+    <div id="alertContainer">
+        <!-- Alerts will be shown here via JavaScript -->
             </div>
-            <!-- Hết thông báo -->
 
-            <div class="row mt-2 mb-2">
-                <div class="col-md-6">
-                    <form th:action="@{/admin/categories/searchpaginated}" method="get">
-                        <div class="input-group">
-                            <input type="text" class="form-control ml-2" name="keyword" id="keyword" 
-                                   th:value="${keyword}" placeholder="Nhập từ khóa để tìm" />
-                            <button class="btn btn-outline-primary ml-2" type="submit">
+    <!-- Search Form -->
+    <div class="row g-2 mb-3">
+        <div class="col-sm-4 col-md-3">
+            <input type="text" id="searchKeyword" class="form-control" placeholder="Nhập từ khóa để tìm..." />
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-primary" onclick="searchCategories()">
                                 <i class="bi bi-search"></i> Tìm kiếm
                             </button>
-                            <a th:href="@{/admin/categories}" class="btn btn-outline-info ml-2">
+            <a href="/admin/categories" class="btn btn-outline-info ms-2">
                                 <i class="bi bi-list"></i> Danh sách đầy đủ
                             </a>
                         </div>
-                    </form>
+    </div>
+
+    <!-- Page Size Selector -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="pageSize" class="form-label">Kích thước trang:</label>
+            <select id="pageSize" class="form-select" onchange="changePageSize()">
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">Danh sách danh mục</div>
-                <div class="card-body">
-                    <!-- Hiển thị khi không có dữ liệu -->
-                    <div th:if="${!categoryPage.hasContent()}" class="row">
-                        <div class="col">
-                            <div class="alert alert-danger" role="alert">
-                                <i class="bi bi-exclamation-triangle"></i> Không tìm thấy danh mục nào
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="text-center py-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
                             </div>
-                        </div>
+        <p class="mt-2">Đang tải danh sách danh mục...</p>
                     </div>
 
-                    <!-- Bảng danh sách -->
-                    <table th:if="${categoryPage.hasContent()}" class="table table-striped table-inverse table-responsive">
-                        <thead class="thead-inverse">
+    <!-- Categories Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Danh sách danh mục</h5>
+            <span id="categoryCount" class="badge bg-primary">0 danh mục</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
                             <tr>
                                 <th style="width: 80px;">ID</th>
                                 <th>Tên danh mục</th>
@@ -58,70 +72,306 @@
                                 <th style="width: 160px;" class="text-end">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr th:each="category, iStat: ${categoryPage.content}">
-                                <td scope="row">[[${category.id}]]</td>
-                                <td th:text="${category.categoryName}"></td>
-                                <td>
-                                    <img th:if="${category.images != null and !category.images.isEmpty()}" 
-                                         th:src="@{/image(fname=${category.images})}" 
-                                         alt="icon" 
-                                         style="height:32px; border-radius:6px;"/>
-                                    <span th:if="${category.images == null or category.images.isEmpty()}" class="text-muted">(chưa có)</span>
-                                </td>
-                                <td class="text-end">
-                                    <a th:href="@{'/admin/categories/edit/'+ ${category.id}}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form th:action="@{/admin/categories/delete/{id}(id=${category.id})}" method="post" class="d-inline" 
-                                          onsubmit="return confirm('Xóa danh mục này?')">
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
+                <tbody id="categoriesTableBody">
+                    <!-- Categories will be loaded here via JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Pagination -->
-            <div class="card-footer text-muted">
-                <div class="row">
-                    <div class="col-3">
-                        <form method="get" th:action="@{/admin/categories/searchpaginated}">
-                            <div class="mb-3 input-group float-left">
-                                <label for="size" class="mr-2">Kích thước trang:</label>
-                                <select class="form-select ml-2" name="size" aria-label="size" id="size" onchange="this.form.submit()">
-                                    <option th:selected="${categoryPage.size == 3}" value="3">3</option>
-                                    <option th:selected="${categoryPage.size == 5}" value="5">5</option>
-                                    <option th:selected="${categoryPage.size == 10}" value="10">10</option>
-                                    <option th:selected="${categoryPage.size == 15}" value="15">15</option>
-                                    <option th:selected="${categoryPage.size == 20}" value="20">20</option>
-                                </select>
+    <div class="card-footer">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <span id="paginationInfo" class="text-muted">Hiển thị 0 - 0 của 0 danh mục</span>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-7">
+            <div class="col-md-6">
                         <nav aria-label="Page navigation">
-                            <ul th:if="${categoryPage.totalPages > 0}" class="pagination justify-content-center">
-                                <li th:class="${categoryPage.number + 1 == 1 ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/categories/searchpaginated(keyword=${keyword}, size=${categoryPage.size}, page=${1})}">Đầu</a>
-                                </li>
-                                <li th:each="pageNumber: ${pageNumbers}" th:if="${categoryPage.totalPages > 1}" 
-                                    th:class="${pageNumber == categoryPage.number + 1 ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/categories/searchpaginated(keyword=${keyword}, size=${categoryPage.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
-                                </li>
-                                <li th:class="${categoryPage.number + 1 == categoryPage.totalPages ? 'page-item active' : 'page-item'}">
-                                    <a class="page-link" th:href="@{/admin/categories/searchpaginated(keyword=${keyword}, size=${categoryPage.size}, page=${categoryPage.totalPages})}">Cuối</a>
-                                </li>
+                    <ul id="pagination" class="pagination justify-content-end mb-0">
+                        <!-- Pagination will be generated here -->
                             </ul>
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
+<div layout:fragment="scripts">
+    <script>
+        // GraphQL endpoint
+        const GRAPHQL_ENDPOINT = '/graphql';
 
-</body>
-</html>
+        // Pagination state
+        let currentPage = 1;
+        let pageSize = 5;
+        let currentKeyword = '';
+        let allCategories = [];
+        let totalPages = 0;
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'error' ? 'alert-danger' : 
+                             type === 'success' ? 'alert-success' : 'alert-info';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+        }
+
+        // Show/hide loading spinner
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            const table = document.querySelector('.card');
+            if (show) {
+                spinner.style.display = 'block';
+                table.style.display = 'none';
+            } else {
+                spinner.style.display = 'none';
+                table.style.display = 'block';
+            }
+        }
+
+        // Execute GraphQL query
+        async function executeGraphQL(query, variables = {}) {
+            try {
+                const response = await fetch(GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: variables
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error('GraphQL Error:', error);
+                showAlert('Lỗi: ' + error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Load categories
+        async function loadCategories() {
+            console.log('Loading categories...');
+            showLoading(true);
+
+            let query;
+            let variables = {};
+
+            if (currentKeyword) {
+                query = `
+                    query SearchCategories($keyword: String!) {
+                        searchCategories(keyword: $keyword) {
+                            id
+                            categoryName
+                            images
+                        }
+                    }
+                `;
+                variables = { keyword: currentKeyword };
+            } else {
+                query = `
+                    query {
+                        categories {
+                            id
+                            categoryName
+                            images
+                        }
+                    }
+                `;
+            }
+
+            try {
+                const data = await executeGraphQL(query, variables);
+                allCategories = currentKeyword ? data.searchCategories : data.categories;
+                console.log('Categories loaded:', allCategories);
+                
+                // Calculate pagination
+                totalPages = Math.ceil(allCategories.length / pageSize);
+                currentPage = Math.min(currentPage, totalPages || 1);
+                
+                displayCategories();
+                updatePagination();
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Display categories with pagination
+        function displayCategories() {
+            const tbody = document.getElementById('categoriesTableBody');
+            const countBadge = document.getElementById('categoryCount');
+            
+            if (!allCategories || allCategories.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="bi bi-folder-x"></i> Không có danh mục nào
+                        </td>
+                    </tr>
+                `;
+                countBadge.textContent = '0 danh mục';
+                updatePaginationInfo(0, 0, 0);
+                return;
+            }
+
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, allCategories.length);
+            const paginatedCategories = allCategories.slice(startIndex, endIndex);
+
+            countBadge.textContent = `${allCategories.length} danh mục`;
+            updatePaginationInfo(startIndex + 1, endIndex, allCategories.length);
+
+            tbody.innerHTML = paginatedCategories.map(category => `
+                <tr>
+                    <td>${category.id}</td>
+                    <td>${category.categoryName}</td>
+                           <td>
+                               ${category.images ? 
+                                   `<img src="/image?fname=${category.images}" alt="Category Icon" style="height:40px; width:60px; object-fit:cover; border-radius:4px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                                   `<div style="display:none; height:40px; width:60px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:4px; display:flex; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>` :
+                                   `<div style="height:40px; width:60px; background:#f8f9fa; border:1px solid #dee2e6; border-radius:4px; display:flex; align-items:center; justify-content:center;"><i class="bi bi-image text-muted"></i></div>`
+                               }
+                           </td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary" href="/admin/categories/edit/${category.id}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${category.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update pagination info
+        function updatePaginationInfo(start, end, total) {
+            const info = document.getElementById('paginationInfo');
+            info.textContent = `Hiển thị ${start} - ${end} của ${total} danh mục`;
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="goToPage(${currentPage - 1})">Trước</a>
+                </li>
+            `;
+
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="goToPage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="goToPage(${currentPage + 1})">Sau</a>
+                </li>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Go to specific page
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            displayCategories();
+            updatePagination();
+        }
+
+        // Search categories
+        function searchCategories() {
+            currentKeyword = document.getElementById('searchKeyword').value.trim();
+            console.log('Searching for keyword:', currentKeyword);
+            currentPage = 1;
+            loadCategories();
+        }
+
+        // Change page size
+        function changePageSize() {
+            pageSize = parseInt(document.getElementById('pageSize').value);
+            currentPage = 1;
+            displayCategories();
+            updatePagination();
+        }
+
+        // Delete category
+        async function deleteCategory(categoryId) {
+            if (!confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+                return;
+            }
+
+            console.log('Deleting category with ID:', categoryId);
+
+            const mutation = `
+                mutation DeleteCategory($id: Int!) {
+                    deleteCategory(id: $id)
+                }
+            `;
+
+            try {
+                const data = await executeGraphQL(mutation, { id: categoryId });
+                
+                if (data.deleteCategory) {
+                    showAlert('Xóa danh mục thành công!', 'success');
+                    loadCategories(); // Reload categories
+                } else {
+                    showAlert('Không thể xóa danh mục!', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showAlert('Lỗi xóa danh mục: ' + error.message, 'error');
+            }
+        }
+
+        // Search on Enter key
+        document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCategories();
+            }
+        });
+
+        // Load categories when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, starting to load categories...');
+            loadCategories();
+        });
+    </script>
+</div>

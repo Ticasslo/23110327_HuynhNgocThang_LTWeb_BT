@@ -18,6 +18,7 @@ public interface ProductService {
     List<Product> findByUserId(Integer userId);
     List<Product> findTop4ByOrderByIdDesc();
     List<Product> findTop4ByOrderByPurchasesDesc();
+    List<Product> findAllByOrderByPriceAsc();
     long count();
     Long sumPurchases();
 }

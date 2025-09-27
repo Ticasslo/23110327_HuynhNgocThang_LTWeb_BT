@@ -91,6 +91,31 @@
             </div>
         </div>
 
+        <!-- Products by Price Section -->
+        <div class="container my-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3><i class="bi bi-sort-down"></i> Sản phẩm giá thấp đến cao (GraphQL)</h3>
+                <button class="btn btn-outline-primary" onclick="loadProductsByPrice()">
+                    <i class="bi bi-arrow-clockwise"></i> Tải lại
+                </button>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div id="priceLoadingSpinner" class="text-center py-4" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="mt-2">Đang tải sản phẩm theo giá...</p>
+            </div>
+            
+            <!-- Products by Price -->
+            <div id="productsByPriceContainer">
+                <div class="row" id="productsByPriceRow">
+                    <!-- Products will be loaded here via JavaScript -->
+                </div>
+            </div>
+        </div>
+
         <!-- Welcome Message -->
         <div class="container my-5">
             <div class="row">
@@ -105,6 +130,150 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div layout:fragment="scripts">
+        <script>
+            // GraphQL endpoint
+            const GRAPHQL_ENDPOINT = '/graphql';
+
+            // Show/hide loading spinner
+            function showPriceLoading(show) {
+                const spinner = document.getElementById('priceLoadingSpinner');
+                const container = document.getElementById('productsByPriceContainer');
+                if (show) {
+                    spinner.style.display = 'block';
+                    container.style.display = 'none';
+                } else {
+                    spinner.style.display = 'none';
+                    container.style.display = 'block';
+                }
+            }
+
+            // Execute GraphQL query
+            async function executeGraphQL(query, variables = {}) {
+                try {
+                    const response = await fetch(GRAPHQL_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: query,
+                            variables: variables
+                        })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.errors) {
+                        throw new Error(result.errors[0].message);
+                    }
+                    
+                    return result.data;
+                } catch (error) {
+                    console.error('GraphQL Error:', error);
+                    throw error;
+                }
+            }
+
+            // Load products by price (ascending)
+            async function loadProductsByPrice() {
+                console.log('Loading products by price...');
+                showPriceLoading(true);
+
+                const query = `
+                    query {
+                        productsByPriceAsc {
+                            id
+                            productName
+                            description
+                            image
+                            price
+                            purchases
+                            stock
+                            category {
+                                id
+                                categoryName
+                            }
+                            user {
+                                id
+                                fullName
+                                userName
+                            }
+                        }
+                    }
+                `;
+
+                try {
+                    const data = await executeGraphQL(query);
+                    console.log('Products by price loaded:', data.productsByPriceAsc);
+                    displayProductsByPrice(data.productsByPriceAsc);
+                } catch (error) {
+                    console.error('Error loading products by price:', error);
+                    document.getElementById('productsByPriceRow').innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger text-center">
+                                <i class="bi bi-exclamation-triangle"></i> Lỗi tải sản phẩm: ${error.message}
+                            </div>
+                        </div>
+                    `;
+                } finally {
+                    showPriceLoading(false);
+                }
+            }
+
+            // Display products by price
+            function displayProductsByPrice(products) {
+                const row = document.getElementById('productsByPriceRow');
+                
+                if (!products || products.length === 0) {
+                    row.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <i class="bi bi-info-circle"></i> Không có sản phẩm nào
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                row.innerHTML = products.map(product => `
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <div class="product-thumbnail">
+                                ${product.image ? 
+                                    `<img src="/image?fname=${product.image}" alt="Product Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` +
+                                    `<div style="display:none; align-items: center; justify-content: center; width: 100%; height: 100%;"><i class="bi bi-box" style="font-size: 3rem;"></i></div>` :
+                                    `<div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;"><i class="bi bi-box" style="font-size: 3rem;"></i></div>`
+                                }
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${product.productName}</h5>
+                                <p class="card-text text-muted">${product.description || 'Không có mô tả'}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-primary fw-bold">${new Intl.NumberFormat('vi-VN').format(product.price)} VNĐ</span>
+                                    <small class="text-muted">
+                                        <i class="bi bi-eye"></i> ${product.purchases || 0} lượt mua
+                                    </small>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-tag"></i> ${product.category?.categoryName || 'Không có danh mục'}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Load products by price when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Page loaded, starting to load products by price...');
+                loadProductsByPrice();
+            });
+        </script>
     </div>
 </body>
 </html>
