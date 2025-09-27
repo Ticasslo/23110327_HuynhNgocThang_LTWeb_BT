@@ -14,5 +14,6 @@ public interface CategoryService {
     void deleteById(Integer id);
     List<Category> findByCategoryNameContainingIgnoreCase(String categoryName);
     Page<Category> findByCategoryNameContainingIgnoreCase(String categoryName, Pageable pageable);
+    Optional<Category> findByCategoryName(String categoryName);
     long count();
 }

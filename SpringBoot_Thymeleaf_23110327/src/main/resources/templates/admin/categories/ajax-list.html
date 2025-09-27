@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout.html}">
+<head>
+    <title>Quản lý danh mục - AJAX</title>
+    <style>
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0"><i class="bi bi-folder2-open"></i> Quản lý danh mục (AJAX)</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal" onclick="openAddModal()">
+                    <i class="bi bi-plus"></i> Thêm danh mục
+                            </button>
+                        </div>
+
+            <!-- Alert Messages -->
+            <div id="alertContainer"></div>
+
+            <!-- Search Form -->
+            <div class="row g-2 mb-3">
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" id="searchKeyword" class="form-control" placeholder="Tìm theo tên..." />
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-primary" onclick="searchCategories()">
+                                                <i class="bi bi-search"></i> Tìm kiếm
+                                            </button>
+                    <button class="btn btn-outline-secondary" onclick="loadCategories()">
+                                            <i class="bi bi-arrow-clockwise"></i> Làm mới
+                                        </button>
+                                </div>
+                            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading">
+                                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+
+                            <!-- Categories Table -->
+            <div class="card">
+                            <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                                        <tr>
+                                <th style="width: 80px;">ID</th>
+                                            <th>Tên danh mục</th>
+                                <th style="width: 140px;">Biểu tượng</th>
+                                <th style="width: 160px;" class="text-end">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="categoriesTableBody">
+                                        <!-- Data will be loaded here via AJAX -->
+                                    </tbody>
+                                </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Modal -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="categoryModalLabel">Thêm danh mục</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="categoryForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                            <input type="hidden" id="categoryId" name="id">
+                            
+                            <div class="form-group">
+                                <label for="categoryName" class="form-label">Tên danh mục <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="categoryImages" class="form-label">Hình ảnh</label>
+                                <input type="file" class="form-control" id="categoryImages" name="images" accept="image/*" onchange="previewImage(this)">
+                                <div id="imagePreview"></div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary" id="saveButton">Lưu</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="scripts">
+        console.log("=== Script đã được load ===");
+        
+        let currentCategoryId = null;
+
+        // Load categories on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("=== DOM Content Loaded ===");
+            loadCategories();
+        });
+
+        // Load all categories
+        function loadCategories() {
+            showLoading(true);
+            console.log('Đang gọi API: /api/category');
+            fetch('/api/category')
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('API Response:', data);
+                    showLoading(false);
+                    if (data.status) {
+                        renderCategoriesTable(data.body);
+                    } else {
+                        showAlert('error', 'Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi AJAX:', error);
+                    showLoading(false);
+                    showAlert('error', 'Lỗi khi tải danh sách: ' + error.message);
+                });
+        }
+
+        // Search categories
+        function searchCategories() {
+            const keyword = document.getElementById('searchKeyword').value;
+            if (!keyword.trim()) {
+                loadCategories();
+                return;
+            }
+
+            showLoading(true);
+            fetch(`/api/category/search?name=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    showLoading(false);
+                    if (data.status) {
+                        renderCategoriesTable(data.body);
+                    } else {
+                        showAlert('error', 'Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    showLoading(false);
+                    showAlert('error', 'Lỗi khi tìm kiếm: ' + error.message);
+                });
+        }
+
+        // Render categories table
+        function renderCategoriesTable(categories) {
+            const tbody = document.getElementById('categoriesTableBody');
+            if (categories.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Không có dữ liệu</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = categories.map(category => `
+                <tr>
+                    <td>${category.category_id || category.id}</td>
+                    <td>${category.categoryName}</td>
+                    <td>
+                        ${category.images ? 
+                            `<img src="/image?fname=${category.images}" alt="icon" style="height:32px; border-radius:6px;"/>` : 
+                            '<span class="text-muted">(chưa có)</span>'
+                        }
+                    </td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="editCategory(${category.category_id || category.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${category.category_id || category.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Open add modal
+        function openAddModal() {
+            currentCategoryId = null;
+            document.getElementById('categoryModalLabel').textContent = 'Thêm danh mục';
+            document.getElementById('saveButton').textContent = 'Lưu';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        // Edit category
+        function editCategory(id) {
+            currentCategoryId = id;
+            fetch(`/api/category/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        const category = data.body;
+                        document.getElementById('categoryModalLabel').textContent = 'Sửa danh mục';
+                        document.getElementById('saveButton').textContent = 'Cập nhật';
+                        document.getElementById('categoryId').value = category.category_id || category.id;
+                        document.getElementById('categoryName').value = category.categoryName;
+                        
+                        // Show current image
+                        if (category.images) {
+                            document.getElementById('imagePreview').innerHTML = 
+                                `<img src="/image?fname=${category.images}" class="preview-image" alt="Current image">`;
+                        }
+                        
+                        const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+                        modal.show();
+                    } else {
+                        showAlert('error', 'Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi load category:', error);
+                    showAlert('error', 'Lỗi khi tải thông tin danh mục: ' + error.message);
+                });
+        }
+
+        // Delete category
+        function deleteCategory(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+                fetch(`/api/category/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        showAlert('success', 'Xóa danh mục thành công!');
+                        loadCategories();
+                    } else {
+                        showAlert('error', 'Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    showAlert('error', 'Lỗi khi xóa danh mục: ' + error.message);
+                });
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('categoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('categoryName', document.getElementById('categoryName').value);
+            
+            const imageFile = document.getElementById('categoryImages').files[0];
+            if (imageFile) {
+                formData.append('images', imageFile);
+            }
+
+            const url = currentCategoryId ? `/api/category/${currentCategoryId}` : '/api/category';
+            const method = currentCategoryId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    showAlert('success', currentCategoryId ? 'Cập nhật danh mục thành công!' : 'Thêm danh mục thành công!');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('categoryModal'));
+                    modal.hide();
+                    loadCategories();
+                } else {
+                    showAlert('error', 'Lỗi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                showAlert('error', 'Lỗi khi lưu danh mục: ' + error.message);
+            });
+        });
+
+        // Preview image
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        // Show alert
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+            
+            alertContainer.innerHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    <i class="bi ${icon}"></i> ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                const alert = alertContainer.querySelector('.alert');
+                if (alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        }
+</script>

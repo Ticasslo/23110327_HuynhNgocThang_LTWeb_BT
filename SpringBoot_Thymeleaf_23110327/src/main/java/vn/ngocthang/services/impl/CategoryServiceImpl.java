@@ -75,4 +75,9 @@ public class CategoryServiceImpl implements CategoryService {
     public long count() {
         return categoryRepository.count();
     }
+    
+    @Override
+    public Optional<Category> findByCategoryName(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName);
+    }
 }

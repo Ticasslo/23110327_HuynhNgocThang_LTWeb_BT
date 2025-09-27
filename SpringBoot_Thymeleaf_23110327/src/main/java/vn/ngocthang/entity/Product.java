@@ -3,6 +3,8 @@ package vn.ngocthang.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +19,7 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
+    @JsonProperty("product_id")
     private int id;
 
     @Column(name = "productName", columnDefinition = "NVARCHAR(255)")

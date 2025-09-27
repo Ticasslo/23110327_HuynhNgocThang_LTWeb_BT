@@ -185,5 +185,10 @@ public class AdminProductController {
         model.addAttribute("productPage", resultPage);
         return "admin/products/searchpaginated";
     }
+    
+    @GetMapping("/ajax")
+    public String ajaxList(ModelMap model) {
+        return "admin/products/ajax-list";
+    }
 
 }

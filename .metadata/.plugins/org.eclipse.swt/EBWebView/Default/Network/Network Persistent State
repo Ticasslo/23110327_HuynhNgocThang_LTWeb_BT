@@ -1,1 +1,1 @@
-{"net":{"http_server_properties":{"servers":[],"version":5},"network_qualities":{"CAISABiAgICA+P////8B":"4G"}}}
+{"net":{"http_server_properties":{"servers":[],"supports_quic":{"address":"2001:ee0:262:9b9c:915d:852f:854:6e96","used_quic":true},"version":5},"network_qualities":{"CAISABiAgICA+P////8B":"4G"}}}

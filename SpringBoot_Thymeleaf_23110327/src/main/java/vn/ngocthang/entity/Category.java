@@ -3,6 +3,8 @@ package vn.ngocthang.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +19,7 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
+    @JsonProperty("category_id")
     private int id;
 
     @Column(name = "categoryName", columnDefinition = "NVARCHAR(255)")
@@ -26,5 +29,6 @@ public class Category implements Serializable {
     private String images;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Product> products;
 }

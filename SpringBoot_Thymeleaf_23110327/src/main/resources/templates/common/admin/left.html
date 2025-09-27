@@ -15,12 +15,22 @@
         <a th:href="@{/admin/categories}" class="list-group-item list-group-item-action d-flex align-items-center">
             <i class="bi bi-folder2-open me-2"></i> Danh mục
         </a>
+        <a th:href="@{/admin/categories/ajax}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-folder2-open me-2"></i> Danh mục (AJAX)
+        </a>
         <a th:href="@{/admin/products}" class="list-group-item list-group-item-action d-flex align-items-center">
             <i class="bi bi-box me-2"></i> Sản phẩm
+        </a>
+        <a th:href="@{/admin/products/ajax}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-box me-2"></i> Sản phẩm (AJAX)
         </a>
         <h6 class="px-3 py-2 text-muted border-bottom mt-3">Quản lý người dùng</h6>
         <a th:href="@{/admin/users}" class="list-group-item list-group-item-action d-flex align-items-center">
             <i class="bi bi-people me-2"></i> Người dùng
+        </a>
+        <h6 class="px-3 py-2 text-muted border-bottom mt-3">API & Tài liệu</h6>
+        <a href="/swagger-ui.html" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bi bi-book me-2"></i> Swagger API Docs
         </a>
         <h6 class="px-3 py-2 text-muted border-bottom mt-3">Hệ thống</h6>
         <a th:href="@{/}" class="list-group-item list-group-item-action d-flex align-items-center">

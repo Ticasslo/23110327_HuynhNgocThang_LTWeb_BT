@@ -168,5 +168,10 @@ public class AdminCategoryController {
         model.addAttribute("categoryPage", resultPage);
         return "admin/categories/searchpaginated";
     }
+    
+    @GetMapping("/ajax")
+    public String ajaxList(ModelMap model) {
+        return "admin/categories/ajax-list";
+    }
 
 }

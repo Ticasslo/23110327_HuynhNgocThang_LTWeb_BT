@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import vn.ngocthang.entity.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
@@ -15,4 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     
     // Tìm kiếm và Phân trang
     Page<Category> findByCategoryNameContainingIgnoreCase(String keyword, Pageable pageable);
+    
+    // Tìm kiếm theo tên chính xác
+    Optional<Category> findByCategoryName(String categoryName);
 }
