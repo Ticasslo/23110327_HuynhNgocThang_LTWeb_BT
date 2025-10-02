@@ -5,12 +5,15 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import vn.ngocthang.dto.UserRegistrationDto;
 import vn.ngocthang.entity.User;
 import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.Constants;
@@ -41,6 +44,7 @@ public class RegisterController {
         }
         
         model.addAttribute("pageTitle", "Đăng ký - Product Manager");
+        model.addAttribute("userRegistrationDto", new UserRegistrationDto());
         
         // Thêm thông tin tác giả
         model.addAttribute("authorName", Constants.AUTHOR_NAME);
@@ -51,43 +55,44 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username,
-                          @RequestParam String password,
-                          @RequestParam String email,
-                          @RequestParam String fullname,
-                          @RequestParam String phone,
+    public String register(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationDto userRegistrationDto,
+                          BindingResult bindingResult,
                           Model model) {
         
+        // Kiểm tra validation errors
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("pageTitle", "Đăng ký - Product Manager");
+            return "web/register";
+        }
+        
         // Check email tồn tại
-        if (userService.checkExistEmail(email)) {
+        if (userService.checkExistEmail(userRegistrationDto.getEmail())) {
             model.addAttribute("alert", "Email đã tồn tại!");
-            // Thêm thông tin tác giả khi có lỗi
-            model.addAttribute("authorName", Constants.AUTHOR_NAME);
-            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
-            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+            model.addAttribute("pageTitle", "Đăng ký - Product Manager");
             return "web/register";
         }
 
         // Check username tồn tại
-        if (userService.checkExistUsername(username)) {
+        if (userService.checkExistUsername(userRegistrationDto.getUsername())) {
             model.addAttribute("alert", "Tài khoản đã tồn tại!");
-            // Thêm thông tin tác giả khi có lỗi
-            model.addAttribute("authorName", Constants.AUTHOR_NAME);
-            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
-            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+            model.addAttribute("pageTitle", "Đăng ký - Product Manager");
             return "web/register";
         }
 
         // Đăng ký
-        boolean isSuccess = userService.register(email, password, username, fullname, phone);
+        boolean isSuccess = userService.register(
+            userRegistrationDto.getEmail(), 
+            userRegistrationDto.getPassword(), 
+            userRegistrationDto.getUsername(), 
+            userRegistrationDto.getFullname(), 
+            userRegistrationDto.getPhone()
+        );
+        
         if (isSuccess) {
             return "redirect:/login";
         } else {
             model.addAttribute("alert", "System error!");
-            // Thêm thông tin tác giả khi có lỗi
-            model.addAttribute("authorName", Constants.AUTHOR_NAME);
-            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
-            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+            model.addAttribute("pageTitle", "Đăng ký - Product Manager");
             return "web/register";
         }
     }

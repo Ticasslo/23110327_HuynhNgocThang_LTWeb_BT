@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import vn.ngocthang.dto.ProductDto;
 import vn.ngocthang.entity.Category;
 import vn.ngocthang.entity.Product;
 import vn.ngocthang.entity.User;
@@ -30,6 +31,8 @@ import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.UploadHelper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -63,32 +66,52 @@ public class AdminProductController {
     public String add(ModelMap model, HttpServletRequest request) {
         List<Category> categories = categoryService.findAll();
         List<User> users = userService.findAll();
-        Product product = new Product();
+        ProductDto productDto = new ProductDto();
         // Chuyển dữ liệu từ model vào biến product để đưa lên view
-        model.addAttribute("product", product);
+        model.addAttribute("product", productDto);
         model.addAttribute("categories", categories);
         model.addAttribute("users", users);
         return "admin/products/addOrEdit";
     }
 
     @PostMapping("/saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @ModelAttribute("product") Product product, 
-                                   @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-                                   @RequestParam("categoryId") Integer categoryId,
-                                   @RequestParam("userId") Integer userId) {
+    public ModelAndView saveOrUpdate(ModelMap model, 
+                                   @Valid @ModelAttribute("product") ProductDto productDto,
+                                   BindingResult bindingResult,
+                                   @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        
+        // Kiểm tra validation errors
+        if (bindingResult.hasErrors()) {
+            List<Category> categories = categoryService.findAll();
+            List<User> users = userService.findAll();
+            model.addAttribute("categories", categories);
+            model.addAttribute("users", users);
+            return new ModelAndView("admin/products/addOrEdit", model);
+        }
+        
+        // Convert DTO to Entity
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setProductName(productDto.getProductName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setStock(productDto.getStock());
+        product.setPurchases(productDto.getPurchases() != null ? productDto.getPurchases() : 0L);
         
         // Xử lý upload image
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = UploadHelper.save(imageFile);
             product.setImage(fileName);
+        } else if (productDto.getImage() != null) {
+            product.setImage(productDto.getImage());
         }
         
         // Set category
-        Category category = categoryService.findById(categoryId).orElse(null);
+        Category category = categoryService.findById(productDto.getCategoryId()).orElse(null);
         product.setCategory(category);
         
         // Set user
-        User user = userService.findById(userId).orElse(null);
+        User user = userService.findById(productDto.getUserId()).orElse(null);
         product.setUser(user);
         
         // Gọi hàm save trong service
@@ -106,15 +129,25 @@ public class AdminProductController {
     public ModelAndView edit(ModelMap model, @PathVariable("productId") Integer productId) {
         // Kiểm tra sự tồn tại của product
         Optional<Product> optProduct = productService.findById(productId);
-        Product product = new Product();
         List<Category> categories = categoryService.findAll();
         List<User> users = userService.findAll();
         
         if (optProduct.isPresent()) {
-            // Copy từ entity sang product
-            product = optProduct.get();
+            // Convert Entity to DTO
+            Product product = optProduct.get();
+            ProductDto productDto = new ProductDto();
+            productDto.setId(product.getId());
+            productDto.setProductName(product.getProductName());
+            productDto.setDescription(product.getDescription());
+            productDto.setPrice(product.getPrice());
+            productDto.setStock(product.getStock());
+            productDto.setPurchases(product.getPurchases());
+            productDto.setImage(product.getImage());
+            productDto.setCategoryId(product.getCategory() != null ? product.getCategory().getId() : null);
+            productDto.setUserId(product.getUser() != null ? product.getUser().getId() : null);
+            
             // Đẩy dữ liệu ra view
-            model.addAttribute("product", product);
+            model.addAttribute("product", productDto);
             model.addAttribute("categories", categories);
             model.addAttribute("users", users);
             return new ModelAndView("admin/products/addOrEdit", model);

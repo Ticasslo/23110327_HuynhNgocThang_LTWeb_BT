@@ -47,8 +47,9 @@
                                    class="form-control" 
                                    id="productName" 
                                    th:field="*{productName}"
-                                   placeholder="Nhập tên sản phẩm"
-                                   required>
+                                   th:class="${#fields.hasErrors('productName')} ? 'form-control is-invalid' : 'form-control'"
+                                   placeholder="Nhập tên sản phẩm">
+                            <div th:if="${#fields.hasErrors('productName')}" class="invalid-feedback" th:errors="*{productName}"></div>
                         </div>
                     </div>
                     
@@ -57,14 +58,16 @@
                             <label for="categoryId" class="form-label">
                                 <i class="bi bi-folder2-open"></i> Danh mục <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select" id="categoryId" name="categoryId" required>
+                            <select class="form-select" id="categoryId" name="categoryId" 
+                                    th:class="${#fields.hasErrors('categoryId')} ? 'form-select is-invalid' : 'form-select'">
                                 <option value="">-- Chọn danh mục --</option>
                                 <option th:each="cat : ${categories}" 
                                         th:value="${cat.id}" 
                                         th:text="${cat.categoryName}"
-                                        th:selected="${product.category != null and product.category.id == cat.id}">
+                                        th:selected="${product.categoryId != null and product.categoryId == cat.id}">
                                 </option>
                             </select>
+                            <div th:if="${#fields.hasErrors('categoryId')}" class="invalid-feedback" th:errors="*{categoryId}"></div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +83,7 @@
                                 <option th:each="user : ${users}" 
                                         th:value="${user.id}" 
                                         th:text="${user.fullName + ' (' + user.userName + ')'}"
-                                        th:selected="${product.user != null and product.user.id == user.id}">
+                                        th:selected="${product.userId != null and product.userId == user.id}">
                                 </option>
                             </select>
                         </div>
@@ -97,10 +100,11 @@
                                    class="form-control" 
                                    id="price" 
                                    th:field="*{price}"
+                                   th:class="${#fields.hasErrors('price')} ? 'form-control is-invalid' : 'form-control'"
                                    placeholder="0.00"
                                    step="0.01"
-                                   min="0"
-                                   required>
+                                   min="0">
+                            <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback" th:errors="*{price}"></div>
                         </div>
                     </div>
                     
@@ -113,9 +117,10 @@
                                    class="form-control" 
                                    id="stock" 
                                    th:field="*{stock}"
+                                   th:class="${#fields.hasErrors('stock')} ? 'form-control is-invalid' : 'form-control'"
                                    placeholder="0"
-                                   min="0"
-                                   required>
+                                   min="0">
+                            <div th:if="${#fields.hasErrors('stock')}" class="invalid-feedback" th:errors="*{stock}"></div>
                         </div>
                     </div>
                     

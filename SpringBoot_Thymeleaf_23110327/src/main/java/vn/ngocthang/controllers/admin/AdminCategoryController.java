@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import vn.ngocthang.dto.CategoryDto;
 import vn.ngocthang.entity.Category;
 import vn.ngocthang.entity.Product;
 import vn.ngocthang.services.CategoryService;
@@ -17,6 +19,7 @@ import vn.ngocthang.services.ProductService;
 import vn.ngocthang.utils.Constants;
 import vn.ngocthang.utils.UploadHelper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,15 +54,30 @@ public class AdminCategoryController {
 
     @GetMapping("/add")
     public String add(ModelMap model) {
-        Category category = new Category();
+        CategoryDto categoryDto = new CategoryDto();
         // Chuyển dữ liệu từ model vào biến category để đưa lên view
-        model.addAttribute("category", category);
+        model.addAttribute("category", categoryDto);
         return "admin/categories/addOrEdit";
     }
 
     @PostMapping("/saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @ModelAttribute("category") Category category, 
+    public ModelAndView saveOrUpdate(ModelMap model, 
+                                   @Valid @ModelAttribute("category") CategoryDto categoryDto,
+                                   BindingResult bindingResult,
                                    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
+        
+        // Kiểm tra validation errors
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("admin/categories/addOrEdit", model);
+        }
+        
+        // Convert DTO to Entity
+        Category category = new Category();
+        // Chỉ set ID nếu không null (trường hợp edit)
+        if (categoryDto.getId() != null) {
+            category.setId(categoryDto.getId());
+        }
+        category.setCategoryName(categoryDto.getCategoryName());
         
         // Xử lý upload image
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -82,13 +100,17 @@ public class AdminCategoryController {
     public ModelAndView edit(ModelMap model, @PathVariable("categoryId") Integer categoryId) {
         // Kiểm tra sự tồn tại của category
         Optional<Category> optCategory = categoryService.findById(categoryId);
-        Category category = new Category();
         
         if (optCategory.isPresent()) {
-            // Copy từ entity sang category
-            category = optCategory.get();
+            // Convert Entity to DTO
+            Category category = optCategory.get();
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setId(category.getId());
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setImages(category.getImages());
+            
             // Đẩy dữ liệu ra view
-            model.addAttribute("category", category);
+            model.addAttribute("category", categoryDto);
             return new ModelAndView("admin/categories/addOrEdit", model);
         } else {
             model.addAttribute("message", "Category is not existed!!!!");

@@ -5,12 +5,15 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import vn.ngocthang.dto.UserLoginDto;
 import vn.ngocthang.entity.User;
 import vn.ngocthang.services.UserService;
 import vn.ngocthang.utils.Constants;
@@ -42,6 +45,7 @@ public class LoginController {
         }
 
         model.addAttribute("pageTitle", "Đăng nhập - Product Manager");
+        model.addAttribute("userLoginDto", new UserLoginDto());
         
         // Thêm thông tin tác giả
         model.addAttribute("authorName", Constants.AUTHOR_NAME);
@@ -52,36 +56,31 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, 
-                       @RequestParam String password,
-                       @RequestParam(required = false) String remember,
+    public String login(@Valid @ModelAttribute("userLoginDto") UserLoginDto userLoginDto,
+                       BindingResult bindingResult,
                        HttpServletRequest request, 
                        HttpServletResponse response,
                        Model model) throws IOException {
         
-        // Validate input
-        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            model.addAttribute("alert", "Tài khoản hoặc mật khẩu không được rỗng");
-            // Thêm thông tin tác giả khi có lỗi
-            model.addAttribute("authorName", Constants.AUTHOR_NAME);
-            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
-            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
+        // Kiểm tra validation errors
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("pageTitle", "Đăng nhập - Product Manager");
             return "web/login";
         }
 
         // Xử lý đăng nhập
-        User user = userService.login(username.trim(), password);
+        User user = userService.login(userLoginDto.getUsername().trim(), userLoginDto.getPassword());
 
         if (user != null) {
             // Đăng nhập thành công
             SessionUtils.setUser(request, user);
 
             // Lưu cookie remember me nếu được chọn
-            if ("on".equals(remember)) {
-                CookieUtils.saveRememberMe(response, username);
+            if ("on".equals(userLoginDto.getRemember())) {
+                CookieUtils.saveRememberMe(response, userLoginDto.getUsername());
             }
 
-            // Kiểm tra có URL redirect từ filter không
+            // Kiểm tra có URL redirect từ interceptor không
             String redirectUrl = SessionUtils.getRedirectUrl(request);
             if (redirectUrl != null) {
                 SessionUtils.removeRedirectUrl(request);
@@ -94,13 +93,7 @@ public class LoginController {
         } else {
             // Đăng nhập thất bại
             model.addAttribute("alert", "Tài khoản hoặc mật khẩu không đúng");
-            model.addAttribute("username", username); // Giữ lại username đã nhập
-            
-            // Thêm thông tin tác giả khi có lỗi
-            model.addAttribute("authorName", Constants.AUTHOR_NAME);
-            model.addAttribute("authorAvatar", Constants.AUTHOR_AVATAR);
-            model.addAttribute("authorStudentId", Constants.AUTHOR_STUDENT_ID);
-            
+            model.addAttribute("pageTitle", "Đăng nhập - Product Manager");
             return "web/login";
         }
     }
