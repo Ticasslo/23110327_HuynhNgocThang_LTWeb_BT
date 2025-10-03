@@ -19,8 +19,8 @@ GO
 
 -- Insert dữ liệu mẫu
 INSERT INTO UserInfo (name, email, password, roles) VALUES 
-('thang', 'thang@student.hcmute.edu.vn', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDi', 'ADMIN'),
-('user', 'user@student.hcmute.edu.vn', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDi', 'USER');
+('thang', 'thang@student.hcmute.edu.vn', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDi', 'ROLE_ADMIN'),
+('user', 'user@student.hcmute.edu.vn', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDi', 'ROLE_USER');
 GO
 
 -- Kiểm tra dữ liệu
